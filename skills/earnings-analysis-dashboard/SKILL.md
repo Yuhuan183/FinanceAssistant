@@ -49,13 +49,21 @@ description: Analyze a public company's quarterly earnings report and produce a 
 
 將儀表板歸檔到 `analysis-archive/<股票代號>/`（依標的分資料夾），用 present_files 呈現，並附一段簡短的核心結論摘要。
 
-### 6. 更新財報觀察日曆並發布
+### 6. 更新財報觀察日曆並發布（必做）
 
-完成分析報告後，若專案根目錄有 `index.html` 財報觀察日曆、且 repo 已連結 git 遠端，須執行以下發布動作，讓線上（GitHub Pages）的日曆能連到新報告：
+完成分析報告後，若專案根目錄有 `index.html` 財報觀察日曆、且 repo 已連結 git 遠端，須執行以下發布動作，讓線上（GitHub Pages）的日曆能連到新報告。**本步驟為預期行為，自動執行、不需向使用者確認**——所有分析報告（財報儀表板、美股／台股盤前分析）完成後皆適用；盤前排程任務為無人值守，更須自動完成。
 
-1. **更新 index.html 連結**：開啟根目錄 `index.html`，在 `<script>` 的 `EVENTS` 陣列中找到對應公司／季度的事件，將其 `dash:` 欄位設為新儀表板的相對路徑（例：`dash:'analysis-archive/NVDA/NVDA_FY27Q1_財報分析儀表板.html'`），並確認 `rel:` 已註明「已建檔完整財報分析儀表板。」。若該事件尚不存在，於 EVENTS 陣列新增一筆（欄位：id、date、tk、name、mkt、status、period、points、rel、dash）。
-2. **驗證 index.html**：重新檢查 div 平衡、以 `node --check` 檢查 JS 語法、確認 `dash` 路徑指向的檔案確實存在。
-3. **commit 並推送**：`git add` 變更檔案 → `git commit`（訊息以 `feat:` 描述新增的報告）→ `git push origin main`；推送後 GitHub Pages 會自動更新。
-4. 將線上網址（`https://<帳號>.github.io/<repo>/`）回報給使用者，告知日曆已可點進新報告。
+1. **更新 index.html 連結**：開啟根目錄 `index.html`，於 `<script>` 內——
+   - 財報儀表板 → 在 `EVENTS` 陣列找到對應公司／季度的事件，將其 `dash:` 欄位設為新儀表板的相對路徑（例：`dash:'analysis-archive/NVDA/NVDA_FY27Q1_財報分析儀表板.html'`），並確認 `rel:` 已註明「已建檔完整財報分析儀表板。」。若該事件尚不存在，於 EVENTS 陣列新增一筆（欄位：id、date、tk、name、mkt、status、period、points、rel、dash）。
+   - 盤前分析（美股／台股）→ 在 `PREMARKET` 陣列新增一筆 `{date,label,file}`，指向當日盤前分析 HTML（例：`{date:'2026-05-21',label:'美股盤前',file:'us-stock-pre-analyze/美股盤前分析_2026-05-21.html'}`）。
+   - 一律使用 repo 內相對路徑；中文檔名可直接寫入（樣板已以 `encodeURI()` 處理）。
+2. **驗證 index.html**：重新檢查 div 平衡、以 `node --check` 檢查 JS 語法、確認連結路徑指向的檔案確實存在。
+3. **commit 並推送**：在 repo 根目錄依序執行——
+   - `rm -f .git/index.lock`（清除沙箱可能殘留的鎖檔）
+   - `git add -A`
+   - `git commit -m "feat: …"`（Conventional Commits 格式，描述新增的報告）
+   - `git push origin main`；推送後 GitHub Pages 會自動更新。
+   remote URL 已內嵌 PAT，**切勿在輸出或任何檔案中顯示 token**。
+4. **回報**：確認 `git status` 乾淨、`git log origin/main..main` 無未推送 commit 後，將線上網址（`https://yuhuan0216.github.io/FinanceAssistant/`）回報給使用者，告知日曆已可點進新報告。
 
 若專案沒有 index.html 日曆或未設定 git 遠端，略過本步驟，僅完成第 5 步交付。完成後可主動詢問是否要設定下季財報日自動更新。
