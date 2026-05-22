@@ -31,6 +31,7 @@ body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystem
 .sw.tw{background:#3a2a08;border-left:3px solid var(--tw);}
 .sw.dn{background:#1c3a0a;border-left:3px solid var(--us);opacity:.5;}
 .sw.es{background:#1c3a0a;border:1px dashed var(--us);}
+.sw.pm{background:#10243a;border-left:3px solid var(--blue);}
 
 .tsmcnote{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--tw);
   border-radius:9px;padding:11px 15px;font-size:12.3px;color:var(--txt2);margin-bottom:16px;}
@@ -65,6 +66,12 @@ body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystem
 .ev.us.est{color:var(--us);}.ev.tw.est{color:var(--tw);}
 .ev:hover{filter:brightness(1.35);transform:translateY(-1px);}
 .ev.sel{outline:2px solid var(--txt);outline-offset:1px;opacity:1;}
+/* pre-market analysis link chip */
+.pm{display:block;width:100%;text-align:left;border-radius:5px;
+  padding:4px 7px;margin-top:4px;font-size:10.5px;font-weight:700;
+  line-height:1.35;cursor:pointer;text-decoration:none;transition:.12s;
+  background:#10243a;color:var(--blue);border:1px solid #24456b;}
+.pm:hover{filter:brightness(1.4);transform:translateY(-1px);}
 
 /* detail */
 .detail{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--green);
@@ -115,7 +122,7 @@ body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystem
   <div class="hd">
     <div class="eyebrow">Earnings Watch Calendar</div>
     <h1>財報觀察日曆 · 2026 年 5–6 月</h1>
-    <div class="sub">美股 ＋ 台股 · AI／半導體焦點 · 點選日曆上的事件可查看觀察重點 · 更新日：2026-05-21</div>
+    <div class="sub">美股 ＋ 台股 · AI／半導體焦點 · 點財報事件看觀察重點、點藍色「盤前」連結看當日盤前分析 · 更新日：2026-05-22</div>
   </div>
 
   <div class="legend">
@@ -124,6 +131,7 @@ body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystem
     <span class="lk"><span class="sw tw"></span>台股事件</span>
     <span class="lk"><span class="sw dn"></span>已公布</span>
     <span class="lk"><span class="sw es"></span>日期推估（虛線，待公司公告）</span>
+    <span class="lk"><span class="sw pm"></span>盤前分析（可點擊開啟）</span>
   </div>
 
   <div class="tsmcnote">
@@ -169,7 +177,7 @@ body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystem
 
   <div class="foot">
     資料來源：各公司投資人關係資訊、財報行事曆（MarketBeat、Investing.com 等）、台灣公開資訊觀測站（MOPS）<br>
-    更新日：2026-05-21 · 涵蓋區間：2026 年 5 月–6 月
+    更新日：2026-05-22 · 涵蓋區間：2026 年 5 月–6 月
   </div>
 </div>
 
@@ -212,12 +220,17 @@ const EVENTS=[
   points:['HBM 高頻寬記憶體的 AI 需求、產能與報價。','DRAM／NAND 報價走勢與供需緊俏程度。'],
   rel:'驗證 ARM 所提「記憶體短缺」說法的關鍵。日期為推估窗口（6/24–6/29），待公告。'}
 ];
+/* 每日盤前分析：依日期連到對應的盤前分析 HTML */
+const PREMARKET=[
+ {date:'2026-05-21',label:'美股盤前',file:'us-stock-pre-analyze/美股盤前分析_2026-05-21.html'},
+ {date:'2026-05-22',label:'台股盤前',file:'tw-stock-pre-analyze/台股盤前分析_2026-05-22.html'}
+];
 const MONTHS=[
  {label:'2026 年 4 月',y:2026,m:4,first:3,days:30},
  {label:'2026 年 5 月',y:2026,m:5,first:5,days:31},
  {label:'2026 年 6 月',y:2026,m:6,first:1,days:30}
 ];
-const TODAY='2026-05-21';
+const TODAY='2026-05-22';
 const WK=['日','一','二','三','四','五','六'];
 const pad=n=>n<10?'0'+n:''+n;
 
@@ -236,6 +249,9 @@ function renderMonth(){
     g+='<div class="cell'+(ds===TODAY?' today':'')+'"><span class="dnum">'+d+'</span>';
     EVENTS.filter(e=>e.date===ds).forEach(e=>{
       g+='<button class="ev '+e.mkt+' '+e.status+(e.id===selId?' sel':'')+'" data-id="'+e.id+'">'+e.tk+'</button>';
+    });
+    PREMARKET.filter(p=>p.date===ds).forEach(p=>{
+      g+='<a class="pm" href="'+encodeURI(p.file)+'" target="_blank" rel="noopener">'+p.label+' &#8599;</a>';
     });
     g+='</div>';
   }

@@ -16,3 +16,5 @@ Icon
 .Trashes
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
+# LibreOffice / Office 鎖定檔
+.~lock.*#
