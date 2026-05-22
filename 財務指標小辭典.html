@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>財務指標小辭典 · 看財報必備</title>
+<style>
+:root{
+  --bg:#0b0e14;--panel:#141925;--panel2:#1c2333;--line:#2a3346;
+  --txt:#e8ecf3;--txt2:#9aa6bd;--txt3:#6b7689;
+  --green:#76b900;--green2:#9ed320;--pos:#34d399;--neg:#f87171;--warn:#fbbf24;
+  --blue:#60a5fa;--purple:#c084fc;--teal:#2dd4bf;--radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);color:var(--txt);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 18px 60px;}
+
+/* header */
+.hd{background:linear-gradient(135deg,#141925 0%,#1c2333 60%,#10331a 100%);
+  border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:14px;}
+.hd .eyebrow{color:var(--green2);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.hd h1{font-size:23px;font-weight:800;margin:6px 0 4px;}
+.hd .sub{color:var(--txt2);font-size:13px;}
+.backlink{display:inline-flex;align-items:center;gap:5px;margin-top:12px;
+  background:var(--panel2);color:var(--txt2);font-size:12px;font-weight:700;text-decoration:none;
+  padding:6px 13px;border-radius:7px;border:1px solid var(--line);transition:.12s;}
+.backlink:hover{background:var(--green);color:#0b0e14;border-color:var(--green);}
+
+/* how-to note */
+.note{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--green2);
+  border-radius:9px;padding:11px 15px;font-size:12.3px;color:var(--txt2);margin-bottom:14px;}
+.note b{color:var(--green2);}
+
+/* controls */
+.controls{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 16px;margin-bottom:14px;position:sticky;top:0;z-index:10;}
+.search{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;
+  color:var(--txt);font-family:inherit;font-size:14px;padding:10px 13px;outline:none;transition:.12s;}
+.search:focus{border-color:var(--green);}
+.search::placeholder{color:var(--txt3);}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px;align-items:center;}
+.chip{background:var(--panel2);border:1px solid var(--line);color:var(--txt2);
+  font-family:inherit;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;
+  cursor:pointer;transition:.12s;}
+.chip:hover{filter:brightness(1.3);}
+.chip.on{background:var(--green);color:#0b0e14;border-color:var(--green);}
+.count{margin-left:auto;color:var(--txt3);font-size:11.5px;}
+
+/* glossary grid */
+.glos{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:15px 17px;display:flex;flex-direction:column;}
+.card.hide{display:none;}
+.ch{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:9px;}
+.cn .zh{font-size:16px;font-weight:800;color:var(--txt);}
+.cn .en{font-size:11.5px;color:var(--txt3);font-weight:600;margin-top:1px;}
+.tag{flex:0 0 auto;font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap;}
+.tag.g{background:#10243a;color:var(--blue);border:1px solid #24456b;}
+.tag.p{background:#1c3a0a;color:var(--green2);border:1px solid #3a5c10;}
+.tag.v{background:#3a2a08;color:var(--warn);border:1px solid #5c4a10;}
+.tag.r{background:#2a1a3a;color:var(--purple);border:1px solid #4a2f6b;}
+.tag.c{background:#0a3330;color:var(--teal);border:1px solid #105c54;}
+.fld{margin-top:9px;}
+.fld .lbl{font-size:10.5px;font-weight:700;letter-spacing:.5px;color:var(--txt3);
+  text-transform:uppercase;display:block;margin-bottom:3px;}
+.fld p{font-size:12.8px;color:var(--txt2);}
+.formula{background:var(--bg);border:1px solid var(--line);border-radius:7px;
+  padding:8px 11px;font-family:"SF Mono","Consolas","Menlo",monospace;
+  font-size:12px;color:var(--green2);line-height:1.7;}
+.fld.read p{color:var(--txt2);}
+.fld.ex{border-top:1px dashed var(--line);padding-top:9px;margin-top:11px;}
+.fld.ex .lbl{color:var(--green);}
+.fld.ex p{font-size:12.3px;color:var(--txt3);}
+.empty{grid-column:1/-1;text-align:center;color:var(--txt3);font-size:13px;padding:40px 0;}
+
+/* disclaimer + foot */
+.disc{background:var(--panel);border:1px solid #5c4a10;border-radius:9px;padding:12px 16px;
+  font-size:11.6px;color:var(--txt2);margin-top:16px;}
+.disc b{color:var(--warn);}
+.foot{color:var(--txt3);font-size:11.5px;text-align:center;margin-top:10px;line-height:1.8;}
+
+@media(max-width:680px){
+  .glos{grid-template-columns:1fr;}
+  .wrap{padding:16px 10px 50px;}
+  .controls{position:static;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <div class="eyebrow">Financial Metrics Glossary</div>
+    <h1>財務指標小辭典 · 看財報必備</h1>
+    <div class="sub">20 個核心指標 · 白話定義 ＋ 計算公式 ＋ 判讀重點 ＋ 半導體股實例 · 更新日：2026-05-22</div>
+    <a class="backlink" href="index.html">&#8592; 回財報觀察日曆</a>
+  </div>
+
+  <div class="note">
+    <b>怎麼用：</b>看財報時遇到不熟的指標,直接搜尋或按分類篩選。每張卡片的重點是「判讀重點」——數字本身不會說話,要看<b>趨勢、跟同業比、跟自己的歷史比</b>。估值類指標(本益比、PEG 等)務必和成長性一起看。
+  </div>
+
+  <div class="controls">
+    <input type="text" class="search" id="search" placeholder="🔍 搜尋指標(中／英文、關鍵字)… 例如：毛利率、P/E、現金流">
+    <div class="filters" id="filters"></div>
+  </div>
+
+  <div class="glos" id="glos"></div>
+
+  <div class="disc">
+    <b>免責聲明：</b>本辭典為財務指標的教學性整理,定義與公式為通用會計／財務概念,實例引用之數據為公開資料彙整(來源見下),<b>僅供研究與學習參考,不構成投資建議</b>。各公司財報口徑(GAAP／Non-GAAP、會計年度)可能不同,實際分析請以公司正式財報為準。
+  </div>
+
+  <div class="foot">
+    財務指標小辭典 · Finance Assistant<br>
+    實例數據來源：各公司投資人關係資訊與 2026 年財報、本專案晨會筆記（2026-05-21）<br>
+    更新日：2026-05-22
+  </div>
+
+</div>
+
+<script>
+/* 分類定義 */
+const CATS=[
+  {key:'all',label:'全部'},
+  {key:'g',label:'成長性'},
+  {key:'p',label:'獲利能力'},
+  {key:'v',label:'估值'},
+  {key:'r',label:'報酬與效率'},
+  {key:'c',label:'現金流與財務體質'}
+];
+const CATNAME={g:'成長性',p:'獲利能力',v:'估值',r:'報酬與效率',c:'現金流與財務體質'};
+
+/* 20 個核心財務指標 */
+const METRICS=[
+ {cat:'g',zh:'營收年增率',en:'YoY Revenue Growth',
+  def:'本期營收相對「去年同期」的成長幅度。排除掉季節性後,最能反映公司真實的成長動能。',
+  formula:'(本期營收 − 去年同期營收) ÷ 去年同期營收 × 100%',
+  read:'數字要搭配「基期」看——在高基期下仍維持高增速更難得。增速「連續放緩」往往比單季數字更值得警覺;成長股一旦 YoY 從三位數掉到兩位數,常引發評價重估。',
+  ex:'NVIDIA FY2027 Q1 營收 $816 億、YoY +85%——絕對金額龐大下仍維持高速,但市場早已預期,於是出現「超預期卻不漲」。'},
+
+ {cat:'g',zh:'營收季增率',en:'QoQ Revenue Growth',
+  def:'本期營收相對「上一季」的變化,反映最近一季的環比動能,但容易受產業季節性干擾。',
+  formula:'(本季營收 − 上季營收) ÷ 上季營收 × 100%',
+  read:'須注意季節性(如消費電子 Q4 旺、Q1 淡)。看「財測的 QoQ」比看歷史 QoQ 更重要——財測加速通常是股價的催化劑。',
+  ex:'AMD Q1 2026 後給出 Q2 財測 $112 億,較 Q1 的 $102.5 億 QoQ 約 +9%;財測「加速」是財報後股價大漲的主因之一。'},
+
+ {cat:'p',zh:'毛利率',en:'Gross Margin',
+  def:'每 100 元營收,扣掉直接生產成本後還剩多少。反映產品的「定價力」與成本結構。',
+  formula:'(營收 − 銷貨成本) ÷ 營收 × 100%',
+  read:'半導體業毛利率高,通常代表技術領先、製程議價力強。毛利率的「趨勢」比絕對值重要;突然下滑要追查是產品組合、降價、還是晶圓代工漲價所致。',
+  ex:'台積電 Q1 2026 毛利率 66.2%,反映先進製程(3nm)的訂價力;NVIDIA 資料中心 GPU 毛利率長期維持 70%+ 是其護城河指標。'},
+
+ {cat:'p',zh:'營業利益率',en:'Operating Margin',
+  def:'扣掉生產成本後「再扣掉」營運費用(研發、行銷、管理)的獲利比率,衡量本業真實賺錢能力。',
+  formula:'營業利益 ÷ 營收 × 100%',
+  read:'比毛利率更能看出「規模效益」——營收成長時,營業利益率若同步擴張,代表營運槓桿正在發酵。研發費用龐大的晶片股,營業利益率通常明顯低於毛利率。',
+  ex:'晶片設計公司研發占營收常達 20–30%,因此就算毛利率 60%+,營業利益率可能僅 30–40%。'},
+
+ {cat:'p',zh:'淨利率',en:'Net Profit Margin',
+  def:'每 100 元營收最終落到「稅後淨利」的比率,已包含利息、稅、業外損益。',
+  formula:'稅後淨利 ÷ 營收 × 100%',
+  read:'最容易被「業外項目」(匯兌、投資收益、一次性項目)干擾。判斷本業表現時,宜回頭看營業利益率,避免被業外損益誤導。',
+  ex:'台積電 Q1 2026 淨利與 EPS 年增 58.3%,高於營收年增 35%——代表獲利成長快於營收,利潤率正在擴張。'},
+
+ {cat:'p',zh:'每股盈餘',en:'EPS · Earnings Per Share',
+  def:'公司賺的錢分攤到「每一股」是多少。它是本益比的分母,也是市場最關注的單一數字。',
+  formula:'(稅後淨利 − 特別股股利) ÷ 流通在外加權平均股數',
+  read:'留意「稀釋 EPS」(計入選擇權、可轉債後的股數)。公司若大量買回庫藏股,股數下降會「美化」EPS——須分辨是本業成長還是財務工程。',
+  ex:'NVIDIA FY2027 Q1 Non-GAAP EPS $1.87;市場通常用「EPS 對比分析師預期」來定義超預期或不如預期。'},
+
+ {cat:'p',zh:'GAAP 與 Non-GAAP',en:'GAAP vs Non-GAAP',
+  def:'GAAP 是依會計準則的「正式」數字;Non-GAAP 是公司剔除一次性／非現金項目(主要是股票薪酬)後的「調整後」數字。',
+  formula:'Non-GAAP = GAAP ± 公司自訂調整項（常見：股票薪酬、併購攤銷、重組費用）',
+  read:'科技股 Non-GAAP 通常會「美化」獲利,尤以股票薪酬為大宗。兩者差距愈大愈該警覺;比較同業時務必用「同一口徑」。',
+  ex:'晶片設計公司股票薪酬動輒占營收 10%+,Non-GAAP EPS 常明顯高於 GAAP;法說會慣用 Non-GAAP,看財報時要對齊口徑。'},
+
+ {cat:'p',zh:'EBITDA',en:'稅前息前折舊攤銷前獲利',
+  def:'加回利息、稅、折舊與攤銷後的獲利,用來近似「本業營運產生的現金獲利」,排除資本結構與會計折舊的影響。',
+  formula:'營業利益 + 折舊 + 攤銷　（或 淨利 + 利息 + 稅 + 折舊 + 攤銷）',
+  read:'方便「跨公司比較」(撇開負債與稅制差異),也是 EV/EBITDA 的分母。但它「不是現金流」——忽略了資本支出與營運資金,資本密集的晶圓廠用 EBITDA 會高估真實現金產生力。',
+  ex:'晶圓代工廠折舊極高(先進製程設備),EBITDA 遠高於淨利;評估這類公司宜搭配自由現金流一起看。'},
+
+ {cat:'v',zh:'本益比',en:'P/E · Price-to-Earnings',
+  def:'股價是「每股盈餘」的幾倍,代表市場願意為公司每 1 元獲利付多少錢,也可理解為靜態的回本年數。',
+  formula:'股價 ÷ 每股盈餘 EPS　（常用 trailing 過去 12 個月 EPS）',
+  read:'高本益比不必然「貴」——市場是在為「未來成長」付溢價。但 P/E 一旦遠離自身歷史區間與同業,風險報酬就轉差。虧損公司 P/E 無意義。',
+  ex:'AMD 財報後 trailing 本益比約 141 倍、ARM 近 300 倍——成長預期被推到極高,「利多出盡」的回檔風險隨之上升。'},
+
+ {cat:'v',zh:'遠期本益比',en:'Forward P/E',
+  def:'用「未來 12 個月的預估 EPS」算出的本益比,對成長股而言比 trailing P/E 更有參考性。',
+  formula:'股價 ÷ 未來 12 個月預估每股盈餘',
+  read:'成長越快,forward P/E 會比 trailing 低很多——這個「落差」本身就是成長性的指標。缺點是依賴分析師預估,一旦預估被下修,看似便宜其實不便宜。',
+  ex:'NVIDIA 股價約 $220、遠期本益比約 27 倍,遠低於 AMD／ARM 的 trailing 倍數;反映市場認為其未來 EPS 仍將大幅成長。'},
+
+ {cat:'v',zh:'PEG 比率',en:'P/E to Growth',
+  def:'把本益比「除以盈餘成長率」,用來判斷一檔股票的高本益比「是否被成長撐得起來」。',
+  formula:'本益比 P/E ÷ 盈餘年成長率（%）',
+  read:'經驗法則：PEG ≈ 1 約為合理、<1 相對便宜、>1 偏貴。但成長率假設極為敏感,高成長階段一旦增速放緩,PEG 會迅速惡化。',
+  ex:'一檔 P/E 60 倍、EPS 成長 60% 的晶片股,PEG ≈ 1 看似合理;但若成長掉到 30%,PEG 立刻跳到 2,評價基礎就瓦解了。'},
+
+ {cat:'v',zh:'EV/EBITDA',en:'企業價值倍數',
+  def:'企業價值(EV)相對 EBITDA 的倍數。EV 把「負債」與「現金」也算進來,比本益比更能跨資本結構比較。',
+  formula:'企業價值 EV ÷ EBITDA　（EV = 市值 + 總負債 − 現金）',
+  read:'適合比較負債水準不同的公司,也常用於併購評價。倍數偏低未必便宜——要看 EBITDA 的品質與資本支出負擔。',
+  ex:'評估晶圓代工或半導體設備商(資本密集、常有負債)時,EV/EBITDA 比本益比更公允;併購半導體標的的報價也多以 EV/EBITDA 表述。'},
+
+ {cat:'v',zh:'股價淨值比',en:'P/B · Price-to-Book',
+  def:'股價相對「每股淨值(帳面股東權益)」的倍數,反映市場願為公司淨資產付出的溢價。',
+  formula:'股價 ÷ 每股淨值　（每股淨值 = 股東權益 ÷ 流通股數）',
+  read:'對「重資產」公司(晶圓廠、設備)較有意義;對「輕資產」的晶片設計／IP 公司——價值多在無形資產與人才——P/B 普遍很高、參考性低。',
+  ex:'ARM 這類 IP 授權公司帳面資產少,P/B 動輒數十倍,用 P/B 評價幾乎無意義;台積電這類重資產廠的 P/B 才較具參考性。'},
+
+ {cat:'r',zh:'股東權益報酬率',en:'ROE · Return on Equity',
+  def:'公司用「股東的錢」一年賺回多少報酬,衡量股東資本的運用效率。',
+  formula:'稅後淨利 ÷ 股東權益 × 100%',
+  read:'長期穩定的高 ROE 是好公司的特徵。但要小心「高負債」也會墊高 ROE(財務槓桿),宜搭配負債比率一起看;買回庫藏股縮減權益同樣會推高 ROE。',
+  ex:'體質佳的晶片龍頭 ROE 常穩定在 25–35%+;若 ROE 飆高的同時負債大增,要分辨是真效率還是加槓桿。'},
+
+ {cat:'r',zh:'資產報酬率',en:'ROA · Return on Assets',
+  def:'公司用「全部資產」一年賺回多少報酬,不受資本結構影響,衡量整體資產的運用效率。',
+  formula:'稅後淨利 ÷ 總資產 × 100%',
+  read:'ROA 與 ROE 的「差距」反映槓桿程度——差距越大代表負債越高。資本密集產業(晶圓代工)的 ROA 天生偏低,需與同業相比。',
+  ex:'晶圓代工廠資產龐大(廠房設備),ROA 通常低於輕資產的晶片設計公司;比較時務必同業對同業。'},
+
+ {cat:'r',zh:'存貨週轉率',en:'Inventory Turnover',
+  def:'一年內存貨「賣掉並補貨」幾次,反映出貨順暢度與存貨管理效率。',
+  formula:'銷貨成本 ÷ 平均存貨　（存貨天數 = 365 ÷ 週轉率）',
+  read:'週轉率下滑、存貨天數拉長,常是「需求轉弱」或「拉貨過頭」的早期警訊。半導體有上下游庫存循環,存貨是重要的領先指標。',
+  ex:'晶片業「庫存修正」期間,通路與客戶端的存貨天數會明顯拉高;留意財報中存貨增幅是否遠快於營收。'},
+
+ {cat:'c',zh:'營業現金流',en:'Operating Cash Flow',
+  def:'公司本業實際「收到的現金」減「付出的現金」,排除會計應計項目,反映獲利的含金量。',
+  formula:'稅後淨利 + 折舊攤銷 ± 營運資金變動　（間接法）',
+  read:'淨利漂亮但營業現金流長期落後,是獲利品質的警訊(可能應收帳款灌水、存貨堆積)。健康公司的營業現金流應與淨利同向,且相近或更高。',
+  ex:'比較晶片股時,若某季 EPS 超預期但營業現金流轉弱,要追查是把貨塞給通路(channel stuffing)還是真實終端需求。'},
+
+ {cat:'c',zh:'自由現金流',en:'FCF · Free Cash Flow',
+  def:'營業現金流再扣掉「維持與擴張所需的資本支出」後,真正可自由運用(配息、買回、還債)的現金。',
+  formula:'自由現金流 = 營業現金流 − 資本支出（Capex）',
+  read:'FCF 才是「股東真正能拿到的錢」。資本密集的晶圓廠在擴產期 FCF 可能為負,須判斷是「成長性投資」還是「燒錢」。FCF 利潤率(FCF÷營收)是品質指標。',
+  ex:'晶圓代工大擴產的年度,FCF 可能轉負或大減;晶片設計公司資本支出輕,FCF 通常很豐沛、利潤率高。'},
+
+ {cat:'c',zh:'資本支出',en:'Capex · Capital Expenditure',
+  def:'公司為購建廠房、設備等長期資產所花的現金,是擴產與技術投資的直接指標。',
+  formula:'取自現金流量表「投資活動」之購置不動產廠房設備　（Capex 強度 = Capex ÷ 營收）',
+  read:'對 AI 晶片產業,雲端巨頭與大客戶的 capex 是「需求面的領先指標」。公司自身 capex 大增代表看好未來,但短期會壓縮自由現金流。',
+  ex:'晨會筆記提到 Broadcom、Oracle 財報的 capex 與在手訂單,被視為驗證「AI 資本支出循環」是否延續的關鍵。'},
+
+ {cat:'c',zh:'負債比率',en:'Debt Ratio',
+  def:'公司資產中有多少是靠「借來的」支應,衡量財務槓桿與償債壓力。',
+  formula:'總負債 ÷ 總資產 × 100%　（亦常用 淨負債 ÷ EBITDA 看槓桿倍數）',
+  read:'高負債在景氣好時放大報酬、景氣差時放大風險。搭配「淨負債／EBITDA」與利息保障倍數一起看更完整;手握大量現金的晶片龍頭常呈「淨現金」。',
+  ex:'多數大型 AI 晶片股財務體質穩健、甚至淨現金;評估擴產積極或併購頻繁的公司時,負債比率與淨負債更需留意。'}
+];
+
+/* 渲染分類 chip */
+let activeCat='all';
+const filtersEl=document.getElementById('filters');
+CATS.forEach(c=>{
+  const b=document.createElement('button');
+  b.className='chip'+(c.key==='all'?' on':'');
+  b.textContent=c.label;
+  b.dataset.cat=c.key;
+  b.addEventListener('click',()=>{
+    activeCat=c.key;
+    document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x.dataset.cat===c.key));
+    apply();
+  });
+  filtersEl.appendChild(b);
+});
+const countEl=document.createElement('span');
+countEl.className='count';
+filtersEl.appendChild(countEl);
+
+/* 渲染指標卡片 */
+const glos=document.getElementById('glos');
+METRICS.forEach((m,i)=>{
+  const card=document.createElement('div');
+  card.className='card';
+  card.dataset.cat=m.cat;
+  card.dataset.search=(m.zh+' '+m.en+' '+m.def).toLowerCase();
+  card.innerHTML=
+    '<div class="ch"><div class="cn"><div class="zh">'+m.zh+'</div>'+
+    '<div class="en">'+m.en+'</div></div>'+
+    '<span class="tag '+m.cat+'">'+CATNAME[m.cat]+'</span></div>'+
+    '<div class="fld"><span class="lbl">白話定義</span><p>'+m.def+'</p></div>'+
+    '<div class="fld"><span class="lbl">計算公式</span><div class="formula">'+m.formula+'</div></div>'+
+    '<div class="fld read"><span class="lbl">判讀重點</span><p>'+m.read+'</p></div>'+
+    '<div class="fld ex"><span class="lbl">半導體股實例</span><p>'+m.ex+'</p></div>';
+  glos.appendChild(card);
+});
+const emptyEl=document.createElement('div');
+emptyEl.className='empty';
+emptyEl.textContent='找不到符合的指標,試試其他關鍵字。';
+emptyEl.style.display='none';
+glos.appendChild(emptyEl);
+
+/* 搜尋 + 篩選 */
+const searchEl=document.getElementById('search');
+function apply(){
+  const q=searchEl.value.trim().toLowerCase();
+  let shown=0;
+  document.querySelectorAll('.card').forEach(c=>{
+    const okCat=activeCat==='all'||c.dataset.cat===activeCat;
+    const okQ=!q||c.dataset.search.indexOf(q)>-1;
+    const vis=okCat&&okQ;
+    c.classList.toggle('hide',!vis);
+    if(vis) shown++;
+  });
+  emptyEl.style.display=shown===0?'block':'none';
+  countEl.textContent='顯示 '+shown+' / '+METRICS.length+' 項';
+}
+searchEl.addEventListener('input',apply);
+apply();
+</script>
+</body>
+</html>
