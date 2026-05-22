@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<!--
+  財報分析互動式儀表板 — 通用模板
+  使用方式：複製本檔 → 將所有 {{雙大括號}} 佔位符與 [示意] 內容替換為實際財報數據。
+  CSS 與 <script> 的分頁／圖表框架可原樣沿用，只需替換各分頁的 HTML 內容與圖表 data 陣列。
+  五個分頁：總覽 / 財報細節 / 未來展望 / 股價與估值 / 三角度投資觀點。
+  ⚠ 常見錯誤：每個 <div> 都要有對應 </div>。收尾務必跑 div 平衡檢查（見 SKILL.md 驗證步驟），
+     未閉合的 div 會讓後面的分頁被吞進前一個分頁而「看不到內容」。
+-->
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{公司}} ({{代號}}) {{財報期間}} 財報分析儀表板</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
+<style>
+:root{
+  --bg:#0b0e14; --panel:#141925; --panel2:#1c2333; --line:#2a3346;
+  --txt:#e8ecf3; --txt2:#9aa6bd; --txt3:#6b7689;
+  --green:#76b900; --green2:#9ed320;
+  --pos:#34d399; --neg:#f87171; --warn:#fbbf24; --blue:#60a5fa;
+  --radius:12px;
+}
+/* 品牌色：可將 --green / --green2 改成標的公司主色 */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);color:var(--txt);line-height:1.65;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1240px;margin:0 auto;padding:20px 18px 60px;}
+.hd{background:linear-gradient(135deg,#141925 0%,#1c2333 60%,#10331a 100%);
+  border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;}
+.hd .eyebrow{color:var(--green2);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.hd h1{font-size:25px;font-weight:800;margin:6px 0 4px;}
+.hd .sub{color:var(--txt2);font-size:13.5px;}
+.hd .meta{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+.chip{background:var(--panel2);border:1px solid var(--line);border-radius:999px;
+  padding:5px 13px;font-size:12px;color:var(--txt2);}
+.chip b{color:var(--txt);}
+.chip.g{border-color:#3a5c10;background:#16240a;color:var(--green2);}
+.verdict{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--green);
+  border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;}
+.verdict h2{font-size:14px;color:var(--green2);margin-bottom:6px;letter-spacing:1px;}
+.verdict p{font-size:14px;color:var(--txt);}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.tab{background:var(--panel);border:1px solid var(--line);color:var(--txt2);
+  padding:9px 16px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s;}
+.tab:hover{color:var(--txt);border-color:#3a4760;}
+.tab.on{background:var(--green);color:#0b0e14;border-color:var(--green);}
+.panel-view{display:none;}
+.panel-view.on{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(186px,1fr));gap:12px;margin-bottom:16px;}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;}
+.kpi .l{font-size:11.5px;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;}
+.kpi .v{font-size:26px;font-weight:800;margin:5px 0 3px;}
+.kpi .d{font-size:12.5px;font-weight:600;}
+.kpi .d.pos{color:var(--pos);}.kpi .d.neg{color:var(--neg);}.kpi .d.neu{color:var(--txt2);}
+.kpi .v.green{color:var(--green2);}
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 22px;margin-bottom:16px;}
+.sec h3{font-size:15.5px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.sec h3::before{content:"";width:4px;height:16px;background:var(--green);border-radius:2px;}
+.sec h4{font-size:13.5px;color:var(--green2);margin:14px 0 7px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr;}}
+.chartbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;}
+.chartbox h3{font-size:14px;font-weight:700;margin-bottom:4px;}
+.chartbox .cap{font-size:11.5px;color:var(--txt3);margin-bottom:12px;}
+.cv{position:relative;height:270px;}
+ul.clean{list-style:none;}
+ul.clean li{padding:8px 0 8px 22px;position:relative;font-size:13.5px;border-bottom:1px solid var(--line);}
+ul.clean li:last-child{border-bottom:none;}
+ul.clean li::before{content:"\25B8";position:absolute;left:2px;color:var(--green);font-size:12px;top:9px;}
+ul.clean li b{color:var(--txt);}
+.txt2{color:var(--txt2);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:9px 11px;text-align:right;border-bottom:1px solid var(--line);}
+th:first-child,td:first-child{text-align:left;}
+thead th{color:var(--txt3);font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;
+  border-bottom:2px solid #313b50;}
+tbody tr:hover{background:var(--panel2);}
+td.pos{color:var(--pos);}td.neg{color:var(--neg);}
+.rowhi{background:#16240a !important;}
+.rowhi td{color:var(--green2);font-weight:700;}
+.note{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:13px 16px;
+  font-size:12.8px;color:var(--txt2);margin-top:10px;}
+.note b{color:var(--txt);}
+.note.warn{border-color:#5c4a10;background:#241d08;}
+.note.warn b{color:var(--warn);}
+.anglecard{background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:18px;}
+.anglecard .tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;margin-bottom:9px;}
+.tag.hold{background:#1a2f12;color:var(--green2);border:1px solid #3a5c10;}
+.tag.buy{background:#0e2440;color:var(--blue);border:1px solid #1d4675;}
+.tag.long{background:#2a1f08;color:var(--warn);border:1px solid #5c4a10;}
+.anglecard h4{font-size:14.5px;color:var(--txt);margin:0 0 8px;}
+.anglecard p{font-size:12.8px;color:var(--txt2);margin-bottom:8px;}
+.anglecard .mini{font-size:11.5px;color:var(--txt3);border-top:1px dashed var(--line);padding-top:8px;margin-top:4px;}
+.anglecard ul.al{list-style:none;margin:2px 0 0;}
+.anglecard ul.al li{font-size:12px;color:var(--txt2);padding:3px 0 3px 15px;position:relative;line-height:1.55;}
+.anglecard ul.al li::before{content:"\2013";position:absolute;left:2px;color:var(--txt3);}
+.anglecard ul.al li b{color:var(--txt);}
+.anglecard .blk{margin-top:10px;}
+.anglecard .blk>b{font-size:11.5px;letter-spacing:.3px;}
+.blk.bp>b{color:var(--pos);}
+.blk.bn>b{color:var(--neg);}
+.blk.bt>b{color:var(--blue);}
+.anglecard .stance{color:var(--txt);font-size:12.6px;font-weight:600;
+  border-left:3px solid var(--green);padding-left:10px;margin:3px 0 4px;}
+.bullcard{background:#10240e;border-color:#2c5223;}
+.bearcard{background:#241011;border-color:#5c2526;}
+.bullcard>h4{color:var(--pos);}
+.bearcard>h4{color:var(--neg);}
+.scen{border-top:3px solid var(--line);}
+.scen.up{border-top-color:var(--pos);}
+.scen.bs{border-top-color:var(--blue);}
+.scen.dn{border-top-color:var(--neg);}
+.scen .px{font-size:22px;font-weight:800;margin:3px 0 1px;}
+.scen.up .px{color:var(--pos);}
+.scen.bs .px{color:var(--blue);}
+.scen.dn .px{color:var(--neg);}
+.scen .prob{font-size:10.5px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;}
+.scen .delta{font-size:12px;color:var(--txt2);margin-bottom:2px;}
+.risk{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;}
+.risk:last-child{border-bottom:none;}
+.risk .nm{flex:1;}
+.dots{display:flex;gap:3px;}
+.dot{width:9px;height:9px;border-radius:2px;background:var(--line);}
+.dot.on{background:var(--neg);}
+.dot.on.m{background:var(--warn);}
+.quote{border-left:3px solid var(--green);padding:6px 0 6px 16px;margin:10px 0;
+  font-style:italic;color:var(--txt);font-size:13.5px;}
+.quote span{display:block;font-style:normal;color:var(--txt3);font-size:11.5px;margin-top:4px;}
+.foot{color:var(--txt3);font-size:11.5px;text-align:center;margin-top:8px;line-height:1.8;}
+.disc{background:var(--panel);border:1px solid #5c4a10;border-radius:9px;padding:13px 16px;
+  font-size:11.8px;color:var(--txt2);margin-top:14px;}
+.disc b{color:var(--warn);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== 標題列 ===== -->
+  <div class="hd">
+    <div class="eyebrow">{{公司英文名}} · {{交易所}}: {{代號}}</div>
+    <h1>{{財報期間}} 財報分析儀表板</h1>
+    <div class="sub">{{會計期間說明}} · 財報於 {{發布日}} 發布</div>
+    <div class="meta">
+      <span class="chip g">營收 <b>{{營收}}</b></span>
+      <span class="chip">{{主要分部}} <b>{{分部營收}}</b></span>
+      <span class="chip">EPS <b>{{EPS}}</b></span>
+      <span class="chip">下季財測 <b>{{財測}}</b></span>
+      <span class="chip">股價 <b>{{股價}}</b></span>
+    </div>
+  </div>
+
+  <!-- ===== 核心結論（2-4 句，點出財報亮點與市場關注的張力）===== -->
+  <div class="verdict">
+    <h2>核心結論</h2>
+    <p>[示意] 一段平衡的總結：財報實際表現、與市場預期的落差、股價反應，以及最值得關注的張力或風險。</p>
+  </div>
+
+  <!-- ===== 分頁列（5 頁，原樣沿用）===== -->
+  <div class="tabs" id="tabs">
+    <div class="tab on" data-t="0">總覽</div>
+    <div class="tab" data-t="1">財報細節</div>
+    <div class="tab" data-t="2">未來展望與方向</div>
+    <div class="tab" data-t="3">股價與估值</div>
+    <div class="tab" data-t="4">三角度投資觀點</div>
+  </div>
+
+  <!-- ============ 分頁 0：總覽 ============ -->
+  <div class="panel-view on" data-v="0">
+    <div class="kpis">
+      <!-- 6 張 KPI 卡：營收、主分部、EPS、毛利率、財測、淨利 等最關鍵數字 -->
+      <div class="kpi"><div class="l">總營收</div><div class="v green">{{營收}}</div><div class="d pos">{{年增}} · {{季增}}</div></div>
+      <div class="kpi"><div class="l">{{KPI 標籤}}</div><div class="v">{{值}}</div><div class="d pos">{{變動}}</div></div>
+      <!-- …再加 4 張… -->
+    </div>
+    <div class="grid2">
+      <div class="chartbox">
+        <h3>營收趨勢（含財測）</h3>
+        <div class="cap">單位：{{單位}} · 灰色為公司財測</div>
+        <div class="cv"><canvas id="cRev"></canvas></div>
+      </div>
+      <div class="chartbox">
+        <h3>本季營收組成</h3>
+        <div class="cap">{{一句話描述業務集中度}}</div>
+        <div class="cv"><canvas id="cMix"></canvas></div>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>財報重點</h3>
+      <ul class="clean">
+        <li><b>[重點標題]：</b>[示意] 5-6 條，每條一個重點＋數據佐證＋簡短解讀。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ 分頁 1：財報細節 ============ -->
+  <div class="panel-view" data-v="1">
+    <div class="sec">
+      <h3>財報摘要</h3>
+      <table>
+        <thead><tr><th>項目</th><th>本季</th><th>上一季</th><th>去年同期</th><th>季增</th><th>年增</th></tr></thead>
+        <tbody>
+          <tr class="rowhi"><td>營收</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          <!-- 毛利率、營業利益、淨利、EPS…（如有 GAAP/non-GAAP 分別列出）-->
+        </tbody>
+      </table>
+      <div class="note warn"><b>關鍵眉角：</b>[示意] 說明任何會計口徑變動、一次性項目、GAAP 與 non-GAAP 差異等需提醒讀者之處。</div>
+    </div>
+    <div class="grid2">
+      <div class="sec" style="margin:0">
+        <h3>分部營收</h3>
+        <table><thead><tr><th>分部</th><th>營收</th><th>季增</th><th>年增</th></tr></thead>
+          <tbody><tr class="rowhi"><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>
+      </div>
+      <div class="chartbox" style="margin:0">
+        <h3>獲利能力趨勢</h3>
+        <div class="cap">毛利率／營業利益率／淨利率</div>
+        <div class="cv"><canvas id="cMargin"></canvas></div>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>資產負債與股東回報</h3>
+      <div class="grid3">
+        <div class="anglecard"><h4>[主題]</h4><p>[示意] 股息、庫藏股、現金、負債等。</p><div class="mini">[簡短解讀]</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 分頁 2：未來展望與方向 ============ -->
+  <div class="panel-view" data-v="2">
+    <div class="kpis">
+      <div class="kpi"><div class="l">下季營收財測</div><div class="v green">{{財測}}</div><div class="d pos">{{隱含成長}}</div></div>
+      <!-- 毛利率財測、費用財測、年化營收等 -->
+    </div>
+    <div class="sec">
+      <h3>成長動能</h3>
+      <ul class="clean"><li><b>[動能標題]：</b>[示意] 結構性成長引擎。</li></ul>
+      <h4>較長線的選擇權</h4>
+      <p class="txt2" style="font-size:13px">[示意] 佔比尚小、但具長線潛力的新業務。</p>
+    </div>
+    <div class="sec">
+      <h3>管理層評論</h3>
+      <div class="quote">「[示意] 法說會關鍵引述。」<span>— 發言人職稱</span></div>
+    </div>
+    <div class="sec">
+      <h3>方向研判（專業推斷）</h3>
+      <ul class="clean"><li><b>[研判標題]：</b>[示意] 基本面方向、變數、成長率走勢、競爭格局——明確標示為推斷。</li></ul>
+    </div>
+  </div>
+
+  <!-- ============ 分頁 3：股價與估值 ============ -->
+  <div class="panel-view" data-v="3">
+    <div class="kpis">
+      <div class="kpi"><div class="l">目前股價</div><div class="v">{{股價}}</div><div class="d neu">{{財報後反應}}</div></div>
+      <div class="kpi"><div class="l">52 週區間</div><div class="v" style="font-size:20px">{{區間}}</div><div class="d neu">{{距高點}}</div></div>
+      <div class="kpi"><div class="l">本益比 trailing/forward</div><div class="v" style="font-size:22px">{{PE}}</div><div class="d neu">—</div></div>
+      <div class="kpi"><div class="l">分析師平均目標價</div><div class="v green">{{目標價}}</div><div class="d pos">{{上行空間}}</div></div>
+    </div>
+    <div class="chartbox">
+      <h3>關鍵價位地圖</h3>
+      <div class="cap">{{一句話描述股價相對均線位置}}</div>
+      <div class="cv" style="height:300px"><canvas id="cPrice"></canvas></div>
+    </div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="sec" style="margin:0">
+        <h3>技術面解讀</h3>
+        <ul class="clean"><li><b>[均線/支撐/壓力/型態]：</b>[示意]</li></ul>
+      </div>
+      <div class="sec" style="margin:0">
+        <h3>估值評析</h3>
+        <p class="txt2" style="font-size:13px">[示意] 市值、本益比、PEG 評析。</p>
+        <div class="note">[示意] 真正的估值風險所在。</div>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>財報後股價反應與原因</h3>
+      <ul class="clean"><li><b>[原因]：</b>[示意]</li></ul>
+    </div>
+  </div>
+
+  <!-- ============ 分頁 4：三角度投資觀點 ============ -->
+  <div class="panel-view" data-v="4">
+    <div class="sec">
+      <h3>多空對決</h3>
+      <div class="grid2">
+        <div class="anglecard bullcard">
+          <h4>&#9650; 多方論點（Bull Case）</h4>
+          <ul class="al"><li><b>[論點]：</b>[示意] 5-6 條。</li></ul>
+        </div>
+        <div class="anglecard bearcard">
+          <h4>&#9660; 空方論點（Bear Case）</h4>
+          <ul class="al"><li><b>[論點]：</b>[示意] 5-6 條。</li></ul>
+        </div>
+      </div>
+      <div class="note">[示意] 點出多空張力的核心。</div>
+    </div>
+    <div class="sec">
+      <h3>三角度投資觀點</h3>
+      <p class="txt2" style="font-size:13px;margin-bottom:14px">依「已持有／考慮買進／長期投資」三種立場整理觀察重點與決策觸發點，作為自行判斷的依據，並非買賣建議。</p>
+      <div class="grid3">
+        <div class="anglecard">
+          <span class="tag hold">已持有 · 是否續抱</span>
+          <h4>[一句話結論標題]</h4>
+          <div class="stance">[示意] 一句話立場。</div>
+          <div class="blk bp"><b>&#10003; 支持續抱</b><ul class="al"><li>[示意]</li></ul></div>
+          <div class="blk bn"><b>&#9888; 該留意</b><ul class="al"><li>[示意]</li></ul></div>
+          <div class="blk bt"><b>&#127919; 決策觸發點</b><ul class="al"><li>[示意]</li></ul></div>
+        </div>
+        <div class="anglecard">
+          <span class="tag buy">考慮買進 · 進場時機</span>
+          <h4>[標題]</h4>
+          <div class="stance">[示意]</div>
+          <div class="blk bp"><b>&#10003; 進場理由</b><ul class="al"><li>[示意]</li></ul></div>
+          <div class="blk bn"><b>&#9888; 風險報酬</b><ul class="al"><li>[示意]</li></ul></div>
+          <div class="blk bt"><b>&#127919; 操作參考</b><ul class="al"><li>[示意]</li></ul></div>
+        </div>
+        <div class="anglecard">
+          <span class="tag long">長期投資 · 3–5 年</span>
+          <h4>[標題]</h4>
+          <div class="stance">[示意]</div>
+          <div class="blk bp"><b>&#10003; 長線多頭邏輯</b><ul class="al"><li>[示意]</li></ul></div>
+          <div class="blk bn"><b>&#9888; 長線風險</b><ul class="al"><li>[示意]</li></ul></div>
+          <div class="blk bt"><b>&#127919; 每季追蹤</b><ul class="al"><li>[示意]</li></ul></div>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>12 個月情境分析（情境推演，非價格預測）</h3>
+      <p class="txt2" style="font-size:13px;margin-bottom:14px">[示意] 說明推估方法（本益比 × 前瞻 EPS）並對照分析師目標價與 52 週區間。</p>
+      <div class="grid3">
+        <div class="anglecard scen up"><div class="prob">機率傾向 · 中</div><h4>樂觀情境</h4>
+          <div class="px">{{區間}}</div><div class="delta">{{較現價}}</div>
+          <div class="blk"><b>成立條件</b><ul class="al"><li>[示意]</li></ul></div></div>
+        <div class="anglecard scen bs"><div class="prob">機率傾向 · 最高</div><h4>基準情境</h4>
+          <div class="px">{{區間}}</div><div class="delta">{{較現價}}</div>
+          <div class="blk"><b>成立條件</b><ul class="al"><li>[示意]</li></ul></div></div>
+        <div class="anglecard scen dn"><div class="prob">機率傾向 · 中低</div><h4>保守情境</h4>
+          <div class="px">{{區間}}</div><div class="delta">{{較現價}}</div>
+          <div class="blk"><b>成立條件</b><ul class="al"><li>[示意]</li></ul></div></div>
+      </div>
+      <div class="note warn"><b>提醒：</b>情境機率為相對傾向的定性判斷，非精算結果，請勿視為價格保證。</div>
+    </div>
+    <div class="sec">
+      <h3>風險因素一覽（紅色＝高，黃色＝中）</h3>
+      <div class="risk"><span class="nm"><b>[風險名稱]</b>：[說明]</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <!-- 每條風險 5 個 dot，亮起的數量代表程度；高風險用 class="dot on"、中風險用 class="dot on m" -->
+    </div>
+    <div class="sec">
+      <h3>後續追蹤清單</h3>
+      <ul class="clean"><li><b>[追蹤項目]：</b>[示意]</li></ul>
+    </div>
+    <div class="disc">
+      <b>免責聲明：</b>本儀表板為財報資訊整理與分析，內容根據公開資料彙整，<b>不構成投資建議、不保證準確性</b>。所有投資決策應自行評估風險承受度與財務狀況，並諮詢合格專業人士。股票投資可能損失本金，過往績效不代表未來表現。
+    </div>
+  </div>
+
+  <div class="foot">
+    資料來源：{{來源}}<br>
+    財報期間：{{期間}} · 數據截至 {{日期}} · 儀表板產製日：{{產製日}}
+  </div>
+</div>
+
+<script>
+const GREEN='#76b900',GREEN2='#9ed320',TXT2='#9aa6bd',LINE='#2a3346';
+Chart.defaults.color=TXT2;
+Chart.defaults.font.family="-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif";
+Chart.defaults.font.size=11.5;
+
+/* ===== 分頁切換（原樣沿用，勿改）===== */
+const tabs=document.querySelectorAll('.tab'),views=document.querySelectorAll('.panel-view');
+let drawn={0:true};
+tabs.forEach(t=>t.addEventListener('click',()=>{
+  const i=t.dataset.t;
+  tabs.forEach(x=>x.classList.remove('on'));t.classList.add('on');
+  views.forEach(v=>v.classList.toggle('on',v.dataset.v===i));
+  if(!drawn[i]){drawn[i]=true;setTimeout(()=>renderFor(i),30);}
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+/* ===== 圖表：替換 labels 與 data 陣列即可 ===== */
+function chartRev(){
+  new Chart(document.getElementById('cRev'),{
+    type:'bar',
+    data:{labels:['去年同期','上一季','本季','下季財測'],
+      datasets:[{data:[0,0,0,0],
+        backgroundColor:[GREEN+'66',GREEN+'99',GREEN,'#5b6577'],
+        borderColor:[GREEN,GREEN,GREEN2,'#7a8499'],borderWidth:1.5,borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'營收 '+c.parsed.y}}},
+      scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:LINE}}}}
+  });
+}
+function chartMix(){
+  new Chart(document.getElementById('cMix'),{
+    type:'doughnut',
+    data:{labels:['分部 A','分部 B','分部 C'],
+      datasets:[{data:[0,0,0],
+        backgroundColor:[GREEN,GREEN2,'#5b6577'],borderColor:'#141925',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+      plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:14}},
+        tooltip:{callbacks:{label:c=>{const t=c.dataset.data.reduce((a,b)=>a+b,0);
+          return ' '+c.label+'：'+c.parsed+'（'+(c.parsed/t*100).toFixed(1)+'%）';}}}}}
+  });
+}
+function chartMargin(){
+  new Chart(document.getElementById('cMargin'),{
+    type:'line',
+    data:{labels:['去年同期','上一季','本季'],
+      datasets:[
+        {label:'毛利率',data:[0,0,0],borderColor:GREEN2,backgroundColor:GREEN2+'22',borderWidth:2.5,tension:.3,pointRadius:4,fill:true},
+        {label:'營業利益率',data:[0,0,0],borderColor:GREEN,borderWidth:2.5,tension:.3,pointRadius:4},
+        {label:'淨利率',data:[0,0,0],borderColor:'#60a5fa',borderWidth:2.5,tension:.3,pointRadius:4,borderDash:[5,3]}
+      ]},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+'：'+c.parsed.y+'%'}}},
+      scales:{x:{grid:{display:false}},y:{grid:{color:LINE},ticks:{callback:v=>v+'%'}}}}
+  });
+}
+function chartPrice(){
+  /* 由低到高排序：52週低、200日均、現價、50日均、52週高、分析師均價、最高目標價 */
+  const labels=['52週低','200日均線','目前股價','50日均線','52週高','分析師均價','最高目標價'];
+  const data=[0,0,0,0,0,0,0];
+  const colors=['#5b6577','#60a5fa','#9ed320','#fbbf24','#5b6577',GREEN,GREEN];
+  new Chart(document.getElementById('cPrice'),{
+    type:'bar',
+    data:{labels:labels,datasets:[{data:data,backgroundColor:colors.map(c=>c+'cc'),
+      borderColor:colors,borderWidth:1.5,borderRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x}}},
+      scales:{x:{grid:{color:LINE}},y:{grid:{display:false}}}}
+  });
+}
+
+/* 依分頁延遲繪製圖表（圖表 canvas 在隱藏分頁中尺寸為 0，須切到該頁才繪製）*/
+function renderFor(i){
+  if(i==='1')chartMargin();
+  if(i==='3')chartPrice();
+}
+chartRev();chartMix();
+</script>
+</body>
+</html>

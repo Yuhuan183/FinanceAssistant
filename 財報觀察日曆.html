@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>財報觀察日曆 · 2026 年 5–6 月</title>
+<style>
+:root{
+  --bg:#0b0e14;--panel:#141925;--panel2:#1c2333;--line:#2a3346;
+  --txt:#e8ecf3;--txt2:#9aa6bd;--txt3:#6b7689;
+  --green:#76b900;--green2:#9ed320;--pos:#34d399;--neg:#f87171;--warn:#fbbf24;--blue:#60a5fa;
+  --us:#9ed320;--tw:#fbbf24;--radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);color:var(--txt);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 18px 60px;}
+.hd{background:linear-gradient(135deg,#141925 0%,#1c2333 60%,#10331a 100%);
+  border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:14px;}
+.hd .eyebrow{color:var(--green2);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.hd h1{font-size:23px;font-weight:800;margin:6px 0 4px;}
+.hd .sub{color:var(--txt2);font-size:13px;}
+
+/* legend */
+.legend{display:flex;gap:8px 18px;flex-wrap:wrap;align-items:center;
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:11px 16px;margin-bottom:14px;font-size:12px;color:var(--txt2);}
+.lk{display:flex;align-items:center;gap:6px;}
+.sw{width:22px;height:14px;border-radius:4px;display:inline-block;}
+.sw.us{background:#1c3a0a;border-left:3px solid var(--us);}
+.sw.tw{background:#3a2a08;border-left:3px solid var(--tw);}
+.sw.dn{background:#1c3a0a;border-left:3px solid var(--us);opacity:.5;}
+.sw.es{background:#1c3a0a;border:1px dashed var(--us);}
+
+.tsmcnote{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--tw);
+  border-radius:9px;padding:11px 15px;font-size:12.3px;color:var(--txt2);margin-bottom:16px;}
+.tsmcnote b{color:var(--tw);}
+
+/* calendar */
+.cal{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 18px;margin-bottom:14px;}
+.calnav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;}
+.calnav h2{font-size:16px;font-weight:800;color:var(--txt);text-align:center;flex:1;}
+.navbtn{background:var(--panel2);border:1px solid var(--line);color:var(--txt);
+  width:38px;height:36px;border-radius:8px;font-size:20px;line-height:1;cursor:pointer;
+  font-family:inherit;transition:.12s;flex:0 0 auto;}
+.navbtn:hover:not(:disabled){background:var(--green);color:#0b0e14;border-color:var(--green);}
+.navbtn:disabled{opacity:.28;cursor:not-allowed;}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.wkhd{font-size:11px;color:var(--txt3);text-align:center;padding:3px 0 5px;font-weight:700;}
+.cell{background:var(--panel2);border:1px solid var(--line);border-radius:7px;
+  min-height:78px;padding:5px 6px;}
+.cell.blank{background:transparent;border:none;}
+.cell.today{border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green);}
+.dnum{font-size:11px;color:var(--txt3);font-weight:700;}
+.cell.today .dnum{color:var(--green2);}
+.cell.today .dnum::after{content:" 今天";font-size:9px;color:var(--green2);}
+.ev{display:block;width:100%;text-align:left;border:none;border-radius:5px;
+  padding:4px 7px;margin-top:4px;font-size:10.5px;font-weight:700;cursor:pointer;
+  font-family:inherit;line-height:1.35;transition:.12s;}
+.ev.us{background:#1c3a0a;color:var(--us);}
+.ev.tw{background:#3a2a08;color:var(--tw);}
+.ev.done{opacity:.5;}
+.ev.est{background:transparent;border:1px dashed currentColor;}
+.ev.us.est{color:var(--us);}.ev.tw.est{color:var(--tw);}
+.ev:hover{filter:brightness(1.35);transform:translateY(-1px);}
+.ev.sel{outline:2px solid var(--txt);outline-offset:1px;opacity:1;}
+
+/* detail */
+.detail{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--green);
+  border-radius:var(--radius);padding:18px 20px;margin-bottom:16px;}
+.detail .hint{color:var(--txt3);font-size:13px;}
+.dh{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:3px;}
+.dtk{font-size:18px;font-weight:800;color:var(--txt);}
+.badge{font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:999px;}
+.badge.us{background:#1c3a0a;color:var(--us);border:1px solid #3a5c10;}
+.badge.tw{background:#3a2a08;color:var(--tw);border:1px solid #5c4a10;}
+.badge.st{background:var(--panel2);color:var(--txt2);border:1px solid var(--line);}
+.dmeta{font-size:12px;color:var(--txt3);margin-bottom:11px;}
+.dl b{font-size:12px;color:var(--green2);}
+.dl ul{list-style:none;margin:6px 0 0;}
+.dl li{font-size:13px;color:var(--txt2);padding:4px 0 4px 16px;position:relative;}
+.dl li::before{content:"\25B8";position:absolute;left:1px;color:var(--green);font-size:11px;top:6px;}
+.drel{font-size:11.8px;color:var(--txt3);border-top:1px dashed var(--line);
+  margin-top:10px;padding-top:8px;}
+.drel b{color:var(--txt2);}
+.dashlink{display:inline-flex;align-items:center;gap:6px;margin-top:12px;
+  background:var(--green);color:#0b0e14;font-size:12.5px;font-weight:700;text-decoration:none;
+  padding:8px 16px;border-radius:8px;transition:.12s;}
+.dashlink:hover{background:var(--green2);}
+
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 20px;margin-bottom:14px;}
+.sec h2{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.sec h2::before{content:"";width:4px;height:15px;background:var(--green);border-radius:2px;}
+.theme{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.tcard{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:13px 15px;}
+.tcard h3{font-size:13px;color:var(--green2);margin-bottom:5px;}
+.tcard p{font-size:12.2px;color:var(--txt2);}
+@media(max-width:680px){
+  .theme{grid-template-columns:1fr;}
+  .cell{min-height:62px;padding:4px;}
+  .ev{font-size:9.5px;padding:3px 4px;}
+  .wrap{padding:16px 10px 50px;}
+}
+.foot{color:var(--txt3);font-size:11.5px;text-align:center;margin-top:8px;line-height:1.8;}
+.disc{background:var(--panel);border:1px solid #5c4a10;border-radius:9px;padding:12px 16px;
+  font-size:11.6px;color:var(--txt2);margin-top:14px;}
+.disc b{color:var(--warn);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <div class="eyebrow">Earnings Watch Calendar</div>
+    <h1>財報觀察日曆 · 2026 年 5–6 月</h1>
+    <div class="sub">美股 ＋ 台股 · AI／半導體焦點 · 點選日曆上的事件可查看觀察重點 · 更新日：2026-05-21</div>
+  </div>
+
+  <div class="legend">
+    <span class="lk"><b style="color:var(--txt)">圖例</b></span>
+    <span class="lk"><span class="sw us"></span>美股財報</span>
+    <span class="lk"><span class="sw tw"></span>台股事件</span>
+    <span class="lk"><span class="sw dn"></span>已公布</span>
+    <span class="lk"><span class="sw es"></span>日期推估（虛線，待公司公告）</span>
+  </div>
+
+  <div class="tsmcnote">
+    <b>台股延伸觀察：</b>台積電（2330）Q1 2026 已於 4 月公布——合併營收 NT$1.13 兆、年增 35%，毛利率 66.2%，全年營收展望上調至年增 30% 以上；Q2 法說會預計 7 月中舉行。台股 Q1 季報於 5/15 前已陸續公布完畢。
+  </div>
+
+  <div class="cal">
+    <div class="calnav">
+      <button class="navbtn" id="prevBtn" aria-label="上一個月">&#8249;</button>
+      <h2 id="monthLabel"></h2>
+      <button class="navbtn" id="nextBtn" aria-label="下一個月">&#8250;</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div class="detail" id="detail"></div>
+
+  <div class="sec">
+    <h2>本季四大主題觀察</h2>
+    <div class="theme">
+      <div class="tcard">
+        <h3>AI 資本支出循環</h3>
+        <p>雲端巨頭與 Oracle 的 capex 是所有 AI 晶片股的領先指標。Broadcom（6/3）、Oracle（6/16）財報是繼 NVIDIA 後驗證循環是否延續的關鍵點。</p>
+      </div>
+      <div class="tcard">
+        <h3>記憶體短缺</h3>
+        <p>ARM 已警告手機受記憶體短缺衝擊。Micron（預計 6 月底）財報將揭示 HBM 與一般記憶體的供需與報價全貌。</p>
+      </div>
+      <div class="tcard">
+        <h3>自研晶片競爭</h3>
+        <p>Broadcom、Marvell 的客製 AI 晶片（XPU／ASIC）進展，攸關 NVIDIA、AMD 90%+ 市佔能否維持的長期辯論。</p>
+      </div>
+      <div class="tcard">
+        <h3>台股 AI 供應鏈月營收</h3>
+        <p>台積電、鴻海、廣達、緯穎、台達電等的月營收（每月 10 日前公布）是 AI 伺服器出貨的高頻檢驗點，比季報更即時。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="disc">
+    <b>免責聲明：</b>本日曆為財報行程與觀察重點整理，內容根據公開資料彙整，<b>不構成投資建議、不保證準確性</b>。標示「日期推估」（虛線）之事件為依歷史排程估算，實際以各公司／主管機關正式公告為準。所有投資決策應自行評估風險並諮詢合格專業人士。
+  </div>
+
+  <div class="foot">
+    資料來源：各公司投資人關係資訊、財報行事曆（MarketBeat、Investing.com 等）、台灣公開資訊觀測站（MOPS）<br>
+    更新日：2026-05-21 · 涵蓋區間：2026 年 5 月–6 月
+  </div>
+</div>
+
+<script>
+const EVENTS=[
+ {id:'tw03',date:'2026-04-10',tk:'3月營收',name:'台股 3 月營收公布',mkt:'tw',status:'done',period:'2026 年 3 月',
+  points:['上市櫃公司 3 月營收於 4 月 10 日前公布完畢。','AI 伺服器供應鏈月營收動能（台積電、鴻海、廣達等）。'],
+  rel:'月營收是台股 AI 供應鏈出貨的高頻領先指標，比季報更即時。'},
+ {id:'tsmc',date:'2026-04-16',tk:'台積電',name:'台積電 TSMC（2330）',mkt:'tw',status:'done',period:'2026 第一季',
+  points:['合併營收 NT$1.13 兆、年增 35.1%；淨利與 EPS 年增 58.3%。','毛利率 66.2%、3nm 占晶圓營收 25%；全年營收展望上調至年增 30% 以上。'],
+  rel:'AI 晶圓代工的核心指標；Q2 法說會預計 7 月中舉行。'},
+ {id:'amd',date:'2026-05-05',tk:'AMD',name:'AMD（超微）',mkt:'us',status:'done',period:'2026 第一季',
+  points:['營收 $102.5 億（年增 38%）、資料中心 +57%，全面超預期、Q2 財測加速至 $112 億。','財報後股價大漲；張力在估值——trailing 本益比約 141 倍，股價已漲過分析師平均目標價。'],
+  rel:'已建檔完整財報分析儀表板。',dash:'財報分析歸檔/AMD/AMD_2026Q1_財報分析儀表板.html'},
+ {id:'arm',date:'2026-05-06',tk:'ARM',name:'ARM Holdings（安謀）',mkt:'us',status:'done',period:'FY2026 第四季',
+  points:['Q4 與全年營收創新高、資料中心權利金年增逾一倍，商業模式由手機轉向 AI 權利金。','自研 AGI CPU 產能不足、手機出貨將轉負，財報日 -7% 後強勁反彈創新高。'],
+  rel:'已建檔完整財報分析儀表板。',dash:'財報分析歸檔/ARM/ARM_FY2026Q4_財報分析儀表板.html'},
+ {id:'tw04',date:'2026-05-11',tk:'4月營收',name:'台股 4 月營收公布',mkt:'tw',status:'done',period:'2026 年 4 月',
+  points:['上市櫃公司 4 月營收於 5 月 10 日前公布完畢。','AI 伺服器供應鏈月營收動能（台積電、鴻海、廣達等）。'],
+  rel:'月營收是台股 AI 供應鏈出貨的高頻領先指標，比季報更即時。'},
+ {id:'nvda',date:'2026-05-20',tk:'NVDA',name:'NVIDIA（輝達）',mkt:'us',status:'done',period:'FY2027 第一季',
+  points:['營收 $816 億（年增 85%）、資料中心 +92%、Q2 財測 $910 億，全面超預期。','高預期已反映、Q2 財測不含中國，股價財報後走弱。'],
+  rel:'已建檔完整財報分析儀表板。',dash:'財報分析歸檔/NVDA/NVDA_FY27Q1_財報分析儀表板.html'},
+ {id:'mrvl',date:'2026-05-28',tk:'MRVL',name:'Marvell（邁威爾）',mkt:'us',status:'est',period:'FY2027 第一季',
+  points:['客製 AI 晶片（XPU／ASIC）與資料中心網路晶片的營收動能。','AI 相關營收是否續成為成長主力。'],
+  rel:'與 Broadcom 同屬「客製 AI 晶片」陣營。日期為歷史排程推估，待公司公告。'},
+ {id:'avgo',date:'2026-06-03',tk:'AVGO',name:'Broadcom（博通）',mkt:'us',status:'soon',period:'FY2026 第二季',
+  points:['AI 半導體營收、客製 AI 晶片（XPU）與網路晶片、全年 AI 營收指引。','VMware 軟體整合進度與軟體部門利潤率。'],
+  rel:'繼 NVIDIA 後，市場驗證「AI 資本支出循環」是否延續的關鍵財報。'},
+ {id:'tw05',date:'2026-06-10',tk:'5月營收',name:'台股 5 月營收公布',mkt:'tw',status:'soon',period:'2026 年 5 月',
+  points:['上市櫃公司 5 月營收於 6 月 10 日前公布。','聚焦 AI 伺服器供應鏈：台積電(2330)、鴻海(2317)、廣達(2382)、緯穎(6669)、台達電(2308)。'],
+  rel:'AI 伺服器出貨動能的高頻檢驗點——本日曆窗口內最重要的台股事件。'},
+ {id:'adbe',date:'2026-06-11',tk:'ADBE',name:'Adobe',mkt:'us',status:'soon',period:'FY2026 第二季',
+  points:['生成式 AI（Firefly）對訂閱營收的實質貢獻。','AI 對其創意軟體商業模式是助力或威脅。'],
+  rel:'軟體應用端的 AI 變現指標，與晶片端的「賣鏟子」邏輯互為對照。'},
+ {id:'orcl',date:'2026-06-16',tk:'ORCL',name:'Oracle（甲骨文）',mkt:'us',status:'soon',period:'FY2026 第四季',
+  points:['OCI 雲端營收成長、AI 資料中心 capex 與 RPO 在手訂單。','與 AMD Helios、NVIDIA 的算力採購布建進度。'],
+  rel:'Oracle 是 AMD Helios 的指標客戶，其 capex 與訂單直接驗證 AMD／NVIDIA 的需求。'},
+ {id:'mu',date:'2026-06-25',tk:'MU',name:'Micron（美光）',mkt:'us',status:'est',period:'FY2026 第三季',
+  points:['HBM 高頻寬記憶體的 AI 需求、產能與報價。','DRAM／NAND 報價走勢與供需緊俏程度。'],
+  rel:'驗證 ARM 所提「記憶體短缺」說法的關鍵。日期為推估窗口（6/24–6/29），待公告。'}
+];
+const MONTHS=[
+ {label:'2026 年 4 月',y:2026,m:4,first:3,days:30},
+ {label:'2026 年 5 月',y:2026,m:5,first:5,days:31},
+ {label:'2026 年 6 月',y:2026,m:6,first:1,days:30}
+];
+const TODAY='2026-05-21';
+const WK=['日','一','二','三','四','五','六'];
+const pad=n=>n<10?'0'+n:''+n;
+
+const tY=+TODAY.slice(0,4),tM=+TODAY.slice(5,7);
+let curMonth=MONTHS.findIndex(mo=>mo.y===tY&&mo.m===tM);
+if(curMonth<0) curMonth=0;
+let selId=null;
+function renderMonth(){
+  const mo=MONTHS[curMonth];
+  document.getElementById('monthLabel').textContent=mo.label;
+  let g='';
+  WK.forEach(d=>g+='<div class="wkhd">'+d+'</div>');
+  for(let i=0;i<mo.first;i++) g+='<div class="cell blank"></div>';
+  for(let d=1;d<=mo.days;d++){
+    const ds=mo.y+'-'+pad(mo.m)+'-'+pad(d);
+    g+='<div class="cell'+(ds===TODAY?' today':'')+'"><span class="dnum">'+d+'</span>';
+    EVENTS.filter(e=>e.date===ds).forEach(e=>{
+      g+='<button class="ev '+e.mkt+' '+e.status+(e.id===selId?' sel':'')+'" data-id="'+e.id+'">'+e.tk+'</button>';
+    });
+    g+='</div>';
+  }
+  document.getElementById('grid').innerHTML=g;
+  document.getElementById('prevBtn').disabled=curMonth===0;
+  document.getElementById('nextBtn').disabled=curMonth===MONTHS.length-1;
+}
+document.getElementById('prevBtn').addEventListener('click',()=>{if(curMonth>0){curMonth--;renderMonth();}});
+document.getElementById('nextBtn').addEventListener('click',()=>{if(curMonth<MONTHS.length-1){curMonth++;renderMonth();}});
+renderMonth();
+
+const ST={done:'已公布',soon:'即將公布',est:'即將公布 · 日期推估'};
+function showDetail(id){
+  const e=EVENTS.find(x=>x.id===id);
+  if(!e) return;
+  selId=id;
+  document.querySelectorAll('.ev').forEach(b=>b.classList.toggle('sel',b.dataset.id===id));
+  let h='<div class="dh"><span class="dtk">'+e.name+'</span>'+
+    '<span class="badge '+e.mkt+'">'+(e.mkt==='us'?'美股':'台股')+'</span>'+
+    '<span class="badge st">'+ST[e.status]+'</span></div>'+
+    '<div class="dmeta">'+e.date+'　｜　'+e.period+'</div>'+
+    '<div class="dl"><b>觀察重點</b><ul>';
+  e.points.forEach(p=>h+='<li>'+p+'</li>');
+  h+='</ul></div><div class="drel"><b>關聯：</b>'+e.rel+'</div>';
+  if(e.dash) h+='<a class="dashlink" href="'+encodeURI(e.dash)+'" target="_blank" rel="noopener">開啟完整財報分析儀表板 &#8599;</a>';
+  document.getElementById('detail').innerHTML=h;
+}
+document.addEventListener('click',ev=>{
+  const b=ev.target.closest('.ev');
+  if(b) showDetail(b.dataset.id);
+});
+/* 預設顯示今天之後最近一場財報 */
+(function(){
+  const up=EVENTS.filter(e=>e.date>TODAY).sort((a,b)=>a.date<b.date?-1:1);
+  if(up.length) showDetail(up[0].id);
+  else document.getElementById('detail').innerHTML='<div class="hint">點選日曆上的任一財報事件，即可查看觀察重點。</div>';
+})();
+</script>
+</body>
+</html>

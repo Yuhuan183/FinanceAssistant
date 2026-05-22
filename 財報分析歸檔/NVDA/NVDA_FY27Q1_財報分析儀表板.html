@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVIDIA (NVDA) FY2027 Q1 財報分析儀表板</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
+<style>
+:root{
+  --bg:#0b0e14; --panel:#141925; --panel2:#1c2333; --line:#2a3346;
+  --txt:#e8ecf3; --txt2:#9aa6bd; --txt3:#6b7689;
+  --green:#76b900; --green2:#9ed320;
+  --pos:#34d399; --neg:#f87171; --warn:#fbbf24; --blue:#60a5fa;
+  --radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);color:var(--txt);line-height:1.65;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1240px;margin:0 auto;padding:20px 18px 60px;}
+
+/* header */
+.hd{background:linear-gradient(135deg,#141925 0%,#1c2333 60%,#10331a 100%);
+  border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;}
+.hd .eyebrow{color:var(--green2);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.hd h1{font-size:25px;font-weight:800;margin:6px 0 4px;}
+.hd .sub{color:var(--txt2);font-size:13.5px;}
+.hd .meta{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+.chip{background:var(--panel2);border:1px solid var(--line);border-radius:999px;
+  padding:5px 13px;font-size:12px;color:var(--txt2);}
+.chip b{color:var(--txt);}
+.chip.g{border-color:#3a5c10;background:#16240a;color:var(--green2);}
+
+/* verdict */
+.verdict{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--green);
+  border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;}
+.verdict h2{font-size:14px;color:var(--green2);margin-bottom:6px;letter-spacing:1px;}
+.verdict p{font-size:14px;color:var(--txt);}
+
+/* tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.tab{background:var(--panel);border:1px solid var(--line);color:var(--txt2);
+  padding:9px 16px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s;}
+.tab:hover{color:var(--txt);border-color:#3a4760;}
+.tab.on{background:var(--green);color:#0b0e14;border-color:var(--green);}
+.panel-view{display:none;}
+.panel-view.on{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+/* kpi */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(186px,1fr));gap:12px;margin-bottom:16px;}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;}
+.kpi .l{font-size:11.5px;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;}
+.kpi .v{font-size:26px;font-weight:800;margin:5px 0 3px;}
+.kpi .d{font-size:12.5px;font-weight:600;}
+.kpi .d.pos{color:var(--pos);}.kpi .d.neg{color:var(--neg);}.kpi .d.neu{color:var(--txt2);}
+.kpi .v.green{color:var(--green2);}
+
+/* cards / sections */
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 22px;margin-bottom:16px;}
+.sec h3{font-size:15.5px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.sec h3::before{content:"";width:4px;height:16px;background:var(--green);border-radius:2px;}
+.sec h4{font-size:13.5px;color:var(--green2);margin:14px 0 7px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr;}}
+
+.chartbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;}
+.chartbox h3{font-size:14px;font-weight:700;margin-bottom:4px;}
+.chartbox .cap{font-size:11.5px;color:var(--txt3);margin-bottom:12px;}
+.cv{position:relative;height:270px;}
+
+/* lists */
+ul.clean{list-style:none;}
+ul.clean li{padding:8px 0 8px 22px;position:relative;font-size:13.5px;border-bottom:1px solid var(--line);}
+ul.clean li:last-child{border-bottom:none;}
+ul.clean li::before{content:"▸";position:absolute;left:2px;color:var(--green);font-size:12px;top:9px;}
+ul.clean li b{color:var(--txt);}
+.txt2{color:var(--txt2);}
+
+/* table */
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:9px 11px;text-align:right;border-bottom:1px solid var(--line);}
+th:first-child,td:first-child{text-align:left;}
+thead th{color:var(--txt3);font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;
+  border-bottom:2px solid #313b50;}
+tbody tr:hover{background:var(--panel2);}
+td.pos{color:var(--pos);}td.neg{color:var(--neg);}
+.rowhi{background:#16240a !important;}
+.rowhi td{color:var(--green2);font-weight:700;}
+
+/* note box */
+.note{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:13px 16px;
+  font-size:12.8px;color:var(--txt2);margin-top:10px;}
+.note b{color:var(--txt);}
+.note.warn{border-color:#5c4a10;background:#241d08;}
+.note.warn b{color:var(--warn);}
+
+/* angle cards */
+.anglecard{background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:18px;}
+.anglecard .tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;margin-bottom:9px;}
+.tag.hold{background:#1a2f12;color:var(--green2);border:1px solid #3a5c10;}
+.tag.buy{background:#0e2440;color:var(--blue);border:1px solid #1d4675;}
+.tag.long{background:#2a1f08;color:var(--warn);border:1px solid #5c4a10;}
+.anglecard h4{font-size:14.5px;color:var(--txt);margin:0 0 8px;}
+.anglecard p{font-size:12.8px;color:var(--txt2);margin-bottom:8px;}
+.anglecard .mini{font-size:11.5px;color:var(--txt3);border-top:1px dashed var(--line);padding-top:8px;margin-top:4px;}
+.anglecard ul.al{list-style:none;margin:2px 0 0;}
+.anglecard ul.al li{font-size:12px;color:var(--txt2);padding:3px 0 3px 15px;position:relative;line-height:1.55;}
+.anglecard ul.al li::before{content:"–";position:absolute;left:2px;color:var(--txt3);}
+.anglecard ul.al li b{color:var(--txt);}
+.anglecard .blk{margin-top:10px;}
+.anglecard .blk>b{font-size:11.5px;letter-spacing:.3px;}
+.blk.bp>b{color:var(--pos);}
+.blk.bn>b{color:var(--neg);}
+.blk.bt>b{color:var(--blue);}
+.anglecard .stance{color:var(--txt);font-size:12.6px;font-weight:600;
+  border-left:3px solid var(--green);padding-left:10px;margin:3px 0 4px;}
+.bullcard{background:#10240e;border-color:#2c5223;}
+.bearcard{background:#241011;border-color:#5c2526;}
+.bullcard>h4{color:var(--pos);}
+.bearcard>h4{color:var(--neg);}
+.scen{border-top:3px solid var(--line);}
+.scen.up{border-top-color:var(--pos);}
+.scen.bs{border-top-color:var(--blue);}
+.scen.dn{border-top-color:var(--neg);}
+.scen .px{font-size:22px;font-weight:800;margin:3px 0 1px;}
+.scen.up .px{color:var(--pos);}
+.scen.bs .px{color:var(--blue);}
+.scen.dn .px{color:var(--neg);}
+.scen .prob{font-size:10.5px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;}
+.scen .delta{font-size:12px;color:var(--txt2);margin-bottom:2px;}
+
+/* quote */
+.quote{border-left:3px solid var(--green);padding:6px 0 6px 16px;margin:10px 0;
+  font-style:italic;color:var(--txt);font-size:13.5px;}
+.quote span{display:block;font-style:normal;color:var(--txt3);font-size:11.5px;margin-top:4px;}
+
+/* risk meter */
+.risk{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;}
+.risk:last-child{border-bottom:none;}
+.risk .nm{flex:1;}
+.dots{display:flex;gap:3px;}
+.dot{width:9px;height:9px;border-radius:2px;background:var(--line);}
+.dot.on{background:var(--neg);}
+.dot.on.m{background:var(--warn);}
+
+.foot{color:var(--txt3);font-size:11.5px;text-align:center;margin-top:8px;line-height:1.8;}
+.disc{background:var(--panel);border:1px solid #5c4a10;border-radius:9px;padding:13px 16px;
+  font-size:11.8px;color:var(--txt2);margin-top:14px;}
+.disc b{color:var(--warn);}
+.big{font-size:15px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <div class="eyebrow">NVIDIA Corporation · NASDAQ: NVDA</div>
+    <h1>FY2027 第一季財報分析儀表板</h1>
+    <div class="sub">會計年度 2027 第一季（截至 2026 年 4 月 26 日）· 財報於 2026/5/20 美股盤後發布</div>
+    <div class="meta">
+      <span class="chip g">營收 <b>$816 億</b> · 創新高</span>
+      <span class="chip">資料中心 <b>$752 億</b></span>
+      <span class="chip">Non-GAAP EPS <b>$1.87</b></span>
+      <span class="chip">Q2 財測 <b>$910 億</b></span>
+      <span class="chip">股價 <b>~$220.7</b>（5/21）</span>
+      <span class="chip">市值 <b>$5.41 兆</b> · 全球第一</span>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <h2>核心結論</h2>
+    <p>這是一份「數字極強、股價卻冷」的財報。營收、獲利、Q2 財測全面優於市場預期，AI 基礎建設需求依然強勁；NVIDIA 同步將股息一口氣調高 25 倍、再加碼 800 億美元庫藏股，展現對現金流的高度信心。但股價在財報後仍下跌、形成「連四次財報後走弱」，反映三件事：<b>(1)</b> 高預期已大量反映在股價，<b>(2)</b> Q2 財測完全不計入中國資料中心營收，地緣政治成為最大不確定性，<b>(3)</b> 估值容錯空間低、加上自研晶片競爭題材升溫。基本面與股價短線出現「分歧」，是現階段最值得關注的訊號。</p>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <div class="tab on" data-t="0">總覽</div>
+    <div class="tab" data-t="1">財報細節</div>
+    <div class="tab" data-t="2">未來展望與方向</div>
+    <div class="tab" data-t="3">股價與估值</div>
+    <div class="tab" data-t="4">三角度投資觀點</div>
+  </div>
+
+  <!-- ============ TAB 0 總覽 ============ -->
+  <div class="panel-view on" data-v="0">
+    <div class="kpis">
+      <div class="kpi"><div class="l">總營收</div><div class="v green">$81.6 B</div><div class="d pos">+85% 年增 · +20% 季增</div></div>
+      <div class="kpi"><div class="l">資料中心營收</div><div class="v">$75.2 B</div><div class="d pos">+92% 年增 · 占總營收 92%</div></div>
+      <div class="kpi"><div class="l">Non-GAAP EPS</div><div class="v">$1.87</div><div class="d pos">+140% 年增 · +18% 季增</div></div>
+      <div class="kpi"><div class="l">GAAP 毛利率</div><div class="v">74.9%</div><div class="d pos">較去年同期 +14.4 個百分點</div></div>
+      <div class="kpi"><div class="l">Q2 FY27 營收財測</div><div class="v">$91.0 B</div><div class="d pos">隱含季增 ~+11.5%</div></div>
+      <div class="kpi"><div class="l">GAAP 淨利</div><div class="v">$58.3 B</div><div class="d pos">+211% 年增（含投資收益）</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="chartbox">
+        <h3>營收趨勢（含 Q2 財測）</h3>
+        <div class="cap">單位：十億美元 · 灰色為公司財測</div>
+        <div class="cv"><canvas id="cRev"></canvas></div>
+      </div>
+      <div class="chartbox">
+        <h3>本季營收組成</h3>
+        <div class="cap">資料中心占比達 92%，業務高度集中</div>
+        <div class="cv"><canvas id="cMix"></canvas></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3>財報六大重點</h3>
+      <ul class="clean">
+        <li><b>營收再創新高、加速成長：</b>單季 $816 億，年增 85%、季增 20%，且優於分析師約 $794–804 億的預估。成長率不僅沒有因基期墊高而放緩，反而再加速。</li>
+        <li><b>資料中心是唯一引擎：</b>$752 億、年增 92%，占總營收 92%。其中網路（networking）營收 $148 億、年增 199%，成長甚至快過運算晶片本身——反映客戶買的是「整櫃式 AI 系統」而非單顆 GPU。</li>
+        <li><b>獲利能力維持巔峰：</b>GAAP 毛利率 74.9%、營業利益率約 66%。毛利率較去年同期的 60.5% 大幅躍升 14.4 個百分點，Blackwell 平台已度過初期良率壓力。</li>
+        <li><b>Q2 財測強勁但「不含中國」：</b>指引 $910 億（±2%），高於市場預估的約 $868 億；但公司明言財測完全不假設任何來自中國的資料中心運算營收——等於把中國風險「歸零處理」。</li>
+        <li><b>大手筆回饋股東：</b>季度股息由每股 $0.01 調高至 $0.25（25 倍），並新增 800 億美元庫藏股授權。本季已回購＋配息約 $200 億。</li>
+        <li><b>會計與分部架構雙變動：</b>自本季起 non-GAAP 不再排除股票薪酬；分部改為「資料中心」與「邊緣運算」兩大平台。解讀歷史比較時需留意口徑差異。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ TAB 1 財報細節 ============ -->
+  <div class="panel-view" data-v="1">
+    <div class="sec">
+      <h3>財報摘要：GAAP vs Non-GAAP</h3>
+      <table>
+        <thead><tr><th>項目（百萬美元）</th><th>Q1 FY27</th><th>Q4 FY26</th><th>Q1 FY26</th><th>季增</th><th>年增</th></tr></thead>
+        <tbody>
+          <tr class="rowhi"><td>營收</td><td>81,615</td><td>68,127</td><td>44,062</td><td>+20%</td><td>+85%</td></tr>
+          <tr><td>GAAP 毛利率</td><td>74.9%</td><td>75.0%</td><td>60.5%</td><td>-0.1pt</td><td>+14.4pt</td></tr>
+          <tr><td>GAAP 營業費用</td><td>7,621</td><td>6,794</td><td>5,030</td><td>+12%</td><td>+52%</td></tr>
+          <tr><td>GAAP 營業利益</td><td>53,536</td><td>44,299</td><td>21,638</td><td>+21%</td><td>+147%</td></tr>
+          <tr><td>GAAP 淨利</td><td>58,321</td><td>42,960</td><td>18,775</td><td>+36%</td><td>+211%</td></tr>
+          <tr><td>GAAP 稀釋每股盈餘</td><td>$2.39</td><td>$1.76</td><td>$0.76</td><td>+36%</td><td>+214%</td></tr>
+          <tr><td>Non-GAAP 毛利率</td><td>75.0%</td><td>75.1%</td><td>60.8%</td><td>-0.1pt</td><td>+14.2pt</td></tr>
+          <tr><td>Non-GAAP 營業利益</td><td>53,783</td><td>44,474</td><td>21,801</td><td>+21%</td><td>+147%</td></tr>
+          <tr><td>Non-GAAP 淨利</td><td>45,548</td><td>38,969</td><td>19,094</td><td>+17%</td><td>+139%</td></tr>
+          <tr class="rowhi"><td>Non-GAAP 稀釋每股盈餘</td><td>$1.87</td><td>$1.59</td><td>$0.78</td><td>+18%</td><td>+140%</td></tr>
+        </tbody>
+      </table>
+      <div class="note warn"><b>關鍵眉角：為何 GAAP 淨利（$583 億）反而高於 Non-GAAP（$455 億）？</b><br>
+      正常情況下 GAAP 數字應低於 non-GAAP。本季反轉，主因 GAAP 淨利包含約 <b>159 億美元的股權投資收益</b>（NVIDIA 持有多家 AI 相關公司股權的帳面增值），這部分在 non-GAAP 被排除。因此判斷「本業實際獲利能力」時，<b>應以 non-GAAP EPS $1.87 為準</b>，而非被投資收益灌大的 GAAP $2.39。此外本季所得稅費用約 116 億美元、也明顯墊高。</div>
+    </div>
+
+    <div class="grid2">
+      <div class="sec">
+        <h3>分部營收（新架構）</h3>
+        <table>
+          <thead><tr><th>分部</th><th>營收</th><th>季增</th><th>年增</th></tr></thead>
+          <tbody>
+            <tr class="rowhi"><td>資料中心</td><td>$75.2 B</td><td>+21%</td><td>+92%</td></tr>
+            <tr><td>— 運算（compute）</td><td>$60.4 B</td><td>+18%</td><td>+77%</td></tr>
+            <tr><td>— 網路（networking）</td><td>$14.8 B</td><td>+35%</td><td>+199%</td></tr>
+            <tr><td>邊緣運算（Edge）</td><td>$6.4 B</td><td>+10%</td><td>+29%</td></tr>
+          </tbody>
+        </table>
+        <div class="note">「邊緣運算」整併了原本的遊戲、專業視覺化與汽車。<b>舊口徑下</b>：遊戲約 $37 億（年增 47%、季增 -13%，屬節後庫存正常回落）、汽車約 $6.04 億（年增 6%）。</div>
+      </div>
+      <div class="chartbox">
+        <h3>獲利能力趨勢</h3>
+        <div class="cap">毛利率與營業利益率穩定於高檔</div>
+        <div class="cv"><canvas id="cMargin"></canvas></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3>資產負債與股東回報</h3>
+      <div class="grid3">
+        <div class="anglecard"><h4>股息大躍進</h4><p>季度現金股息由每股 $0.01 調升至 <b style="color:var(--green2)">$0.25</b>（25 倍），2026/6/26 發放、6/4 為除息基準日。</p><div class="mini">象徵管理層對長期現金流的信心，並開始吸引「股息＋成長」型資金。</div></div>
+        <div class="anglecard"><h4>庫藏股加碼</h4><p>董事會於 5/18 新增 <b style="color:var(--green2)">800 億美元</b>回購授權（無到期日）；季末原額度尚餘 $385 億。</p><div class="mini">本季已回購＋配息合計約 $200 億，回購力道對 EPS 有持續支撐。</div></div>
+        <div class="anglecard"><h4>稅率指引</h4><p>FY2027 全年 GAAP／non-GAAP 有效稅率預估 <b style="color:var(--green2)">16%–18%</b>（不含一次性項目）。</p><div class="mini">本季稅費較高，部分與投資收益實現有關，全年仍屬合理區間。</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 2 未來展望 ============ -->
+  <div class="panel-view" data-v="2">
+    <div class="kpis">
+      <div class="kpi"><div class="l">Q2 FY27 營收財測</div><div class="v green">$91.0 B</div><div class="d pos">±2% · 季增約 +11.5%</div></div>
+      <div class="kpi"><div class="l">Q2 毛利率財測</div><div class="v">74.9 / 75.0%</div><div class="d neu">GAAP / Non-GAAP · ±50bps</div></div>
+      <div class="kpi"><div class="l">Q2 營業費用財測</div><div class="v">~$8.5 B</div><div class="d neg">較本季增加，持續投入研發</div></div>
+      <div class="kpi"><div class="l">年化營收 run-rate</div><div class="v">~$364 B</div><div class="d neu">以 Q2 財測 ×4 估算</div></div>
+    </div>
+
+    <div class="sec">
+      <h3>成長動能：四大結構性引擎</h3>
+      <ul class="clean">
+        <li><b>Agentic AI（代理式 AI）需求爆發：</b>黃仁勳強調 AI 已從「聊天問答」進入「自主執行工作」階段，這類應用的推論（inference）運算量呈數量級放大。管理層形容需求「呈拋物線成長」。</li>
+        <li><b>AI 工廠（AI Factory）建置潮：</b>公司將全球資料中心改建定位為「人類史上最大規模的基礎設施擴張」。雲端巨頭、主權 AI（各國政府自建算力）與企業端三條需求線同時推進。</li>
+        <li><b>下一代平台 Vera Rubin：</b>本季發表 Vera Rubin 平台與全球首款專為 agentic AI 設計的 Vera CPU、BlueField-4 STX 儲存架構，以及可將推論效能提升最高 7 倍的 Dynamo 1.0 軟體。產品路線圖維持「一年一架構」節奏。</li>
+        <li><b>網路（networking）成為第二成長曲線：</b>網路營收年增 199%、季增 35%，NVLink Fusion 生態系再納入 Marvell，並與 Coherent、Corning、Lumentum 簽多年期光學合作。客戶採購已從「單顆晶片」轉向「整櫃系統」。</li>
+      </ul>
+      <h4>較長線的選擇權（option value）</h4>
+      <p class="txt2" style="font-size:13px">邊緣運算與實體 AI（physical AI）——機器人、自駕、AI-RAN 基地台——目前營收占比僅約 8%，但本季年增 29%。與 Hyundai／Kia、BYD、Geely、Nissan、Uber 的自駕合作，以及 Cosmos／Isaac 機器人平台，是 2027 年之後的潛在新成長極，現階段對估值屬「免費贈送的選擇權」。</p>
+    </div>
+
+    <div class="sec">
+      <h3>管理層評論</h3>
+      <div class="quote">「AI 工廠的建置——人類史上最大規模的基礎設施擴張——正以驚人速度加速。Agentic AI 已經到來，正在做有生產力的工作、創造真實價值，並在各產業快速擴張。」<span>— 黃仁勳，NVIDIA 創辦人暨執行長</span></div>
+      <div class="quote">「需求已呈拋物線成長……在 AI 時代，運算產能就是利潤（compute capacity is profits）。世界正為 agentic AI 與機器人 AI 重建整個運算架構。」<span>— 法說會評論</span></div>
+    </div>
+
+    <div class="sec">
+      <h3>方向研判（專業推斷）</h3>
+      <ul class="clean">
+        <li><b>基本面方向：向上、但需求能見度與「政策能見度」分歧。</b>產品需求面幾乎無虞，Blackwell／Rubin 訂單滿載；真正的變數不在「賣不賣得掉」，而在「能不能賣到中國」與「供應鏈（先進封裝、HBM、光學）能否跟上」。</li>
+        <li><b>中國是最大擺盪因子。</b>公司把 Q2 財測中的中國資料中心營收直接設為零——這既是保守、也是把風險「期權化」：若後續中國出貨恢復，將是純粹的上行驚喜；若持續封鎖，財測已不受影響。對投資人而言，這降低了「財測跳票」風險，但也壓低了短線想像空間。</li>
+        <li><b>成長率將自然放緩，但絕對金額續創新高。</b>基期墊高下，年增 85% 這類數字難以長期維持；市場焦點將逐步從「成長率」轉向「毛利率能否守在 75% 上下」與「自由現金流轉換率」。</li>
+        <li><b>競爭格局：客戶同時是對手。</b>Google（TPU）、Amazon（Trainium）、Microsoft（Maia）自研晶片持續推進。短中期 NVIDIA 在訓練與通用推論的軟硬體生態（CUDA）護城河仍深，但這是未來 2–3 年估值最關鍵的辯論點。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ TAB 3 股價與估值 ============ -->
+  <div class="panel-view" data-v="3">
+    <div class="kpis">
+      <div class="kpi"><div class="l">目前股價（5/21）</div><div class="v">~$220.7</div><div class="d neg">財報後走弱 · 連四次財報後下跌</div></div>
+      <div class="kpi"><div class="l">52 週區間</div><div class="v" style="font-size:20px">$129 – $237</div><div class="d neu">目前距高點約 -7%</div></div>
+      <div class="kpi"><div class="l">本益比（trailing / forward）</div><div class="v" style="font-size:22px">~45x / ~27x</div><div class="d neu">前瞻本益比明顯低於歷史均值</div></div>
+      <div class="kpi"><div class="l">分析師平均目標價</div><div class="v green">$275.8</div><div class="d pos">隱含上行空間約 +25%</div></div>
+    </div>
+
+    <div class="chartbox">
+      <h3>關鍵價位地圖</h3>
+      <div class="cap">目前股價位於 50 日均線下方、200 日均線上方——短線轉弱、長線趨勢仍多</div>
+      <div class="cv" style="height:300px"><canvas id="cPrice"></canvas></div>
+    </div>
+
+    <div class="grid2" style="margin-top:16px">
+      <div class="sec" style="margin:0">
+        <h3>技術面解讀</h3>
+        <ul class="clean">
+          <li><b>50 日均線 ≈ $224.8：</b>股價跌破，短期動能轉弱，技術上偏空訊號。</li>
+          <li><b>200 日均線 ≈ $208.4：</b>仍站穩其上，長期上升趨勢未破壞；此處為重要中期支撐。</li>
+          <li><b>關鍵支撐區：</b>$208–212（200 日均線一帶）。若跌破，技術面將轉為中期整理。</li>
+          <li><b>關鍵壓力區：</b>$225（50 日均線）→ $237（52 週高）。需重新站回 $225 上方，多方才重掌主動。</li>
+          <li><b>型態：</b>連續四次財報後走弱，顯示「利多出盡」的籌碼慣性；股價已從題材驅動轉為「需要新催化劑」的階段。</li>
+        </ul>
+      </div>
+      <div class="sec" style="margin:0">
+        <h3>估值評析</h3>
+        <p class="txt2" style="font-size:13px">市值約 <b style="color:var(--txt)">5.41 兆美元</b>，為全球市值最大公司。trailing 本益比約 45x 看似偏高，但其中含一次性投資收益、且滯後反映成長；<b style="color:var(--txt)">forward 本益比僅約 27x</b>，對一家年增 85%、毛利率 75% 的公司而言，並非泡沫等級——本益成長比（PEG）明顯小於 1。</p>
+        <div class="note">真正的估值風險不在「倍數太高」，而在「<b>分母（未來 EPS）的確定性</b>」：市場願意給 27x forward，前提是相信 AI 資本支出循環能延續。一旦雲端客戶釋出「資本支出見頂」訊號，倍數與獲利預估會同步下修，形成戴維斯雙殺。這是高權重持股最需要監控的單一變數。</div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3>財報後為何不漲反跌？四個原因</h3>
+      <ul class="clean">
+        <li><b>高預期已反映：</b>財報前股價已從低點大漲逾 60%，「beat-and-raise（超預期＋上調財測）」幾乎是市場基本盤，超預期幅度不足以再推升股價。</li>
+        <li><b>中國變數：</b>Q2 財測完全不含中國資料中心營收；H20 出口仍受限，H200 雖傳獲准約 10 家中國企業採購、但實際零交付。地緣政治讓財測上緣被「人為封頂」。</li>
+        <li><b>成本與費用上升：</b>GAAP 營業費用增至 $76 億、年增 52%；所得稅費用約 $116 億。市場開始關注「費用成長」與「投資收益佔比」。</li>
+        <li><b>競爭題材升溫：</b>雲端三雄自研晶片進展持續被放大解讀，市場對「90%＋市占能否維持」出現雜音。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ TAB 4 投資觀點 ============ -->
+  <div class="panel-view" data-v="4">
+    <div class="sec">
+      <h3>多空對決：一頁看懂兩派論點</h3>
+      <div class="grid2">
+        <div class="anglecard bullcard">
+          <h4>▲ 多方論點（Bull Case）</h4>
+          <ul class="al">
+            <li><b>需求加速而非放緩：</b>營收年增 85% 仍在加速，agentic AI 把推論運算量推向數量級放大。</li>
+            <li><b>獲利品質頂尖：</b>毛利率 75%、營業利益率 66%，Blackwell 已度過良率陣痛期。</li>
+            <li><b>財測偏保守：</b>$910 億財測完全不含中國，等於把中國變成「純上行的選擇權」。</li>
+            <li><b>護城河仍深：</b>CUDA 軟體生態、一年一架構節奏、從晶片到整櫃系統與網路的整合銷售。</li>
+            <li><b>現金回饋強勁：</b>股息調高 25 倍、加碼 800 億回購，對 EPS 與股價形成支撐。</li>
+            <li><b>估值不算極端：</b>forward 本益比約 27x、PEG&lt;1，對 80%+ 成長的公司並非泡沫等級。</li>
+          </ul>
+        </div>
+        <div class="anglecard bearcard">
+          <h4>▼ 空方論點（Bear Case）</h4>
+          <ul class="al">
+            <li><b>高基期下成長必放緩：</b>未來年增率將從 80%+ 級距自然回落，估值倍數難再擴張。</li>
+            <li><b>中國結構性流失：</b>出口管制反覆，全球第二大市場貢獻被歸零、短期難解。</li>
+            <li><b>客戶即對手：</b>Google／Amazon／Microsoft 自研晶片推進，恐侵蝕 90%+ 市占。</li>
+            <li><b>capex 循環風險：</b>需求高度仰賴雲端四巨頭資本支出，一旦見頂將直接衝擊訂單。</li>
+            <li><b>業務過度集中：</b>資料中心占營收 92%，單一引擎、單一題材依賴度極高。</li>
+            <li><b>容錯空間低：</b>市值 5.4 兆、市場高度關注，任何不如預期都會放大波動。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note">兩派論點目前「都成立」——這正是股價出現「基本面強、走勢弱」分歧的根源。判斷關鍵不在「公司好不好」（答案是好），而在<b>「市場願意付多少倍數」</b>與<b>「AI 資本支出循環還能走多久」</b>。</div>
+    </div>
+
+    <div class="sec">
+      <h3>三角度投資觀點</h3>
+      <p class="txt2" style="font-size:13px;margin-bottom:14px">依「已持有／考慮買進／長期投資」三種立場，整理觀察重點與明確的決策觸發點，作為你自行判斷的依據，並非買賣建議。</p>
+      <div class="grid3">
+        <div class="anglecard">
+          <span class="tag hold">已持有 · 是否續抱</span>
+          <h4>基本面仍支撐持股</h4>
+          <div class="stance">財報無基本面破口，股價回落屬「估值與籌碼」問題；核心課題是部位大小，而非全進全出。</div>
+          <div class="blk bp"><b>✓ 支持續抱</b>
+            <ul class="al">
+              <li>營收加速、毛利率守 75%、財測續創高</li>
+              <li>股息＋800 億回購提供下檔支撐</li>
+              <li>長線 AI 建置趨勢尚無反轉訊號</li>
+            </ul>
+          </div>
+          <div class="blk bn"><b>⚠ 該留意</b>
+            <ul class="al">
+              <li>單一持股若占投組比重過高 → 集中度風險</li>
+              <li>連四次財報後走弱，籌碼面偏弱</li>
+            </ul>
+          </div>
+          <div class="blk bt"><b>🎯 決策觸發點</b>
+            <ul class="al">
+              <li>$208（200 日均線）放量失守 → 重新評估</li>
+              <li>雲端四巨頭釋出 capex 下修訊號 → 考慮減碼</li>
+              <li>部位過重 → 可分批調節至安心水位</li>
+            </ul>
+          </div>
+        </div>
+        <div class="anglecard">
+          <span class="tag buy">考慮買進 · 進場時機</span>
+          <h4>估值合理、但宜分批佈局</h4>
+          <div class="stance">以成長性而言估值不貴，但技術面短線轉弱；分批進場、用紀律取代擇時。</div>
+          <div class="blk bp"><b>✓ 進場理由</b>
+            <ul class="al">
+              <li>forward 本益比約 27x、PEG&lt;1</li>
+              <li>分析師均價 $275.8，隱含約 +25% 空間</li>
+              <li>仍站穩 200 日均線，長線趨勢未破</li>
+            </ul>
+          </div>
+          <div class="blk bn"><b>⚠ 風險報酬</b>
+            <ul class="al">
+              <li>上方壓力 $225／$237；下方支撐 $208–212</li>
+              <li>已跌破 50 日均線，短線動能偏弱</li>
+            </ul>
+          </div>
+          <div class="blk bt"><b>🎯 操作參考</b>
+            <ul class="al">
+              <li>分三段佈局：現價附近、$210、$195 以下</li>
+              <li>避免單筆重壓，預留資金因應波動</li>
+              <li>$208 放量跌破站不回 → 暫停加碼、重評</li>
+            </ul>
+          </div>
+        </div>
+        <div class="anglecard">
+          <span class="tag long">長期投資 · 3–5 年</span>
+          <h4>賭的是 AI 資本支出長循環</h4>
+          <div class="stance">長線價值取決於 AI 建置循環的長度與護城河韌性；焦點放在年度趨勢，而非單季股價。</div>
+          <div class="blk bp"><b>✓ 長線多頭邏輯</b>
+            <ul class="al">
+              <li>CUDA 生態護城河、一年一架構的迭代速度</li>
+              <li>從晶片擴展到整櫃系統與網路</li>
+              <li>機器人／自駕／主權 AI 的新成長極</li>
+            </ul>
+          </div>
+          <div class="blk bn"><b>⚠ 長線風險</b>
+            <ul class="al">
+              <li>AI 資本支出循環反轉</li>
+              <li>自研晶片侵蝕市占、地緣政治長期化</li>
+            </ul>
+          </div>
+          <div class="blk bt"><b>🎯 每季追蹤</b>
+            <ul class="al">
+              <li>毛利率能否守在 75% 上下</li>
+              <li>雲端客戶 capex 方向、Rubin 放量進度</li>
+              <li>部位規模需與個人風險承受度相符</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3>12 個月情境分析（情境推演，非價格預測）</h3>
+      <p class="txt2" style="font-size:13px;margin-bottom:14px">以下情境以「forward 本益比 × 前瞻 EPS」概念推估，並對照分析師目標價（均價 $275.8／中位 $287／最高 $325）與 52 週區間（$129–$237）。為情境推演，非價格保證。</p>
+      <div class="grid3">
+        <div class="anglecard scen up">
+          <div class="prob">機率傾向 · 中</div>
+          <h4>樂觀情境</h4>
+          <div class="px">$300 – 340</div>
+          <div class="delta">較現價約 +35% ~ +55%</div>
+          <div class="blk"><b>成立條件</b>
+            <ul class="al">
+              <li>AI capex 循環延續、雲端 capex 再上修</li>
+              <li>中國出貨部分恢復，成為上行驚喜</li>
+              <li>毛利率守穩 75%、Rubin 順利放量</li>
+              <li>估值倍數擴張至約 32x 以上</li>
+            </ul>
+          </div>
+        </div>
+        <div class="anglecard scen bs">
+          <div class="prob">機率傾向 · 最高</div>
+          <h4>基準情境</h4>
+          <div class="px">$250 – 290</div>
+          <div class="delta">較現價約 +13% ~ +31%（向分析師均價靠攏）</div>
+          <div class="blk"><b>成立條件</b>
+            <ul class="al">
+              <li>成長依財測延續，但年增率自然放緩</li>
+              <li>中國維持歸零、無重大惡化</li>
+              <li>估值倍數大致持平於 27–30x</li>
+              <li>回購持續對 EPS 提供支撐</li>
+            </ul>
+          </div>
+        </div>
+        <div class="anglecard scen dn">
+          <div class="prob">機率傾向 · 中低</div>
+          <h4>保守情境</h4>
+          <div class="px">$160 – 195</div>
+          <div class="delta">較現價約 -12% ~ -27%</div>
+          <div class="blk"><b>成立條件</b>
+            <ul class="al">
+              <li>雲端 capex 出現見頂訊號、能見度下滑</li>
+              <li>自研晶片明顯侵蝕市占</li>
+              <li>地緣政治升級</li>
+              <li>估值倍數壓縮至 20x 以下</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="note warn"><b>提醒：</b>情境機率為相對傾向的定性判斷，非精算結果；各情境價格區間會隨 EPS 預估與市場估值偏好變動，請勿視為價格保證。</div>
+    </div>
+
+    <div class="sec">
+      <h3>風險因素一覽（紅色＝高，黃色＝中）</h3>
+      <div class="risk"><span class="nm"><b>中國／地緣政治</b>：出口管制反覆，財測已將中國歸零</span><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>估值容錯空間低</b>：高權重、高關注，任何不如預期都會放大波動</span><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>客戶自研晶片</b>：Google TPU、Amazon Trainium、Microsoft Maia</span><div class="dots"><span class="dot on m"></span><span class="dot on m"></span><span class="dot on m"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>AI 資本支出循環風險</b>：雲端客戶投資若見頂將直接衝擊需求</span><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>供應鏈瓶頸</b>：先進封裝、HBM、光學元件產能</span><div class="dots"><span class="dot on m"></span><span class="dot on m"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>業務集中度</b>：資料中心占營收 92%，單一引擎依賴度高</span><div class="dots"><span class="dot on m"></span><span class="dot on m"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+    </div>
+
+    <div class="sec">
+      <h3>後續追蹤清單</h3>
+      <ul class="clean">
+        <li><b>中國出口政策：</b>H20／H200 是否實際恢復對中國出貨——這是最大的上行／下行擺盪因子。</li>
+        <li><b>雲端四巨頭資本支出指引：</b>Microsoft、Alphabet、Amazon、Meta 的 capex 方向，是 NVIDIA 需求的領先指標。</li>
+        <li><b>Vera Rubin 量產時程：</b>下一代平台放量速度，決定 FY2028 成長動能。</li>
+        <li><b>毛利率：</b>能否守在 75% 上下，是獲利品質的核心指標。</li>
+        <li><b>技術面價位：</b>$208 支撐與 $225／$237 壓力。</li>
+      </ul>
+    </div>
+
+    <div class="disc">
+      <b>免責聲明：</b>本儀表板為財報資訊整理與分析，內容根據公開資料彙整，<b>不構成投資建議、不保證準確性</b>。本人並非你的財務顧問或券商。所有投資決策應自行評估風險承受度與財務狀況，並諮詢合格專業人士。股票投資可能損失本金，過往績效不代表未來表現。
+    </div>
+  </div>
+
+  <div class="foot">
+    資料來源：NVIDIA 官方新聞稿（FY2027 Q1 財報，2026/5/20）、財經媒體（CNBC、S&amp;P Global、Kiplinger 等）與市場行情資料<br>
+    財報期間：FY2027 Q1（截至 2026/4/26）· 股價與估值數據截至 2026/5/21 · 儀表板產製日：2026/5/21
+  </div>
+</div>
+
+<script>
+const GREEN='#76b900',GREEN2='#9ed320',TXT2='#9aa6bd',LINE='#2a3346',PANEL='#1c2333';
+Chart.defaults.color=TXT2;
+Chart.defaults.font.family="-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif";
+Chart.defaults.font.size=11.5;
+
+/* tabs */
+const tabs=document.querySelectorAll('.tab'),views=document.querySelectorAll('.panel-view');
+let drawn={0:true};
+tabs.forEach(t=>t.addEventListener('click',()=>{
+  const i=t.dataset.t;
+  tabs.forEach(x=>x.classList.remove('on'));t.classList.add('on');
+  views.forEach(v=>v.classList.toggle('on',v.dataset.v===i));
+  if(!drawn[i]){drawn[i]=true;setTimeout(()=>renderFor(i),30);}
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+/* ---- Tab 0 charts ---- */
+function chartRev(){
+  new Chart(document.getElementById('cRev'),{
+    type:'bar',
+    data:{labels:['Q1 FY26','Q4 FY26','Q1 FY27','Q2 FY27（財測）'],
+      datasets:[{data:[44.06,68.13,81.62,91.0],
+        backgroundColor:[GREEN+'66',GREEN+'99',GREEN,'#5b6577'],
+        borderColor:[GREEN,GREEN,GREEN2,'#7a8499'],borderWidth:1.5,borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:c=>'營收 $'+c.parsed.y+' B'}}},
+      scales:{x:{grid:{display:false}},
+        y:{beginAtZero:true,grid:{color:LINE},ticks:{callback:v=>'$'+v+'B'}}}}
+  });
+}
+function chartMix(){
+  new Chart(document.getElementById('cMix'),{
+    type:'doughnut',
+    data:{labels:['資料中心 — 運算','資料中心 — 網路','邊緣運算'],
+      datasets:[{data:[60.4,14.8,6.4],
+        backgroundColor:[GREEN,GREEN2,'#5b6577'],borderColor:'#141925',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+      plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:14}},
+        tooltip:{callbacks:{label:c=>{
+          const t=c.dataset.data.reduce((a,b)=>a+b,0);
+          return ' '+c.label+'：$'+c.parsed+'B（'+(c.parsed/t*100).toFixed(1)+'%）';}}}}}
+  });
+}
+
+/* ---- Tab 1 chart ---- */
+function chartMargin(){
+  new Chart(document.getElementById('cMargin'),{
+    type:'line',
+    data:{labels:['Q1 FY26','Q4 FY26','Q1 FY27'],
+      datasets:[
+        {label:'GAAP 毛利率',data:[60.5,75.0,74.9],borderColor:GREEN2,backgroundColor:GREEN2+'22',
+          borderWidth:2.5,tension:.3,pointRadius:4,fill:true},
+        {label:'GAAP 營業利益率',data:[49.1,65.0,65.6],borderColor:GREEN,backgroundColor:'transparent',
+          borderWidth:2.5,tension:.3,pointRadius:4},
+        {label:'Non-GAAP 淨利率',data:[43.3,57.2,55.8],borderColor:'#60a5fa',backgroundColor:'transparent',
+          borderWidth:2.5,tension:.3,pointRadius:4,borderDash:[5,3]}
+      ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+'：'+c.parsed.y+'%'}}},
+      scales:{x:{grid:{display:false}},
+        y:{grid:{color:LINE},ticks:{callback:v=>v+'%'},suggestedMin:40,suggestedMax:80}}}
+  });
+}
+
+/* ---- Tab 3 chart ---- */
+function chartPrice(){
+  const labels=['52週低','200日均線','目前股價','50日均線','52週高','分析師均價','HSBC 目標價'];
+  const data=[129.16,208.44,220.66,224.79,236.54,275.83,325];
+  const colors=['#5b6577','#60a5fa','#9ed320','#fbbf24','#5b6577',GREEN,GREEN];
+  new Chart(document.getElementById('cPrice'),{
+    type:'bar',
+    data:{labels:labels,datasets:[{data:data,backgroundColor:colors.map(c=>c+'cc'),
+      borderColor:colors,borderWidth:1.5,borderRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:c=>'$'+c.parsed.x.toFixed(2)}}},
+      scales:{x:{beginAtZero:false,suggestedMin:100,grid:{color:LINE},ticks:{callback:v=>'$'+v}},
+        y:{grid:{display:false}}}}
+  });
+}
+
+function renderFor(i){
+  if(i==='1')chartMargin();
+  if(i==='3')chartPrice();
+}
+chartRev();chartMix();
+</script>
+</body>
+</html>

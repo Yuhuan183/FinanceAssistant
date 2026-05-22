@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<!-- AMD Q1 CY2026 財報分析互動式儀表板 -->
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMD (NASDAQ: AMD) 2026 會計年度第一季 財報分析儀表板</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
+<style>
+:root{
+  --bg:#0b0e14; --panel:#141925; --panel2:#1c2333; --line:#2a3346;
+  --txt:#e8ecf3; --txt2:#9aa6bd; --txt3:#6b7689;
+  --green:#76b900; --green2:#9ed320;
+  --pos:#34d399; --neg:#f87171; --warn:#fbbf24; --blue:#60a5fa;
+  --radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);color:var(--txt);line-height:1.65;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1240px;margin:0 auto;padding:20px 18px 60px;}
+.hd{background:linear-gradient(135deg,#141925 0%,#1c2333 60%,#10331a 100%);
+  border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;}
+.hd .eyebrow{color:var(--green2);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.hd h1{font-size:25px;font-weight:800;margin:6px 0 4px;}
+.hd .sub{color:var(--txt2);font-size:13.5px;}
+.hd .meta{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+.chip{background:var(--panel2);border:1px solid var(--line);border-radius:999px;
+  padding:5px 13px;font-size:12px;color:var(--txt2);}
+.chip b{color:var(--txt);}
+.chip.g{border-color:#3a5c10;background:#16240a;color:var(--green2);}
+.verdict{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--green);
+  border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;}
+.verdict h2{font-size:14px;color:var(--green2);margin-bottom:6px;letter-spacing:1px;}
+.verdict p{font-size:14px;color:var(--txt);}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.tab{background:var(--panel);border:1px solid var(--line);color:var(--txt2);
+  padding:9px 16px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s;}
+.tab:hover{color:var(--txt);border-color:#3a4760;}
+.tab.on{background:var(--green);color:#0b0e14;border-color:var(--green);}
+.panel-view{display:none;}
+.panel-view.on{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(186px,1fr));gap:12px;margin-bottom:16px;}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;}
+.kpi .l{font-size:11.5px;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;}
+.kpi .v{font-size:26px;font-weight:800;margin:5px 0 3px;}
+.kpi .d{font-size:12.5px;font-weight:600;}
+.kpi .d.pos{color:var(--pos);}.kpi .d.neg{color:var(--neg);}.kpi .d.neu{color:var(--txt2);}
+.kpi .v.green{color:var(--green2);}
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 22px;margin-bottom:16px;}
+.sec h3{font-size:15.5px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.sec h3::before{content:"";width:4px;height:16px;background:var(--green);border-radius:2px;}
+.sec h4{font-size:13.5px;color:var(--green2);margin:14px 0 7px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr;}}
+.chartbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;}
+.chartbox h3{font-size:14px;font-weight:700;margin-bottom:4px;}
+.chartbox .cap{font-size:11.5px;color:var(--txt3);margin-bottom:12px;}
+.cv{position:relative;height:270px;}
+ul.clean{list-style:none;}
+ul.clean li{padding:8px 0 8px 22px;position:relative;font-size:13.5px;border-bottom:1px solid var(--line);}
+ul.clean li:last-child{border-bottom:none;}
+ul.clean li::before{content:"\25B8";position:absolute;left:2px;color:var(--green);font-size:12px;top:9px;}
+ul.clean li b{color:var(--txt);}
+.txt2{color:var(--txt2);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:9px 11px;text-align:right;border-bottom:1px solid var(--line);}
+th:first-child,td:first-child{text-align:left;}
+thead th{color:var(--txt3);font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;
+  border-bottom:2px solid #313b50;}
+tbody tr:hover{background:var(--panel2);}
+td.pos{color:var(--pos);}td.neg{color:var(--neg);}
+.rowhi{background:#16240a !important;}
+.rowhi td{color:var(--green2);font-weight:700;}
+.note{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:13px 16px;
+  font-size:12.8px;color:var(--txt2);margin-top:10px;}
+.note b{color:var(--txt);}
+.note.warn{border-color:#5c4a10;background:#241d08;}
+.note.warn b{color:var(--warn);}
+.anglecard{background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:18px;}
+.anglecard .tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;margin-bottom:9px;}
+.tag.hold{background:#1a2f12;color:var(--green2);border:1px solid #3a5c10;}
+.tag.buy{background:#0e2440;color:var(--blue);border:1px solid #1d4675;}
+.tag.long{background:#2a1f08;color:var(--warn);border:1px solid #5c4a10;}
+.anglecard h4{font-size:14.5px;color:var(--txt);margin:0 0 8px;}
+.anglecard p{font-size:12.8px;color:var(--txt2);margin-bottom:8px;}
+.anglecard .mini{font-size:11.5px;color:var(--txt3);border-top:1px dashed var(--line);padding-top:8px;margin-top:4px;}
+.anglecard ul.al{list-style:none;margin:2px 0 0;}
+.anglecard ul.al li{font-size:12px;color:var(--txt2);padding:3px 0 3px 15px;position:relative;line-height:1.55;}
+.anglecard ul.al li::before{content:"\2013";position:absolute;left:2px;color:var(--txt3);}
+.anglecard ul.al li b{color:var(--txt);}
+.anglecard .blk{margin-top:10px;}
+.anglecard .blk>b{font-size:11.5px;letter-spacing:.3px;}
+.blk.bp>b{color:var(--pos);}
+.blk.bn>b{color:var(--neg);}
+.blk.bt>b{color:var(--blue);}
+.anglecard .stance{color:var(--txt);font-size:12.6px;font-weight:600;
+  border-left:3px solid var(--green);padding-left:10px;margin:3px 0 4px;}
+.bullcard{background:#10240e;border-color:#2c5223;}
+.bearcard{background:#241011;border-color:#5c2526;}
+.bullcard>h4{color:var(--pos);}
+.bearcard>h4{color:var(--neg);}
+.scen{border-top:3px solid var(--line);}
+.scen.up{border-top-color:var(--pos);}
+.scen.bs{border-top-color:var(--blue);}
+.scen.dn{border-top-color:var(--neg);}
+.scen .px{font-size:22px;font-weight:800;margin:3px 0 1px;}
+.scen.up .px{color:var(--pos);}
+.scen.bs .px{color:var(--blue);}
+.scen.dn .px{color:var(--neg);}
+.scen .prob{font-size:10.5px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;}
+.scen .delta{font-size:12px;color:var(--txt2);margin-bottom:2px;}
+.risk{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;}
+.risk:last-child{border-bottom:none;}
+.risk .nm{flex:1;}
+.dots{display:flex;gap:3px;}
+.dot{width:9px;height:9px;border-radius:2px;background:var(--line);}
+.dot.on{background:var(--neg);}
+.dot.on.m{background:var(--warn);}
+.quote{border-left:3px solid var(--green);padding:6px 0 6px 16px;margin:10px 0;
+  font-style:italic;color:var(--txt);font-size:13.5px;}
+.quote span{display:block;font-style:normal;color:var(--txt3);font-size:11.5px;margin-top:4px;}
+.foot{color:var(--txt3);font-size:11.5px;text-align:center;margin-top:8px;line-height:1.8;}
+.disc{background:var(--panel);border:1px solid #5c4a10;border-radius:9px;padding:13px 16px;
+  font-size:11.8px;color:var(--txt2);margin-top:14px;}
+.disc b{color:var(--warn);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== 標題列 ===== -->
+  <div class="hd">
+    <div class="eyebrow">Advanced Micro Devices · NASDAQ: AMD</div>
+    <h1>2026 會計年度第一季 財報分析儀表板</h1>
+    <div class="sub">會計期間：2026 會計年度第一季（季結束於約 2026 年 3 月）· 財報於 2026-05-05 發布</div>
+    <div class="meta">
+      <span class="chip g">營收 <b>$10.25B（+38% YoY）</b></span>
+      <span class="chip">資料中心 <b>$5.8B（+57% YoY）</b></span>
+      <span class="chip">Non-GAAP EPS <b>$1.37（+43% YoY）</b></span>
+      <span class="chip">下季財測 <b>~$11.2B</b></span>
+      <span class="chip">股價 <b>$447.58</b></span>
+    </div>
+  </div>
+
+  <!-- ===== 核心結論 ===== -->
+  <div class="verdict">
+    <h2>核心結論</h2>
+    <p>一份全面超預期的財報。營收 +38%、資料中心 +57%、EPS、毛利率、財測全數優於市場預期，自由現金流創新高。AMD 正實質拿下 AI 加速器市佔——MI450／Helios 已有 OpenAI、Meta、Oracle 等數 GW 級簽約承諾。但張力在估值：股價過去一年漲逾一倍、逼近 52 週高點，trailing 本益比約 141 倍、forward 約 58 倍，股價甚至已漲過分析師平均目標價。基本面火力全開，但股價已 price in 大量未來成功。</p>
+  </div>
+
+  <!-- ===== 分頁列 ===== -->
+  <div class="tabs" id="tabs">
+    <div class="tab on" data-t="0">總覽</div>
+    <div class="tab" data-t="1">財報細節</div>
+    <div class="tab" data-t="2">未來展望與方向</div>
+    <div class="tab" data-t="3">股價與估值</div>
+    <div class="tab" data-t="4">三角度投資觀點</div>
+  </div>
+
+  <!-- ============ 分頁 0：總覽 ============ -->
+  <div class="panel-view on" data-v="0">
+    <div class="kpis">
+      <div class="kpi"><div class="l">總營收</div><div class="v green">$10.25B</div><div class="d pos">+38% YoY（去年同期 $7.44B）</div></div>
+      <div class="kpi"><div class="l">資料中心營收</div><div class="v">$5.8B</div><div class="d pos">+57% YoY · 占營收約 56%</div></div>
+      <div class="kpi"><div class="l">Non-GAAP EPS</div><div class="v">$1.37</div><div class="d pos">+43% YoY · 優於市場預估 $1.29</div></div>
+      <div class="kpi"><div class="l">Non-GAAP 毛利率</div><div class="v">55%</div><div class="d neu">GAAP 淨利 $1.38B · GAAP EPS $0.84</div></div>
+      <div class="kpi"><div class="l">下季營收財測</div><div class="v">~$11.2B</div><div class="d pos">約 +46% YoY · +9% QoQ · 全年財測上調</div></div>
+      <div class="kpi"><div class="l">自由現金流</div><div class="v">$2.6B</div><div class="d pos">季度新高 · 年增逾 3 倍</div></div>
+    </div>
+    <div class="grid2">
+      <div class="chartbox">
+        <h3>營收趨勢（含財測）</h3>
+        <div class="cap">單位：十億美元（$B）· 灰色為公司財測</div>
+        <div class="cv"><canvas id="cRev"></canvas></div>
+      </div>
+      <div class="chartbox">
+        <h3>本季營收組成</h3>
+        <div class="cap">資料中心單一分部即占整體營收逾五成，業務集中度偏高</div>
+        <div class="cv"><canvas id="cMix"></canvas></div>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>財報重點</h3>
+      <ul class="clean">
+        <li><b>營收全面超標：</b>本季營收 $102.5 億、年增 +38%，全面優於市場預估的約 $98.9 億，成長動能未見鈍化。</li>
+        <li><b>資料中心爆發：</b>資料中心營收 $58 億、年增 +57%，由 EPYC 伺服器 CPU 與 Instinct GPU 雙引擎驅動，單一分部即占整體營收約 56%。</li>
+        <li><b>AI 加速器訂單能見度大增：</b>MI450／Helios 客戶需求超出初期預期，已簽 OpenAI 6GW、Meta 最高 6GW（含客製 MI450）、Oracle Helios supercluster，管理層預期 2027 年資料中心 AI 營收達「數百億美元」。</li>
+        <li><b>獲利與現金流強勁：</b>Non-GAAP EPS $1.37（+43%）、Non-GAAP 毛利率 55%、自由現金流 $26 億創季度新高，年增逾 3 倍，獲利品質明顯提升。</li>
+        <li><b>Q2 財測再加速：</b>下季營收財測 ~$112 億（約 +46% YoY、+9% QoQ）、Non-GAAP 毛利率升至約 56%，且全年財測同步上調。</li>
+        <li><b>中國貢獻壓至最低：</b>MI308 本季中國營收僅約 $1 億，財測亦不含額外中國營收，地緣政治風險對財報的影響大致出清。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ 分頁 1：財報細節 ============ -->
+  <div class="panel-view" data-v="1">
+    <div class="sec">
+      <h3>財報摘要</h3>
+      <table>
+        <thead><tr><th>項目</th><th>Q1 2026</th><th>年增</th></tr></thead>
+        <tbody>
+          <tr class="rowhi"><td>營收</td><td>$10,253M</td><td>+38%</td></tr>
+          <tr><td>資料中心</td><td>$5,775M</td><td class="pos">+57%</td></tr>
+          <tr><td>客戶端與遊戲</td><td>$3,600M</td><td class="pos">+23%</td></tr>
+          <tr><td>嵌入式</td><td>$873M</td><td class="pos">+6%</td></tr>
+          <tr><td>Non-GAAP 毛利率</td><td>55%</td><td>—</td></tr>
+          <tr><td>Non-GAAP EPS</td><td>$1.37</td><td class="pos">+43%</td></tr>
+          <tr><td>GAAP EPS</td><td>$0.84</td><td>—</td></tr>
+          <tr><td>自由現金流</td><td>$2,600M</td><td class="pos">年增逾 3 倍</td></tr>
+        </tbody>
+      </table>
+      <div class="note warn"><b>關鍵眉角：</b>本表僅列 Q1 2026 與去年同期年增，因本案未提供上一季（Q4 2025）對照數據，故不呈現季增欄。AMD 同時揭露 GAAP 與 Non-GAAP 兩套口徑：本季 GAAP 淨利 $1.38B、GAAP EPS $0.84；Non-GAAP EPS $1.37 則排除股票薪酬、收購相關無形資產攤銷、併購整合費用等非現金或一次性項目。市場與管理層財測（EPS、毛利率）主要以 Non-GAAP 口徑溝通，GAAP 與 Non-GAAP 之間存在明顯落差，比較與引用時須先確認口徑一致。</div>
+    </div>
+    <div class="grid2">
+      <div class="sec" style="margin:0">
+        <h3>分部營收</h3>
+        <table><thead><tr><th>分部</th><th>營收</th><th>年增</th><th>占比</th></tr></thead>
+          <tbody>
+            <tr class="rowhi"><td>資料中心</td><td>$5,775M</td><td>+57%</td><td>約 56%</td></tr>
+            <tr><td>客戶端與遊戲</td><td>$3,600M</td><td class="pos">+23%</td><td>約 35%</td></tr>
+            <tr><td>嵌入式</td><td>$873M</td><td class="pos">+6%</td><td>約 9%</td></tr>
+            <tr><td>合計</td><td>$10,248M</td><td class="pos">+38%</td><td>100%</td></tr>
+          </tbody></table>
+        <div class="note">三分部加總 $10,248M，與公司公布總營收 $10,253M（$10.25B）之約 $5M 差異為四捨五入所致。資料中心由 EPYC 伺服器 CPU 與 Instinct GPU 雙引擎驅動；客戶端與遊戲含 PC 處理器與遊戲主機／顯卡晶片；嵌入式涵蓋工業、通訊、車用等領域。</div>
+      </div>
+      <div class="chartbox" style="margin:0">
+        <h3>各分部年增率</h3>
+        <div class="cap">本季三大分部 YoY 成長率（%）· 資料中心遙遙領先</div>
+        <div class="cv"><canvas id="cMargin"></canvas></div>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>獲利能力與現金流</h3>
+      <div class="grid3">
+        <div class="anglecard"><h4>毛利率與獲利</h4><p>Non-GAAP 毛利率 55%，財測指引下季續升至約 56%；GAAP 淨利 $1.38B。獲利結構受惠於資料中心高價值產品占比上升。</p><div class="mini">產品組合改善是毛利率往上的主要推力。</div></div>
+        <div class="anglecard"><h4>自由現金流</h4><p>本季自由現金流 $26 億，創季度新高，年增逾 3 倍。現金流大幅改善反映營運槓桿與獲利品質的同步提升。</p><div class="mini">現金產出能力支撐研發投入與資本配置彈性。</div></div>
+        <div class="anglecard"><h4>營運費用與投入</h4><p>下季 Non-GAAP 營業費用財測約 $33 億，反映 AMD 持續加碼 AI 軟硬體研發與生態系建置，以支撐 MI450／Helios 的產品藍圖。</p><div class="mini">費用上升是搶 AI 市佔的必要投資，須留意對營業利益率的稀釋。</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 分頁 2：未來展望與方向 ============ -->
+  <div class="panel-view" data-v="2">
+    <div class="kpis">
+      <div class="kpi"><div class="l">下季營收財測</div><div class="v green">~$11.2B</div><div class="d pos">±$300M · 約 +46% YoY · +9% QoQ</div></div>
+      <div class="kpi"><div class="l">下季毛利率財測</div><div class="v">~56%</div><div class="d pos">較本季 55% 續升</div></div>
+      <div class="kpi"><div class="l">下季營業費用財測</div><div class="v">~$3.3B</div><div class="d neu">Non-GAAP 口徑 · 持續加碼研發</div></div>
+      <div class="kpi"><div class="l">全年財測</div><div class="v" style="font-size:20px">上調</div><div class="d pos">受 AI 加速器需求帶動</div></div>
+    </div>
+    <div class="sec">
+      <h3>成長動能</h3>
+      <ul class="clean">
+        <li><b>資料中心雙引擎：</b>EPYC 伺服器 CPU 與 Instinct GPU 同步高速成長，本季帶動資料中心 +57%。管理層指伺服器 CPU TAM 年增超過 35%，2030 年上看逾 $1,200 億。</li>
+        <li><b>AI 加速器簽約能見度：</b>MI450 與 Helios 客戶需求「超出初期預期」，已取得 OpenAI（6 GW）、Meta（最高 6 GW，含客製 MI450）、Oracle Helios supercluster 等數 GW 級簽約承諾。</li>
+        <li><b>2027 年 AI 營收展望：</b>管理層預期 2027 年資料中心 AI 營收達「數百億美元」，意味當前 AI 加速器營收仍處早期放量階段。</li>
+        <li><b>產品組合升級：</b>高價值資料中心產品占比上升，推動毛利率由 55% 朝 56%+ 邁進，營運槓桿同步釋放。</li>
+      </ul>
+      <h4>較長線的選擇權</h4>
+      <p class="txt2" style="font-size:13px">客製化矽（custom silicon，如 Meta 客製 MI450）與 Helios supercluster 系統級解決方案，代表 AMD 從賣晶片走向賣整櫃 AI 系統的轉型機會；超大型雲端客戶為分散供應商風險而扶植第二供應商，亦為 AMD 提供結構性的長線需求空間。嵌入式分部（本季 +6%）若隨工業與通訊景氣回溫，則可望由目前低成長轉為另一成長來源。</p>
+    </div>
+    <div class="sec">
+      <h3>管理層評論</h3>
+      <div class="quote">「MI450 與 Helios 的客戶需求超出我們初期的預期；我們預期 2027 年資料中心 AI 營收將達到數百億美元的規模。」<span>— Lisa Su，AMD 董事長暨執行長（重點轉述）</span></div>
+      <div class="quote">「伺服器 CPU 的潛在市場規模正以每年超過 35% 的速度成長，到 2030 年有望突破 1,200 億美元。」<span>— Lisa Su，AMD 董事長暨執行長（重點轉述）</span></div>
+    </div>
+    <div class="sec">
+      <h3>方向研判（專業推斷）</h3>
+      <ul class="clean">
+        <li><b>成長率高檔、但市場焦點轉向兌現：</b>（推斷）在 +38%~+46% 的高成長基礎上，未來市場關注的不再是「能否成長」，而是 GW 級簽約「何時、以多大比例」轉化為實際入帳營收。</li>
+        <li><b>資料中心將持續主導損益：</b>（推斷）資料中心占比已達約 56% 並仍最快成長，整體毛利率與獲利方向將高度連動其產品組合與 Instinct／MI450 放量節奏。</li>
+        <li><b>競爭格局——第二供應商定位漸實：</b>（推斷）OpenAI、Meta、Oracle 的簽約使 AMD 由「潛在替代」走向「實質第二供應商」，但仍須與 NVIDIA 的 CUDA 軟體生態正面競爭，軟體成熟度是關鍵變數。</li>
+        <li><b>最值得監控的變數：</b>（推斷）AI 資本支出循環、Instinct/MI450 實際營收兌現速度、毛利率能否續往 56%+，以及超大型客戶自研晶片的進度，是未來數季決定基本面方向的核心變數。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ 分頁 3：股價與估值 ============ -->
+  <div class="panel-view" data-v="3">
+    <div class="kpis">
+      <div class="kpi"><div class="l">目前股價</div><div class="v">$447.58</div><div class="d pos">財報後大漲 · 盤後一度漲逾 16%</div></div>
+      <div class="kpi"><div class="l">52 週區間</div><div class="v" style="font-size:20px">$107.67–$469.22</div><div class="d neu">逼近 52 週高點 · 過去一年漲逾 114%</div></div>
+      <div class="kpi"><div class="l">本益比 trailing / forward</div><div class="v" style="font-size:22px">~141 / ~58</div><div class="d neu">EV/EBITDA 約 91 倍</div></div>
+      <div class="kpi"><div class="l">分析師平均目標價</div><div class="v">$405.15</div><div class="d neg">低於現價 · 隱含約 -9.5% 下行</div></div>
+    </div>
+    <div class="chartbox">
+      <h3>關鍵價位地圖</h3>
+      <div class="cap">單位：美元 · 現價 $447.58 已高於分析師平均目標價 $405.15、逼近 52 週高 $469.22，遠離 200 日均線（約 $208）</div>
+      <div class="cv" style="height:300px"><canvas id="cPrice"></canvas></div>
+    </div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="sec" style="margin:0">
+        <h3>技術面解讀</h3>
+        <ul class="clean">
+          <li><b>趨勢強勢但偏熱：</b>股價 $447.58 逼近 52 週高 $469.22，過去一年漲逾一倍（+114%），技術面呈強多格局，但已遠離 200 日均線（概估約 $208），漲幅延展。</li>
+          <li><b>壓力與目標：</b>上方壓力為 52 週高 $469.22；再上則對應分析師最高目標價 $579（Evercore ISI）。</li>
+          <li><b>估值已被市場充分定價：</b>現價已漲過分析師平均目標價 $405.15，顯示市場樂觀情緒充分反映，短線追高的風險報酬比偏弱。</li>
+          <li><b>本身高波動：</b>52 週區間自 $107.67 至 $469.22，波動極大，部位管理與進場價位的紀律格外重要。</li>
+        </ul>
+      </div>
+      <div class="sec" style="margin:0">
+        <h3>估值評析</h3>
+        <p class="txt2" style="font-size:13px">市值約 $729.82B。估值偏貴：trailing 本益比約 141 倍、forward 約 58 倍、EV/EBITDA 約 91 倍，明顯高於 NVIDIA 與 Broadcom。高 forward 倍數隱含市場對 AI 加速器營收快速兌現的高度期待——多頭須相信 AI 加速器營收能以「成長消化估值」的速度放量。</p>
+        <div class="note">真正的估值風險：股價已漲過分析師平均目標價（$405 vs $447），且 trailing 本益比達 141 倍，容錯空間極低。一旦 AI 加速器簽約兌現不如預期、或市場對 AI 資本支出產生疑慮，估值倍數的壓縮對股價的殺傷力會遠大於 EPS 本身的波動。</div>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>財報後股價反應與原因</h3>
+      <ul class="clean">
+        <li><b>全面超標推升股價：</b>財報後股價大漲，盤後一度漲逾 16%，因營收、資料中心、Non-GAAP EPS、Q2 財測全面超越市場預期。</li>
+        <li><b>全年財測上調：</b>管理層同步上調全年財測，強化市場對成長延續性的信心。</li>
+        <li><b>市場聚焦 AI 加速器能見度：</b>OpenAI、Meta、Oracle 數 GW 級簽約承諾，使市場將 AMD 重新定價為 AI 加速器的實質第二受惠股。</li>
+        <li><b>地緣風險疑慮淡化：</b>MI308 中國營收僅約 $1 億、財測不含額外中國營收，市場對中國管制的不確定性大致出清。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ 分頁 4：三角度投資觀點 ============ -->
+  <div class="panel-view" data-v="4">
+    <div class="sec">
+      <h3>多空對決</h3>
+      <div class="grid2">
+        <div class="anglecard bullcard">
+          <h4>&#9650; 多方論點（Bull Case）</h4>
+          <ul class="al">
+            <li><b>資料中心雙引擎：</b>EPYC 與 Instinct 同步高速成長，本季帶動資料中心 +57%。</li>
+            <li><b>AI 加速器簽約落地：</b>已拿到 OpenAI、Meta、Oracle 數 GW 級簽約承諾，2027 年資料中心 AI 營收上看數百億美元。</li>
+            <li><b>伺服器 CPU TAM 結構擴大：</b>管理層指 TAM 年增逾 35%、2030 年達逾 $1,200 億。</li>
+            <li><b>獲利品質提升：</b>Non-GAAP EPS +43%、毛利率 55%、自由現金流 $26 億創新高。</li>
+            <li><b>財測加速：</b>Q2 財測約 +46% YoY、毛利率升至 ~56%，全年財測同步上調。</li>
+            <li><b>第二供應商定位：</b>對 NVIDIA 形成實質替代，超大型客戶有分散供應商的內在誘因。</li>
+          </ul>
+        </div>
+        <div class="anglecard bearcard">
+          <h4>&#9660; 空方論點（Bear Case）</h4>
+          <ul class="al">
+            <li><b>估值極端：</b>trailing 本益比約 141 倍、forward 約 58 倍、EV/EBITDA 約 91 倍。</li>
+            <li><b>股價已漲過均價：</b>現價 $447 高於分析師平均目標價 $405，短線上行空間為負。</li>
+            <li><b>漲多且高波動：</b>過去一年漲逾一倍，52 週區間從 $107 到 $469，本身波動劇烈。</li>
+            <li><b>CUDA 生態落後：</b>AI 加速器仍須與 NVIDIA CUDA 軟體生態正面競爭，軟體成熟度落後。</li>
+            <li><b>客戶自研晶片：</b>雲端客戶同時自研 ASIC，長線可能侵蝕第三方加速器需求。</li>
+            <li><b>兌現與供應鏈風險：</b>GW 級簽約轉為實際營收有執行與時程風險，HBM 與先進封裝供應鏈緊俏。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note">多空張力的核心在於「基本面 vs 估值」：基本面幾乎無破口、財測持續加速，但股價已 price in 大量未來成功，甚至漲過分析師均價。真正的判斷關鍵變數，是 AI 加速器 GW 級簽約能否以市場期待的速度與比例轉化為實際入帳營收。</div>
+    </div>
+    <div class="sec">
+      <h3>三角度投資觀點</h3>
+      <p class="txt2" style="font-size:13px;margin-bottom:14px">依「已持有／考慮買進／長期投資」三種立場整理觀察重點與決策觸發點，作為自行判斷的依據，並非買賣建議。</p>
+      <div class="grid3">
+        <div class="anglecard">
+          <span class="tag hold">已持有 · 是否續抱</span>
+          <h4>基本面無破口，課題在估值紀律</h4>
+          <div class="stance">基本面無破口、財測加速，續抱基礎扎實；但股價已漲過分析師均價、估值偏熱，核心課題是估值紀律與部位大小。</div>
+          <div class="blk bp"><b>&#10003; 支持續抱</b><ul class="al"><li>營收 +38%、資料中心 +57%、財測再加速，基本面動能完整。</li><li>AI 加速器簽約落地、全年財測上調，成長故事仍在強化。</li></ul></div>
+          <div class="blk bn"><b>&#9888; 該留意</b><ul class="al"><li>現價 $447 已高於分析師平均目標價 $405。</li><li>trailing 本益比約 141 倍，估值偏熱、容錯空間低。</li></ul></div>
+          <div class="blk bt"><b>&#127919; 決策觸發點</b><ul class="al"><li>AI 加速器簽約兌現不如預期，或 forward 本益比擴張到極端區，可考慮部分獲利了結。</li><li>重新檢視部位大小是否與高波動相稱。</li></ul></div>
+        </div>
+        <div class="anglecard">
+          <span class="tag buy">考慮買進 · 進場時機</span>
+          <h4>AI 第二受惠股，但現價追高不利</h4>
+          <div class="stance">AMD 是 AI 第二受惠股，但現價逼近 52 週高、且高於分析師均價，追高的風險報酬比不佳。</div>
+          <div class="blk bp"><b>&#10003; 進場理由</b><ul class="al"><li>AI 加速器簽約能見度高，2027 年 AI 營收上看數百億美元。</li><li>資料中心雙引擎與伺服器 CPU TAM 結構性擴張。</li></ul></div>
+          <div class="blk bn"><b>&#9888; 風險報酬</b><ul class="al"><li>上方壓力為 52 週高 $469；現價已高於均價 $405。</li><li>估值極端，倍數壓縮風險大於 EPS 波動風險。</li></ul></div>
+          <div class="blk bt"><b>&#127919; 操作參考</b><ul class="al"><li>等待回檔（如 $380–400 區）分批進場，風險報酬比較佳。</li><li>現價追高需有高波動的心理準備並控管資金比重。</li></ul></div>
+        </div>
+        <div class="anglecard">
+          <span class="tag long">長期投資 · 3–5 年</span>
+          <h4>賭 AI 加速器與伺服器 CPU 的結構份額</h4>
+          <div class="stance">賭 AMD 長期吃下 NVIDIA 以外的 AI 加速器關鍵份額，以及伺服器 CPU TAM 的結構性成長。</div>
+          <div class="blk bp"><b>&#10003; 長線多頭邏輯</b><ul class="al"><li>實質第二供應商定位成形，超大型客戶有分散供應商誘因。</li><li>伺服器 CPU TAM 2030 年上看逾 $1,200 億，結構性擴張。</li></ul></div>
+          <div class="blk bn"><b>&#9888; 長線風險</b><ul class="al"><li>CUDA 軟體生態落差、AI 資本支出循環。</li><li>超大型客戶自研晶片可能侵蝕第三方加速器需求。</li></ul></div>
+          <div class="blk bt"><b>&#127919; 每季追蹤</b><ul class="al"><li>Instinct／MI450 實際營收兌現速度。</li><li>Non-GAAP 毛利率與資料中心年增率走勢。</li></ul></div>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>12 個月情境分析（情境推演，非價格預測）</h3>
+      <p class="txt2" style="font-size:13px;margin-bottom:14px">以「forward 本益比 × 前瞻 EPS」為錨，並對照分析師目標價（均價 $405.15、最高 $579、最低 $248）與 52 週區間（$107.67–$469.22），錨定現價 $447.58。三情境僅為相對推演，非價格預測。</p>
+      <div class="grid3">
+        <div class="anglecard scen up"><div class="prob">機率傾向 · 中</div><h4>樂觀情境</h4>
+          <div class="px">$560–640</div><div class="delta">約 +25%~+43%（較現價 $447.58）</div>
+          <div class="blk"><b>成立條件</b><ul class="al"><li>AI 加速器 GW 級簽約大量轉為實際營收。</li><li>2027 年資料中心 AI 營收見數百億美元的路徑明確。</li><li>估值倍數維持高檔、市場 AI 情緒持續。</li></ul></div></div>
+        <div class="anglecard scen bs"><div class="prob">機率傾向 · 最高</div><h4>基準情境</h4>
+          <div class="px">$440–510</div><div class="delta">約 -2%~+14%（較現價 $447.58）</div>
+          <div class="blk"><b>成立條件</b><ul class="al"><li>成長依財測延續，年增率自然放緩。</li><li>估值倍數略降，但由 EPS 成長承接。</li><li>AI 加速器兌現節奏符合（而非超越）市場預期。</li></ul></div></div>
+        <div class="anglecard scen dn"><div class="prob">機率傾向 · 中低</div><h4>保守情境</h4>
+          <div class="px">$300–360</div><div class="delta">約 -33%~-20%（較現價 $447.58）</div>
+          <div class="blk"><b>成立條件</b><ul class="al"><li>AI 題材降溫或市場對 AI 資本支出產生疑慮。</li><li>估值倍數大幅壓縮。</li><li>AI 加速器簽約兌現延遲或不如預期。</li></ul></div></div>
+      </div>
+      <div class="note warn"><b>提醒：</b>情境機率為相對傾向的定性判斷，非精算結果，請勿視為價格保證。</div>
+    </div>
+    <div class="sec">
+      <h3>風險因素一覽（紅色＝高，黃色＝中）</h3>
+      <div class="risk"><span class="nm"><b>估值極端、容錯空間極低</b>：trailing 本益比約 141 倍、forward 約 58 倍，股價已漲過分析師均價。</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>AI 加速器執行與兌現風險</b>：GW 級簽約轉為實際入帳營收有執行與時程的不確定性。</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>與 NVIDIA CUDA 生態競爭</b>：AMD 軟體生態落後，須正面與 CUDA 競爭以拿下市佔。</span>
+        <div class="dots"><span class="dot on m"></span><span class="dot on m"></span><span class="dot on m"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>AI 資本支出循環風險</b>：整體 AI capex 若降溫，將直接衝擊加速器需求與估值。</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>客戶自研晶片</b>：雲端客戶同時自研 ASIC，長線可能侵蝕第三方加速器需求。</span>
+        <div class="dots"><span class="dot on m"></span><span class="dot on m"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>供應鏈 HBM／先進封裝</b>：記憶體與先進封裝產能緊俏，可能限制加速器出貨節奏。</span>
+        <div class="dots"><span class="dot on m"></span><span class="dot on m"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+    </div>
+    <div class="sec">
+      <h3>後續追蹤清單</h3>
+      <ul class="clean">
+        <li><b>AI 加速器營收兌現：</b>Instinct MI400／MI450 與 Helios 實際營收兌現的速度與比例。</li>
+        <li><b>雲端 capex 方向：</b>超大型雲端客戶資本支出的方向與強度。</li>
+        <li><b>毛利率走勢：</b>Non-GAAP 毛利率能否續往 56%+ 推進。</li>
+        <li><b>資料中心年增率：</b>資料中心分部年增率是否維持高檔。</li>
+        <li><b>估值倍數：</b>forward 本益比是否回到較合理的區間。</li>
+      </ul>
+    </div>
+    <div class="disc">
+      <b>免責聲明：</b>本儀表板為財報資訊整理與分析，內容根據公開資料彙整，<b>不構成投資建議、不保證準確性</b>。所有投資決策應自行評估風險承受度與財務狀況，並諮詢合格專業人士。股票投資可能損失本金，過往績效不代表未來表現。
+    </div>
+  </div>
+
+  <div class="foot">
+    資料來源：AMD 官方財報新聞稿與法說會、公開市場行情與分析師資料彙整<br>
+    財報期間：2026 會計年度第一季（季結束於約 2026 年 3 月）· 數據截至 2026-05-21 · 儀表板產製日：2026-05-21
+  </div>
+</div>
+
+<script>
+const GREEN='#76b900',GREEN2='#9ed320',TXT2='#9aa6bd',LINE='#2a3346';
+Chart.defaults.color=TXT2;
+Chart.defaults.font.family="-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif";
+Chart.defaults.font.size=11.5;
+
+/* ===== 分頁切換（原樣沿用，勿改）===== */
+const tabs=document.querySelectorAll('.tab'),views=document.querySelectorAll('.panel-view');
+let drawn={0:true};
+tabs.forEach(t=>t.addEventListener('click',()=>{
+  const i=t.dataset.t;
+  tabs.forEach(x=>x.classList.remove('on'));t.classList.add('on');
+  views.forEach(v=>v.classList.toggle('on',v.dataset.v===i));
+  if(!drawn[i]){drawn[i]=true;setTimeout(()=>renderFor(i),30);}
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+/* ===== 圖表 ===== */
+function chartRev(){
+  new Chart(document.getElementById('cRev'),{
+    type:'bar',
+    data:{labels:['Q1 2025','Q1 2026','Q2 2026（財測）'],
+      datasets:[{data:[7.44,10.25,11.2],
+        backgroundColor:[GREEN+'99',GREEN,'#5b6577'],
+        borderColor:[GREEN,GREEN2,'#7a8499'],borderWidth:1.5,borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'營收 $'+c.parsed.y+'B'}}},
+      scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:LINE},ticks:{callback:v=>'$'+v+'B'}}}}
+  });
+}
+function chartMix(){
+  new Chart(document.getElementById('cMix'),{
+    type:'doughnut',
+    data:{labels:['資料中心','客戶端與遊戲','嵌入式'],
+      datasets:[{data:[5.775,3.6,0.873],
+        backgroundColor:[GREEN,GREEN2,'#5b6577'],borderColor:'#141925',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+      plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:14}},
+        tooltip:{callbacks:{label:c=>{const t=c.dataset.data.reduce((a,b)=>a+b,0);
+          return ' '+c.label+'：$'+c.parsed+'B（'+(c.parsed/t*100).toFixed(1)+'%）';}}}}}
+  });
+}
+function chartMargin(){
+  new Chart(document.getElementById('cMargin'),{
+    type:'bar',
+    data:{labels:['資料中心','客戶端與遊戲','嵌入式'],
+      datasets:[{label:'年增率',data:[57,23,6],
+        backgroundColor:[GREEN,GREEN2,'#5b6577'],
+        borderColor:[GREEN,GREEN2,'#7a8499'],borderWidth:1.5,borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'年增率 '+c.parsed.y+'%'}}},
+      scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:LINE},ticks:{callback:v=>v+'%'}}}}
+  });
+}
+function chartPrice(){
+  const labels=['52週低','200日均線','分析師平均目標價','目前股價','52週高','最高目標價(Evercore)'];
+  const data=[107.67,208,405.15,447.58,469.22,579];
+  const colors=['#5b6577','#60a5fa',GREEN,GREEN2,'#5b6577','#fbbf24'];
+  new Chart(document.getElementById('cPrice'),{
+    type:'bar',
+    data:{labels:labels,datasets:[{data:data,backgroundColor:colors.map(c=>c+'cc'),
+      borderColor:colors,borderWidth:1.5,borderRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+c.parsed.x}}},
+      scales:{x:{grid:{color:LINE},ticks:{callback:v=>'$'+v}},y:{grid:{display:false}}}}
+  });
+}
+
+/* 依分頁延遲繪製圖表 */
+function renderFor(i){
+  if(i==='1')chartMargin();
+  if(i==='3')chartPrice();
+}
+chartRev();chartMix();
+</script>
+</body>
+</html>
