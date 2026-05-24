@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美股盤前分析 · 2026-05-24</title>
+<style>
+:root{
+  --bg:#0b0e14;--panel:#141925;--panel2:#1c2333;--line:#2a3346;
+  --txt:#e8ecf3;--txt2:#9aa6bd;--txt3:#6b7689;
+  --green:#76b900;--green2:#9ed320;--pos:#34d399;--neg:#f87171;--warn:#fbbf24;--blue:#60a5fa;
+  --us:#9ed320;--tw:#fbbf24;--radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);color:var(--txt);line-height:1.65;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 18px 60px;}
+
+/* header */
+.hd{background:linear-gradient(135deg,#141925 0%,#1c2333 60%,#10331a 100%);
+  border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:14px;}
+.hd .eyebrow{color:var(--green2);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.hd h1{font-size:24px;font-weight:800;margin:6px 0 4px;}
+.hd .sub{color:var(--txt2);font-size:13px;}
+.hd .clock{display:inline-block;margin-top:9px;background:#1c3a0a;border:1px solid #3a5c10;
+  color:var(--green2);font-size:11.5px;font-weight:700;padding:3px 11px;border-radius:999px;}
+.hd .clock.hol{background:#3a2a08;border-color:#5c4a10;color:var(--warn);margin-left:6px;}
+
+/* section */
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 20px;margin-bottom:14px;}
+.sec h2{font-size:15.5px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.sec h2::before{content:"";width:4px;height:16px;background:var(--green);border-radius:2px;}
+.sec .shint{font-size:11.5px;color:var(--txt3);margin-bottom:13px;}
+
+/* top call */
+.topcall{background:var(--panel2);border:1px solid var(--line);border-left:4px solid var(--green);
+  border-radius:10px;padding:14px 17px;margin-bottom:13px;}
+.topcall .tag{font-size:10.5px;font-weight:800;letter-spacing:1.5px;color:var(--green2);text-transform:uppercase;}
+.topcall p{font-size:13.3px;color:var(--txt);margin-top:5px;}
+.topcall p b{color:var(--green2);}
+
+/* signal chips */
+.sigrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
+.chip{font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid var(--line);
+  background:var(--panel2);color:var(--txt2);}
+.chip.pos{background:#0e2d20;border-color:#1d5c40;color:var(--pos);}
+.chip.neg{background:#3a1414;border-color:#6b2020;color:var(--neg);}
+.chip.warn{background:#3a2a08;border-color:#5c4a10;color:var(--warn);}
+
+/* market grid */
+.mkt{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+.mcard{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:11px 13px;}
+.mcard .ml{font-size:11px;color:var(--txt3);font-weight:700;}
+.mcard .mv{font-size:18px;font-weight:800;margin:3px 0 1px;}
+.mcard .mc{font-size:11.5px;font-weight:700;}
+.mcard .mc.pos{color:var(--pos);}.mcard .mc.neg{color:var(--neg);}.mcard .mc.flat{color:var(--txt2);}
+.mcard .mn{font-size:10.5px;color:var(--txt3);margin-top:3px;line-height:1.45;}
+
+/* sub-heading inside section */
+.subh{font-size:12px;font-weight:800;color:var(--green2);margin:15px 0 8px;
+  border-top:1px dashed var(--line);padding-top:11px;}
+.subh:first-of-type{border-top:none;padding-top:0;margin-top:6px;}
+
+/* narrative blocks */
+.nb{font-size:12.8px;color:var(--txt2);}
+.nb b{color:var(--txt);}
+.nb+.nb{margin-top:7px;}
+
+/* taiwan callout */
+.twbox{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--tw);
+  border-radius:9px;padding:12px 15px;font-size:12.6px;color:var(--txt2);}
+.twbox b{color:var(--tw);}
+
+/* data calendar strip */
+.dcal{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:4px;}
+.dccard{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:11px 13px;}
+.dccard .dcd{font-size:11px;font-weight:800;color:var(--blue);}
+.dccard .dct{font-size:12.8px;font-weight:800;color:var(--txt);margin:3px 0 2px;}
+.dccard .dcn{font-size:11px;color:var(--txt3);line-height:1.5;}
+.dccard.hot{border-left:3px solid var(--warn);}
+
+/* holdings cards */
+.hcard{background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+  padding:14px 16px;margin-bottom:11px;}
+.hcard:last-child{margin-bottom:0;}
+.hch{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:2px;}
+.hck{font-size:16px;font-weight:800;color:var(--txt);}
+.hcn{font-size:11.5px;color:var(--txt3);}
+.hcp{margin-left:auto;text-align:right;}
+.hcp .pv{font-size:16px;font-weight:800;}
+.hcp .pc{font-size:11px;font-weight:700;}
+.pc.pos{color:var(--pos);}.pc.neg{color:var(--neg);}.pc.flat{color:var(--txt2);}
+.hcmeta{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 9px;}
+.tg{font-size:10.3px;font-weight:700;padding:2px 8px;border-radius:5px;
+  background:#10131c;border:1px solid var(--line);color:var(--txt2);}
+.tg.g{color:var(--pos);border-color:#1d5c40;}
+.tg.r{color:var(--neg);border-color:#6b2020;}
+.tg.y{color:var(--warn);border-color:#5c4a10;}
+.hcread{font-size:12.5px;color:var(--txt2);}
+.hcread b{color:var(--txt);}
+
+/* angle tabs */
+.tabs{display:flex;gap:6px;margin:14px 0 10px;flex-wrap:wrap;}
+.tab{font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;
+  background:var(--panel2);border:1px solid var(--line);color:var(--txt2);
+  padding:7px 14px;border-radius:8px;transition:.12s;}
+.tab:hover{filter:brightness(1.25);}
+.tab.on{background:var(--green);color:#0b0e14;border-color:var(--green);}
+.pane{display:none;}
+.pane.on{display:block;}
+.pane .nb{font-size:12.9px;}
+
+/* scenario */
+.scn{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+.scard{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:12px 14px;}
+.scard.a{border-top:3px solid var(--pos);}
+.scard.b{border-top:3px solid var(--neg);}
+.scard.c{border-top:3px solid var(--warn);}
+.scard h4{font-size:12.5px;font-weight:800;margin-bottom:5px;}
+.scard p{font-size:11.8px;color:var(--txt2);}
+
+/* catalysts */
+.cat{list-style:none;}
+.cat li{font-size:12.6px;color:var(--txt2);padding:6px 0 6px 76px;position:relative;
+  border-bottom:1px dashed var(--line);}
+.cat li:last-child{border-bottom:none;}
+.cat li .cd{position:absolute;left:0;top:6px;font-size:11px;font-weight:800;color:var(--green2);}
+.cat li b{color:var(--txt);}
+
+/* risk list */
+.risk{list-style:none;}
+.risk li{font-size:12.6px;color:var(--txt2);padding:5px 0 5px 18px;position:relative;}
+.risk li::before{content:"\25B8";position:absolute;left:1px;color:var(--neg);font-size:11px;top:7px;}
+.risk li b{color:var(--txt);}
+
+/* watch list */
+.watch{list-style:none;}
+.watch li{font-size:12.6px;color:var(--txt2);padding:5px 0 5px 18px;position:relative;}
+.watch li::before{content:"\25B8";position:absolute;left:1px;color:var(--green);font-size:11px;top:7px;}
+.watch li b{color:var(--txt);}
+
+.disc{background:var(--panel);border:1px solid #5c4a10;border-radius:9px;padding:12px 16px;
+  font-size:11.4px;color:var(--txt2);margin-top:14px;}
+.disc b{color:var(--warn);}
+.foot{color:var(--txt3);font-size:11px;text-align:center;margin-top:9px;line-height:1.8;}
+
+@media(max-width:680px){
+  .mkt{grid-template-columns:repeat(2,1fr);}
+  .scn{grid-template-columns:1fr;}
+  .dcal{grid-template-columns:1fr;}
+  .hcp{margin-left:0;text-align:left;width:100%;}
+  .wrap{padding:16px 11px 50px;}
+  .hd h1{font-size:20px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <div class="eyebrow">US Pre-Market Analysis · Personalized</div>
+    <h1>美股盤前分析與個人化解讀</h1>
+    <div class="sub">2026-05-24（週日）· 美股休市中 · 連假倒數最後一日，整合 5/22 收盤與重啟週行事曆，前瞻 5/26 開盤</div>
+    <span class="clock">資料截至台北時間 5/24</span>
+    <span class="clock hol">5/25 美國陣亡將士紀念日休市 · 下一交易日 5/26（週二）</span>
+  </div>
+
+  <!-- ========== 今日主軸 ========== -->
+  <div class="sec">
+    <h2>本週末主軸（Top Call）</h2>
+    <div class="topcall">
+      <div class="tag">核心觀點</div>
+      <p><b>連假進入最後一天，焦點從「假期跳空」轉向「重啟週的數據考驗」。</b>
+      昨天（5/23）的張力是「假期無人看管的跳空風險」，但今天連假只剩一天，那個窗口已收窄；
+      真正接棒的是——<b>5/26 重啟後是一週密集的宏觀數據：5/26 消費者信心、5/28 核心 PCE（4 月）＋ Q1 GDP 二修。</b>
+      其中<b>核心 PCE 是 Fed 最看重的通膨指標</b>，在當前「升息風險升溫」的敘事下，它會是這週決定殖利率與高估值股方向的單一最關鍵變數。
+      盤面看似仍榮景——道瓊收 50,580 再創新高、標普 500 寫下<b>連 8 週收紅</b>；
+      但底層裂痕在擴大：<b>30 年期公債殖利率升破 5.1%（金融海嘯前以來高位）、市場對 12 月升息的定價升到約 50%（昨日約 40%）、ARM 股價已噴過所有最新上修的券商目標價、NVDA 龍頭續弱</b>。
+      本報告的核心張力：<b>「指數創高＋AI 動能（多方）」對上「殖利率飆升＋估值地心引力＋重啟週數據考驗（空方）」。</b></p>
+    </div>
+    <div class="sigrow">
+      <span class="chip pos">道瓊創新高 50,580</span>
+      <span class="chip pos">標普連 8 週收紅</span>
+      <span class="chip pos">油價週線重挫 · WTI 約 -8%</span>
+      <span class="chip neg">30Y 殖利率升破 5.1% · 海嘯前以來高位</span>
+      <span class="chip neg">12 月升息機率升至約 50%</span>
+      <span class="chip neg">ARM 股價噴過所有券商目標價</span>
+      <span class="chip warn">5/28 核心 PCE · 重啟週最大考驗</span>
+      <span class="chip warn">連假最後一日 · 5/26 才重啟</span>
+    </div>
+  </div>
+
+  <!-- ========== 全球市場儀表板 ========== -->
+  <div class="sec">
+    <h2>全球市場儀表板</h2>
+    <div class="shint">美股為 5/22（週五）收盤值；利率、商品為 5/22 盤後最新觀察值。美股期貨週末不交易，台北時間 5/26 清晨才恢復。數值為近似值。</div>
+
+    <div class="subh">美股指數（5/22 週五收盤）</div>
+    <div class="mkt">
+      <div class="mcard">
+        <div class="ml">道瓊工業指數</div>
+        <div class="mv">50,579.70</div>
+        <div class="mc pos">+0.58%（+294）</div>
+        <div class="mn">收盤再創歷史新高</div>
+      </div>
+      <div class="mcard">
+        <div class="ml">S&amp;P 500</div>
+        <div class="mv">7,473.47</div>
+        <div class="mc pos">+0.37%</div>
+        <div class="mn">連續 8 週收紅</div>
+      </div>
+      <div class="mcard">
+        <div class="ml">NASDAQ 綜合</div>
+        <div class="mv">26,343.97</div>
+        <div class="mc pos">+0.19%</div>
+        <div class="mn">小漲收高、科技內部分歧</div>
+      </div>
+      <div class="mcard">
+        <div class="ml">標普週線紀錄</div>
+        <div class="mv">8 週</div>
+        <div class="mc warn">連續收紅</div>
+        <div class="mn">2023 年底連 9 週以來最長</div>
+      </div>
+    </div>
+
+    <div class="subh">利率、商品與政策（5/22 盤後）</div>
+    <div class="mkt">
+      <div class="mcard">
+        <div class="ml">美 10 年期公債殖利率</div>
+        <div class="mv">約 4.65%</div>
+        <div class="mc neg">高檔上行</div>
+        <div class="mn">通膨疑慮帶動殖利率走高</div>
+      </div>
+      <div class="mcard">
+        <div class="ml">美 30 年期公債殖利率</div>
+        <div class="mv">逾 5.1%</div>
+        <div class="mc neg">海嘯前以來高位</div>
+        <div class="mn">長天期殖利率是新增壓力源</div>
+      </div>
+      <div class="mcard">
+        <div class="ml">西德州原油 WTI</div>
+        <div class="mv">約 $96.6</div>
+        <div class="mc pos">週線約 -8%</div>
+        <div class="mn">伊朗談判露曙光、油價回落</div>
+      </div>
+      <div class="mcard">
+        <div class="ml">Fed 12 月政策定價</div>
+        <div class="mv">升息 ~50%</div>
+        <div class="mc neg">方向偏鷹</div>
+        <div class="mn">較昨日約 40% 再升溫</div>
+      </div>
+    </div>
+
+    <div class="subh">宏觀脈絡解讀</div>
+    <div class="nb"><b>「殖利率飆升」是這份報告新接棒的最大壓力源。</b>美 30 年期公債殖利率已升破 5.1%、來到金融海嘯前以來的高位，
+    10 年期約 4.65%、同樣在高檔上行。背後是 5 月 CPI 升抵近三年高、加上油價推升的通膨疑慮，
+    讓 CME FedWatch 工具顯示市場對「12 月升息 1 碼」的定價升到約 50%（昨日約 40%）。
+    對 ARM、AMD 這類本益比極高的成長股，<b>長天期殖利率每上行一步，就是估值上多一分「地心引力」</b>——這是貫穿本週的結構性逆風。</div>
+    <div class="nb"><b>重啟週是一週密集的數據週，核心 PCE 是重中之重。</b>5/26 重啟當天有 5 月消費者信心，
+    5/28 則一次公布<b>核心 PCE（4 月）與 Q1 GDP 二修</b>。核心 PCE 是 Fed 最看重的通膨指標：
+    若數字偏高，會強化升息敘事、推升殖利率，直接衝擊高估值科技股；若意外降溫，則是這波殖利率壓力的紓解閥。
+    市場也關注媒體報導中新任 Fed 主席預計 6 月的首場 FOMC——這代表政策不確定性在重啟後不會消失，只會延續。</div>
+    <div class="nb"><b>油價是唯一明確的「多方」變數，但根基並不穩。</b>本週 WTI 重挫約 8%、Brent 跌約 5%，
+    原因是美伊談判露出進展曙光（美國國務卿 Rubio 稱有「good signs」）。但要注意兩點：一是 Rubio 同時警告，
+    若伊朗尋求「永久控制荷莫茲海峽通行」，協議將「窒礙難行」；二是國際能源總署（IEA）警告，
+    若海峽不重新開放，今夏全球油市將進入「紅區」。<b>油價的回落是「對和平的押注」，不是「和平本身」</b>——
+    連假期間任何一則中東頭條，仍可能讓 5/26 開盤油價跳空，改寫通膨與 Fed 敘事。</div>
+    <div class="nb"><b>連假的結構性風險窗口正在收窄。</b>5/25（週一）美股因陣亡將士紀念日休市，下一交易日是 5/26（週二）。
+    昨天這還是一個「三天無人看管」的大窗口，但今天已是連假最後一日，跳空風險的時間窗縮短到約一天。
+    對你的組合而言，<b>真正的風險已從「假期跳空」轉移到「重啟週的數據與殖利率」——這是後續定價的主軸。</b></div>
+  </div>
+
+  <!-- ========== 台股與亞洲 ========== -->
+  <div class="sec">
+    <h2>台股與亞洲市場（你的供應鏈視角）</h2>
+    <div class="shint">台股 5/22 已收盤；台股週一（5/25）照常交易，將領先美股一個交易日，是你個人持股「上游供應鏈」的籌碼前哨。</div>
+    <div class="mkt" style="grid-template-columns:repeat(3,1fr);margin-bottom:12px;">
+      <div class="mcard">
+        <div class="ml">加權指數 TWII（5/22 收盤）</div>
+        <div class="mv">約 42,268</div>
+        <div class="mc pos">續創高、量能放大</div>
+        <div class="mn">5/22 成交逾 1.19 兆元</div>
+      </div>
+      <div class="mcard">
+        <div class="ml">台積電 2330（5/22 收盤）</div>
+        <div class="mv">NT$2,235</div>
+        <div class="mc flat">高檔整理</div>
+        <div class="mn">TSM ADR 5/22 約 $404.5</div>
+      </div>
+      <div class="mcard">
+        <div class="ml">台股下一交易日</div>
+        <div class="mv">5/25 週一</div>
+        <div class="mc warn">領先美股一日</div>
+        <div class="mn">美股 5/26 才開盤</div>
+      </div>
+    </div>
+    <div class="twbox">
+      <b>關鍵觀察：AMD 宣布逾 100 億美元台灣投資。</b>AMD 執行長蘇姿丰於 5/21 在台北宣布，
+      AMD 將投資<b>逾 100 億美元（約新台幣 3,156 億元）於台灣 AI 生態系</b>，擴大先進封裝與製造產能；
+      蘇姿丰並指出全球 CPU 需求遠超預期、市場「吃緊」，2nm EPYC 伺服器晶片進入量產。
+      合作夥伴橫跨封測與供應鏈：日月光（ASE）、矽品（SPIL）、力成（PTI）、緯穎（Wiwynn）、緯創（Wistron）、英業達（Inventec）、欣興（Unimicron）、南電（Nan Ya PCB）、景碩（Kinsus）。
+      <br><br>
+      <b>給你的解讀：</b>這則消息對你的組合有雙重意義。其一，<b>先進封裝（CoWoS 等）已是高階 AI 晶片的瓶頸</b>，
+      AMD 大舉加碼台灣，等於從產業面再次印證 AI 算力擴張題材的真實性——這對 NVDA／AMD／TSMC 的長期論點是支撐。
+      其二，週一（5/25）台股這些「AMD 概念股」加上 2330 的籌碼與外資動向，會是你預判美股 5/26 開盤情緒的<b>免費前哨站</b>：
+      若週一台股 AI 鏈量能未縮、外資續買，代表亞洲資金信心未動搖；若出現「量大不漲」或權值轉弱，
+      則是美股噴出股（ARM／AMD）在 5/26 也可能轉弱的提早警訊。<b>不必熬夜、不用花錢，週一收盤看一眼台股即可。</b>
+    </div>
+  </div>
+
+  <!-- ========== 個人持股組合分析 ========== -->
+  <div class="sec">
+    <h2>個人持股組合 · 盤前個股快評</h2>
+    <div class="shint">
+      持股組合依專案內「analysis-archive」財報分析歸檔推定為 AI 半導體四檔（NVDA／AMD／ARM／TSMC）。
+      ※ 尚無正式持股部位與成本檔案，如提供實際張數／成本，可再做部位層級的損益與權重分析。價格為 5/22 收盤近似值。
+    </div>
+
+    <!-- NVDA -->
+    <div class="hcard">
+      <div class="hch">
+        <span class="hck">NVDA</span>
+        <span class="hcn">NVIDIA · 核心持股</span>
+        <span class="hcp"><span class="pv">約 $215</span> <span class="pc neg">財報後連續走弱</span></span>
+      </div>
+      <div class="hcmeta">
+        <span class="tg g">FY27Q1 營收 $816 億 · 年增 85%</span>
+        <span class="tg g">Q2 財測 $910 億 · 年增 95%</span>
+        <span class="tg r">財報後兩個交易日累計約 -3.5%</span>
+        <span class="tg r">日線 MACD 空頭背離</span>
+      </div>
+      <div class="hcread">
+        <b>盤前快評：</b>NVDA 週五（5/22）收在 $215 附近、仍是當日偏弱的一檔，自 5/14 創下的 $235.74 歷史收盤高已回落約 9%；
+        財報（5/20）以來連續兩個交易日累計約 -3.5%，日線 MACD 出現空頭背離。
+        基本面仍是組合中最扎實的——FY27Q1 營收 $816 億（年增 85%）、Q2 財測 $910 億（年增 95%），均優於市場預期；
+        分析師端維持「買進」共識，平均目標價約 $297，與現價有明顯距離。
+        <b>觀察重點：</b>NVDA 是組合、甚至整個 AI 板塊的「龍頭風向球」。它連續走弱、而 ARM／AMD 卻在噴出，
+        這種背離本身就是警訊——當龍頭失血而周邊狂歡，行情往往已進入<b>後段輪動</b>。
+        正面看，NVDA 估值容錯在四檔中最寬、$215 一帶是財報後的關鍵支撐，若守得住、且資金回流龍頭，「補漲」仍是 5/26 後值得期待的路徑；
+        負面看，龍頭若再破前低，會是整個 AI 板塊轉弱的領先訊號。它是你 5/26 開盤<b>最該先看的一檔</b>。
+      </div>
+    </div>
+
+    <!-- AMD -->
+    <div class="hcard">
+      <div class="hch">
+        <span class="hck">AMD</span>
+        <span class="hcn">Advanced Micro Devices · 動能持股</span>
+        <span class="hcp"><span class="pv">約 $471</span> <span class="pc pos">5/22 約 +5%</span></span>
+      </div>
+      <div class="hcmeta">
+        <span class="tg g">逾 $100 億台灣投資 · 題材加溫</span>
+        <span class="tg g">2nm EPYC 量產 · Helios H2 2026 部署</span>
+        <span class="tg r">trailing 本益比約 141 倍 · 極貴</span>
+        <span class="tg r">創歷史新高、位階極端</span>
+      </div>
+      <div class="hcread">
+        <b>盤前快評：</b>AMD 週五盤中一度漲約 4.9%、來到約 $471 的歷史新高區，催化來自蘇姿丰在台北宣布逾 100 億美元台灣投資、
+        並指出全球 CPU 需求超預期、市場「吃緊」。2nm EPYC 進入量產、Helios 機櫃級平台（MI450X＋第 6 代 EPYC）維持 2026 下半年多 GW 部署時程，
+        Q1 財報與 OpenAI、Meta、Oracle 等大單撐起訂單能見度——故事面確實很硬。
+        <b>觀察重點：</b>AMD 的兩個弱點，在重啟週會被放大。其一，trailing 本益比約 141 倍、股價已在歷史新高，
+        位階對任何利空都敏感；其二，<b>它對殖利率特別敏感</b>——5/28 核心 PCE 若偏高、推升殖利率，AMD 的高估值首當其衝。
+        現價不是追價點；若帳上獲利豐厚，這是與 ARM 並列、可一併評估「部分鎖利、降低殖利率敏感曝險」的標的。
+      </div>
+    </div>
+
+    <!-- ARM -->
+    <div class="hcard">
+      <div class="hch">
+        <span class="hck">ARM</span>
+        <span class="hcn">ARM Holdings · 高波動持股（本報告最需警戒）</span>
+        <span class="hcp"><span class="pv">約 $314</span> <span class="pc neg">已噴過所有目標價</span></span>
+      </div>
+      <div class="hcmeta">
+        <span class="tg r">2026 年至今累漲約 84%</span>
+        <span class="tg r">連三根拋物線噴出 · RSI 過熱</span>
+        <span class="tg r">現價高於最樂觀券商目標價</span>
+        <span class="tg g">AGI CPU 升級 · 資料中心權利金翻倍</span>
+      </div>
+      <div class="hcread">
+        <b>盤前快評：</b>ARM 連三個交易日拋物線式噴出，現價推估約 $314、2026 年至今累漲約 84%。
+        題材來自 NVIDIA 在財報會中點名 CPU 有 $2,000 億規模潛在市場，引爆「AGI CPU 升級」想像，多家券商隨之大幅調升目標價。
+        <b>但這裡有一個非常具體的警訊：</b>即便是上修後最樂觀的目標價——Jefferies $290、TD Cowen $265、RBC $260——<b>全都已低於現價約 $314</b>；
+        換句話說，ARM 的股價已經<b>「噴過」所有最新、最樂觀的分析師目標價</b>，另有券商（24/7 Wall St.）給出 $160 的看空目標。
+        <b>觀察重點：</b>成長故事還在，但當股價跑在所有目標價之上、RSI 過熱、連三根大漲，技術面與情緒面都是典型的過熱訊號。
+        它是組合裡<b>風險報酬最不對稱、一旦回檔幅度可能最大</b>的一檔。若帳上獲利豐厚，這是最該務實評估「部分鎖利、降低組合波動」的標的；
+        <b>現價追高，是把運氣當勝率。</b>
+      </div>
+    </div>
+
+    <!-- TSMC -->
+    <div class="hcard">
+      <div class="hch">
+        <span class="hck">TSMC</span>
+        <span class="hcn">台積電 2330.TW / TSM ADR · 供應鏈核心</span>
+        <span class="hcp"><span class="pv">2330 NT$2,235</span> <span class="pc flat">TSM ADR 約 $404.5</span></span>
+      </div>
+      <div class="hcmeta">
+        <span class="tg g">Q1 營收 NT$1.13 兆（+35%）</span>
+        <span class="tg g">毛利率 66.2% · 全年展望上調至 +30%</span>
+        <span class="tg g">先進封裝為 AI 晶片瓶頸 · 受益者</span>
+        <span class="tg">終端最分散 · 估值相對溫和</span>
+      </div>
+      <div class="hcread">
+        <b>盤前快評：</b>身為 NVDA／AMD 共同的晶圓代工與先進封裝上游，台積電 2330 在 5/22 收 NT$2,235、處高檔整理，
+        TSM ADR 5/22 約收 $404.5（近似值）。Q1 財報扎實、全年展望已上調至年增 30% 以上，AI 需求直接灌注其產能；
+        AMD 此次加碼台灣先進封裝，也再次凸顯 CoWoS 等封裝產能是整個 AI 晶片供應鏈的瓶頸與議價核心。
+        <b>觀察重點：</b>TSMC 是組合中<b>終端最分散、估值相對溫和、波動最低</b>的部位，在「龍頭背離、噴出股過熱、殖利率上行」的盤勢裡，
+        扮演相對防禦的「壓艙石」角色。它不會漲最兇，但也最不容易在回檔時讓你受傷。
+        台股週一（5/25）的 2330 走勢，也是你預判美股 5/26 的前哨之一。
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 多角度個人化分析 ========== -->
+  <div class="sec">
+    <h2>多角度個人化分析</h2>
+    <div class="shint">同一組持股、三種立場——點選切換對應你目前的決策情境。</div>
+    <div class="tabs">
+      <button class="tab on" data-pane="hold">① 既有持有者</button>
+      <button class="tab" data-pane="buy">② 潛在加碼／買方</button>
+      <button class="tab" data-pane="long">③ 長期投資人</button>
+    </div>
+
+    <div class="pane on" id="hold">
+      <div class="nb"><b>立場結論：續抱基本盤，但這週的重點是「準備好面對重啟週的數據與殖利率」，而不是預測方向。</b></div>
+      <div class="nb">四檔的基本面都通過了財報檢驗，AI 工廠建置潮的需求動能未見放緩，AMD 加碼台灣更從產業面再添佐證，
+      <b>沒有任何「賣出論點」被觸發</b>。但真正的張力不在基本面，而在<b>位階、殖利率與數據</b>——
+      標普連 8 週收紅、ARM 噴過所有目標價、AMD 創新高，整個組合都站在「漲多、過熱」的位置；
+      而 5/28 的核心 PCE 與持續上行的長天期殖利率，是這週懸在高估值股頭上的兩把劍。</div>
+      <div class="nb"><b>本週末傾向：</b>把焦點放在風險管理。若帳上 ARM（甚至 AMD）獲利豐厚，
+      這個週末仍是務實評估<b>「部分減碼、鎖住獲利、降低殖利率敏感曝險」</b>的時機，把組合重心向估值較合理、波動較低的 NVDA／TSMC 傾斜。
+      這不是看空 AI，而是<b>把報酬落袋、讓組合在數據週更耐震</b>的動作。NVDA 則因估值容錯較寬、續抱無妨，
+      重點觀察 5/26 它能否守住 $215 一帶支撐。</div>
+    </div>
+
+    <div class="pane" id="buy">
+      <div class="nb"><b>立場結論：重啟與數據週前的此刻，是「最不該追」的時點之一；若一定要動，標的順序 TSMC ≧ NVDA ＞ AMD ＞ ARM。</b></div>
+      <div class="nb"><b>TSMC</b> 估值最溫和、終端最分散，是風險報酬最對稱的防禦型切入點。<b>NVDA</b> 在四檔中估值相對合理、
+      股價也「最未反映財報利多」，若 5/26 守穩 $215 支撐，是估值面較有吸引力的龍頭選擇。
+      <b>AMD</b> 已在歷史新高、<b>ARM</b> 股價更已噴過所有最新券商目標價——這兩檔現價追高的勝率偏低。</div>
+      <div class="nb"><b>但重啟與數據週前絕非進場時機。</b>市場已連 8 週上攻、ARM 拋物線噴出、長天期殖利率升破 5.1%、
+      5/28 還有核心 PCE 這道大關——在這種「漲多＋過熱＋殖利率逆風＋數據考驗」四疊加的環境一次重壓，是拿運氣賭勝率。
+      若決定佈局，務必<b>分批、預設明顯回檔的承接價位</b>，並優先等 5/26 連假後第一根 K 與 5/28 核心 PCE 的反應後再切入。
+      <b>耐心等待，是現在最有價值的動作。</b></div>
+    </div>
+
+    <div class="pane" id="long">
+      <div class="nb"><b>立場結論：長期論點完好，殖利率飆升、ARM 噴出、龍頭背離都屬「短期噪音」，不改變持有計畫。</b></div>
+      <div class="nb">AI 算力被客戶視為「基礎設施而非選配」的結構性趨勢未變；NVDA FY27Q1 +85%、台積電 Q1 +35% 並上調全年展望、
+      AMD 加碼台灣先進封裝，從上下游同步佐證需求的真實性。連 8 週上漲、ARM 噴過目標價、殖利率隨通膨疑慮上行，
+      多屬<b>循環性／情緒性波動</b>，不構成推翻長期論點的訊號——但它們確實提醒：<b>當下的價格已內含很高的樂觀</b>，未來的報酬率會比過去一年低。</div>
+      <div class="nb"><b>長線做法：</b>以「分批、逢明顯回檔承接」累積部位，不被單週的噴出或數據波動牽動而追價。
+      真正該追蹤的是<b>論點檢核點</b>：5/27 邁威爾、6/3 博通、6/16 甲骨文財報驗證 AI 資本支出循環是否延續、
+      6 月底美光揭示記憶體供需是否如 ARM 所警告般緊俏、雲端巨頭 capex 指引方向——以及殖利率的結構性走勢（會影響估值中樞）。
+      這些才是會真正改變長期判斷的變數；單週的噴出與數據雜訊，都不在這份清單上。</div>
+    </div>
+  </div>
+
+  <!-- ========== 情境劇本 ========== -->
+  <div class="sec">
+    <h2>下一交易日（5/26）情境劇本</h2>
+    <div class="shint">針對你的 AI 半導體組合，連假後 5/26 開盤的三種可能路徑與對應反應。</div>
+    <div class="scn">
+      <div class="scard a">
+        <h4 style="color:var(--pos);">情境 A · 動能延續、龍頭補漲</h4>
+        <p>連假無重大利空、油價平穩，市場對 5/28 核心 PCE 預期溫和，資金自噴出股回流估值合理的龍頭，NVDA 守穩 $215 並出現補漲。
+        <b>對組合：</b>偏多，NVDA／TSMC 彈性最佳；但 ARM／AMD 在高位追高空間有限。</p>
+      </div>
+      <div class="scard b">
+        <h4 style="color:var(--neg);">情境 B · 殖利率／油價衝擊</h4>
+        <p>連假一則中東頭條讓油價跳空，或重啟後殖利率再上行、市場對 PCE 偏鷹定價，高 beta 股率先回吐。
+        <b>對組合：</b>偏空，ARM 回檔幅度最大、AMD 次之；TSMC 相對抗跌、NVDA 因估值容錯較高而較穩。</p>
+      </div>
+      <div class="scard c">
+        <h4 style="color:var(--warn);">情境 C · 量縮整理、等 PCE</h4>
+        <p>多空因子抵銷，5/26 開盤後陷膠著，NVDA「漲不動」延續、噴出股高檔震盪，市場按兵不動等 5/27 邁威爾財報與 5/28 核心 PCE。
+        <b>對組合：</b>中性，宜不增不減，先觀察台股 5/25 籌碼前哨。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 風險清單 ========== -->
+  <div class="sec">
+    <h2>盤前風險清單</h2>
+    <ul class="risk">
+      <li><b>ARM 股價噴過所有券商目標價（本報告最高風險）：</b>現價約 $314 已高於上修後最樂觀的 Jefferies $290、TD Cowen $265、RBC $260，RSI 過熱、連三根拋物線——均值回歸風險顯著。</li>
+      <li><b>長天期殖利率飆升：</b>30 年期升破 5.1%、為金融海嘯前以來高位，市場對 12 月升息定價升至約 50%，對高本益比成長股（ARM／AMD）是估值地心引力。</li>
+      <li><b>重啟週數據考驗：</b>5/28 核心 PCE（4 月）是 Fed 最看重的通膨指標，若偏高將推升殖利率、衝擊 AMD／ARM 估值；5/26 消費者信心亦為觀察點。</li>
+      <li><b>龍頭背離：</b>NVDA 財報後連續走弱、MACD 空頭背離，而周邊噴出——是行情進入後段、輪動加速的典型特徵，追高勝率下降。</li>
+      <li><b>假期跳空（窗口收窄）：</b>今為連假最後一日，5/25 休市、5/26 重啟一次性消化新聞；跳空時間窗已縮短至約一天，但仍不可忽略。</li>
+      <li><b>油價「和平押注」根基不穩：</b>本週油價重挫是押注美伊談判進展，但荷莫茲海峽實質仍封閉、核心議題僵持，IEA 已警告夏季油市恐進入「紅區」。</li>
+      <li><b>過熱／追價風險：</b>標普連 8 週收紅、道瓊創高，市場強勢但耐震空間變薄，利空容易引發較大幅度的獲利了結。</li>
+      <li><b>組合集中度：</b>四檔同屬「AI 半導體」單一主題、與台股高度連動——同漲同跌、缺乏避震。</li>
+    </ul>
+  </div>
+
+  <!-- ========== 今日 / 本週觀察 ========== -->
+  <div class="sec">
+    <h2>連假觀察與重啟週行事曆</h2>
+    <div class="subh">連假期間（5/24–5/25）觀察重點</div>
+    <ul class="watch">
+      <li><b>台股 5/25（週一）走勢：</b>台股照常交易、領先美股一日；2330 與 AMD 概念股（日月光、矽品、緯穎、緯創、欣興等）的籌碼與外資動向，是預判美股 5/26 情緒的免費前哨。</li>
+      <li><b>中東／油價頭條：</b>美伊談判與荷莫茲海峽任何進展或反覆，都會決定 5/26 油價是否跳空——這是連假最後一日的最大單一變數。</li>
+      <li><b>美股期貨重啟（台北時間 5/26 清晨）：</b>連假後期貨一開盤的方向，是 5/26 現貨開盤的第一個風向球。</li>
+      <li><b>ARM／AMD 是否有負面消息：</b>噴出股最怕利空累積；留意券商評等、目標價調整或獲利了結相關報導。</li>
+    </ul>
+    <div class="subh">重啟週重點數據（5/26 起）</div>
+    <div class="dcal">
+      <div class="dccard">
+        <div class="dcd">5/26（週二）</div>
+        <div class="dct">美國 5 月消費者信心</div>
+        <div class="dcn">重啟首日數據，反映通膨與關稅環境下的消費端體感。</div>
+      </div>
+      <div class="dccard">
+        <div class="dcd">5/27（週三）</div>
+        <div class="dct">邁威爾 Marvell 財報</div>
+        <div class="dcn">客製 AI 晶片（XPU／ASIC）動能，牽動 NVDA／AMD 競爭格局辯論。</div>
+      </div>
+      <div class="dccard hot">
+        <div class="dcd">5/28（週四）</div>
+        <div class="dct">核心 PCE（4 月）＋ Q1 GDP 二修</div>
+        <div class="dcn">本週最大宏觀考驗——Fed 最看重的通膨指標，直接牽動殖利率與高估值股。</div>
+      </div>
+    </div>
+    <div class="subh">後續催化劑</div>
+    <ul class="cat">
+      <li><span class="cd">5/25</span><b>美國陣亡將士紀念日</b>——美股休市；台股照常交易。</li>
+      <li><span class="cd">5/26</span><b>美股連假後重新開盤</b>——連假累積新聞一次消化，第一根 K 放大多空張力；消費者信心、AutoZone 等財報。</li>
+      <li><span class="cd">5/27</span><b>邁威爾 Marvell 財報</b>——客製 AI 晶片（XPU／ASIC）動能，與博通同陣營。</li>
+      <li><span class="cd">5/28</span><b>核心 PCE ＋ Q1 GDP 二修</b>——重啟週最大宏觀考驗，決定殖利率與 Fed 敘事方向。</li>
+      <li><span class="cd">6/03</span><b>博通 Broadcom 財報</b>——AI 客製晶片指引，繼 NVDA 後驗證 capex 循環是否延續。</li>
+      <li><span class="cd">6/10</span><b>台股 5 月營收</b>——台積電、鴻海、廣達、緯穎等 AI 伺服器供應鏈動能的高頻檢驗。</li>
+      <li><span class="cd">6/16</span><b>甲骨文 Oracle 財報</b>——AI 雲端 capex 與 Helios 進展，直接關聯 AMD 訂單。</li>
+      <li><span class="cd">~6/25</span><b>美光 Micron 財報</b>——HBM 與記憶體供需報價，對應 ARM 所提的記憶體短缺。</li>
+      <li><span class="cd">6 月</span><b>新任 Fed 主席首場 FOMC（媒體報導）</b>——政策不確定性在重啟後延續，關注利率路徑指引。</li>
+    </ul>
+  </div>
+
+  <div class="disc">
+    <b>免責聲明：</b>本報告為盤前資訊整理與個人化分析觀點，依公開資訊（市場新聞、財報行事曆、券商資料等）彙整，
+    <b>不構成任何投資建議、買賣指令或獲利保證</b>。美股指數與台股為 5/22 收盤值；個股與商品報價、殖利率為近似值，
+    其中 ARM 現價為依連續漲幅推估、AMD 為盤中漲幅近似值、2330 與 TSM ADR 報價來源略有差異。
+    新任 Fed 主席與其首場 FOMC 之相關內容係依媒體報導轉述，實際以官方公告為準。
+    「個人持股組合」係依專案內財報分析歸檔推定，非實際持股部位。多空觀點並陳僅供參考，
+    所有投資決策應自行評估風險並諮詢合格專業人士。
+  </div>
+  <div class="foot">
+    美股盤前分析 · 2026-05-24（週日，連假最後一日）· Finance Assistant<br>
+    資料來源：The Motley Fool、TheStreet、CNBC、Yahoo Finance、TradingKey、equityclock、StartupHub、AMD IR、Taipei Times、Taiwan News、24/7 Wall St.、Wikipedia 等公開資訊彙整
+  </div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click',function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+    document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('on');});
+    t.classList.add('on');
+    document.getElementById(t.dataset.pane).classList.add('on');
+  });
+});
+</script>
+</body>
+</html>
