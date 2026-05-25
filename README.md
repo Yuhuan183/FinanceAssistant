@@ -12,8 +12,8 @@
   - `TSMC/` — 可比公司分析
 - **`tw-stock-pre-analyze/`** — 台股每日盤前分析
 - **`us-stock-pre-analyze/`** — 美股每日盤前分析
-- **`skills/`** — 自製的財報分析儀表板產生器 skill
-- **`晨會筆記_*.md`** — 晨會筆記
+- **`skills/`** — 自製 skill:`earnings-analysis-dashboard`(財報分析儀表板產生器)、`git-publish`(git 發布規範,所有自動排程共用)
+- **`schedules/`** — 自動排程任務的正式定義(真實來源),詳見該目錄 `README.md`
 
 ## 線上瀏覽
 
