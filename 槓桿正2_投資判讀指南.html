@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>槓桿型 ETF 正2 判讀指南</title>
+<style>
+  :root{
+    --bg:#0b0f1a; --panel:#141a2b; --panel2:#1b2236; --line:#2a3350;
+    --txt:#e8ecf6; --mut:#9aa6c4; --dim:#6b779b;
+    --up:#ff5b6e; --down:#22c08a; --warn:#f5b13d; --acc:#5b8cff; --acc2:#9d7bff; --good:#22c08a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:28px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:2px;color:var(--acc);font-weight:700;text-transform:uppercase}
+  h1{font-size:29px;font-weight:800;margin:8px 0 6px;letter-spacing:.5px}
+  .sub{color:var(--mut);font-size:14px}
+  .stamp{color:var(--dim);font-size:12px;margin-top:6px}
+  section{margin-top:30px}
+  .sec-title{font-size:19px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:9px}
+  .sec-title .n{flex:none;width:25px;height:25px;border-radius:7px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .sec-note{color:var(--dim);font-size:12px;margin:3px 0 14px 35px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .panel.tight{padding:16px 18px}
+  .panel+.panel{margin-top:12px}
+  p.tx{font-size:14px;color:#cdd5ea;margin-top:10px}
+  p.tx:first-child{margin-top:0}
+  p.tx b{color:var(--txt)}
+  .hl{color:var(--acc);font-weight:700}
+  .hl-up{color:var(--up);font-weight:700}
+  .hl-dn{color:var(--down);font-weight:700}
+  .hl-w{color:var(--warn);font-weight:700}
+  .key{background:var(--panel2);border-left:3px solid var(--acc);border-radius:0 9px 9px 0;padding:11px 15px;margin-top:13px;font-size:14px;color:#dfe5f2}
+  .key b{color:var(--txt)}
+  .key.warn{border-color:var(--warn)}
+  .key.good{border-color:var(--good)}
+  .tbl{width:100%;border-collapse:collapse;margin-top:10px;font-size:12.7px}
+  .tbl th{background:var(--panel2);color:var(--mut);font-weight:700;text-align:left;padding:9px 10px;border:1px solid var(--line);font-size:11.5px}
+  .tbl td{padding:9px 10px;border:1px solid var(--line);color:#cdd5ea;vertical-align:top}
+  .tbl td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .tbl tr:nth-child(even) td{background:rgba(255,255,255,.018)}
+  .tbl .tname{font-weight:800;color:var(--txt)}
+  .tbl .em{color:var(--txt);font-weight:700}
+  .tnote{font-size:11px;color:var(--dim);margin-top:8px}
+  .u{color:var(--up)} .d{color:var(--down)} .w{color:var(--warn)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:720px){.grid2,.grid3{grid-template-columns:1fr}}
+  .mini{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+  .mini h4{font-size:13.5px;font-weight:800;color:var(--txt);margin-bottom:5px}
+  .mini p{font-size:12.5px;color:var(--mut)}
+  /* interactive */
+  .sim{background:linear-gradient(135deg,#161d33,#141a2b);border:1px solid #34406b;border-radius:14px;padding:18px}
+  .sim .simhd{font-size:13px;font-weight:800;color:var(--acc2);letter-spacing:.5px;margin-bottom:3px}
+  .sim .simsub{font-size:11.5px;color:var(--dim);margin-bottom:13px}
+  .presets{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:13px}
+  .pbtn{font-size:12px;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);color:var(--mut);cursor:pointer;transition:.13s;font-family:inherit}
+  .pbtn:hover{color:var(--txt);border-color:var(--acc)}
+  .pbtn.on{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;border-color:transparent}
+  .ctrl{display:flex;align-items:center;gap:10px;margin:9px 0;font-size:12.5px;color:var(--mut)}
+  .ctrl label{flex:none;width:120px;color:#cdd5ea}
+  .ctrl input[type=range]{flex:1;accent-color:var(--acc)}
+  .ctrl .val{flex:none;width:74px;text-align:right;font-weight:800;color:var(--txt);font-variant-numeric:tabular-nums}
+  canvas{width:100%;height:auto;display:block;margin-top:8px;background:#0d1322;border:1px solid var(--line);border-radius:9px}
+  .simout{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
+  @media(max-width:560px){.simout{grid-template-columns:1fr}}
+  .oc{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:11px 12px;text-align:center}
+  .oc .ol{font-size:11px;color:var(--mut)}
+  .oc .ov{font-size:21px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums}
+  .oc .od{font-size:10.5px;color:var(--dim);margin-top:2px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--mut);margin-top:9px}
+  .legend span{display:flex;align-items:center;gap:5px}
+  .swatch{width:14px;height:3px;border-radius:2px;display:inline-block}
+  .simnote{font-size:11px;color:var(--dim);margin-top:11px;border-top:1px solid var(--line);padding-top:9px}
+  .disc{margin-top:28px;font-size:11px;color:var(--dim);background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:14px 16px}
+  .foot{margin-top:14px;text-align:center;color:var(--dim);font-size:11px}
+  .toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .toc a{font-size:12px;font-weight:700;padding:6px 11px;border-radius:20px;border:1px solid var(--line);background:var(--panel2);color:var(--mut);text-decoration:none;transition:.13s}
+  .toc a:hover{color:var(--txt);border-color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">投資判讀指南 · Leveraged ETF Explainer</div>
+  <h1>槓桿型 ETF「正2」判讀指南</h1>
+  <div class="sub">以 00631L／0050 與 加權正2（00663L／00685L）／加權指數為例 · 機制 ╳ 歷史回測 ╳ 情境試算 ╳ 評價框架 · 作為投資配比的判讀參考</div>
+  <div class="stamp">製作日 2026-05-25 · 內含兩個互動工具:路徑模擬器、配比情境試算器 · 歷史數據截至 2026 年初、為公開資料近似值</div>
+
+  <div class="panel tight" style="margin-top:16px">
+    <p class="tx"><b>這份指南要解決一個常見的誤解:</b>「正2 ETF ＝ 原型的兩倍」。這句話只在「單一交易日」成立;<b>放到長期,正2 的結果取決於『指數怎麼走』,而不只是『指數漲跌多少』</b>。理解這個差別,才能決定正2 在你組合裡該放多少。本指南分七節,先講機制與特性,再用歷史回測與情境試算驗證,最後收斂到「如何評價」與「對配比的啟示」。</p>
+    <div class="toc">
+      <a href="#s1">1·運作機制</a><a href="#s2">2·波動耗損</a><a href="#s3">3·歷史回測</a><a href="#s4">4·事件反應</a><a href="#s5">5·母體差異</a><a href="#s6">6·評價框架</a><a href="#s7">7·配比啟示</a>
+    </div>
+  </div>
+
+  <!-- S1 -->
+  <section id="s1">
+    <div class="sec-title"><span class="n">1</span>正2 的運作機制 —「單日」兩個字是關鍵</div>
+    <div class="sec-note">先把產品說明書的核心讀懂:正2 承諾的是什麼、不承諾什麼。</div>
+    <div class="panel">
+      <p class="tx">00631L、00663L、00685L 這類「正2」ETF,公開說明書寫的目標都是同一句:<b>追蹤標的指數「單日報酬」的正向 2 倍</b>。注意是「單日」——它每天收盤都會<b>重新平衡（rebalancing）</b>,把曝險調回淨資產的 200%,好讓「明天」又是乾淨的 2 倍。</p>
+      <p class="tx">達成方式是<b>股價指數期貨為主、搭配部分成分股現貨與現金</b>:期貨用保證金就能取得槓桿曝險,現貨（例如台積電等權值股）則用來分散期貨部位、降低轉倉成本與追蹤誤差。所以你會在 00631L 的持股明細看到台積電現貨——那是正常的建構方式,2 倍的槓桿仍由期貨提供。</p>
+      <div class="key"><b>關鍵觀念:</b>正2 給你的是「<span class="hl">單日</span> 2 倍」的承諾,<b>不是「長期累積 2 倍」的承諾</b>。每日重設這個動作,正是下一節「波動耗損」與「路徑相依」的根源——它不是 bug,是設計使然。</div>
+    </div>
+  </section>
+
+  <!-- S2 -->
+  <section id="s2">
+    <div class="sec-title"><span class="n">2</span>路徑相依與波動耗損 — 正2 的核心特性</div>
+    <div class="sec-note">同樣的「起點到終點」,指數用不同走法抵達,正2 的結果天差地別。</div>
+    <div class="panel">
+      <p class="tx"><b>① 波動耗損（Volatility Decay）的數學。</b>看一個最小的例子——指數第一天 +10%、第二天 −10%:</p>
+      <table class="tbl">
+        <tr><th>連續兩日</th><th>原型（1x）</th><th>正2（2x 每日重設）</th><th>「單純 2 倍」直覺值</th></tr>
+        <tr><td>第 1 日</td><td class="num">+10% → 1.100</td><td class="num">+20% → 1.200</td><td class="num">—</td></tr>
+        <tr><td>第 2 日</td><td class="num">−10% → 0.990</td><td class="num">−20% → 0.960</td><td class="num">—</td></tr>
+        <tr><td class="em">兩日累積</td><td class="num d">−1.0%</td><td class="num u">−4.0%</td><td class="num">−2.0%</td></tr>
+      </table>
+      <p class="tx">指數只是原地震盪一回合,原型小虧 −1%,但正2 虧 −4%——<b>不只比原型差,還比「原型 ×2（−2%）」更差</b>。多出來的這 2% 就是波動耗損:每日重設＋複利,讓「來回震盪」對 2 倍部位課了一筆隱形的稅。震盪愈劇烈、時間愈久,耗損愈重。</p>
+      <p class="tx"><b>② 路徑相依（Path Dependency）。</b>反過來,若指數是「<b>單邊趨勢</b>」——連續同方向——複利就會反向幫忙:正2 的累積報酬會<b>超過</b>「原型 ×2」。所以正2 不是穩定的「2 倍機器」:<span class="hl-up">趨勢盤它給你超過 2 倍</span>、<span class="hl-w">震盪盤它給你不到 2 倍甚至虧損</span>。決定結果的是「指數怎麼走（路徑）」,不只是「指數走到哪（終點）」。</p>
+    </div>
+
+    <!-- SIMULATOR A -->
+    <div class="sim" style="margin-top:12px">
+      <div class="simhd">⚙ 互動工具 A · 路徑模擬器</div>
+      <div class="simsub">選一種市場路徑,或自己拉動參數,看原型 vs 正2 vs「單純 2 倍」如何分歧。</div>
+      <div class="presets" id="presetsA">
+        <button class="pbtn on" data-k="trend">趨勢多頭</button>
+        <button class="pbtn" data-k="crash">急速崩跌</button>
+        <button class="pbtn" data-k="bear">陰跌空頭</button>
+        <button class="pbtn" data-k="chop">區間震盪</button>
+        <button class="pbtn" data-k="vshape">先跌後 V 轉</button>
+      </div>
+      <div class="ctrl"><label>交易天數</label><input type="range" id="saDays" min="20" max="240" step="10" value="120"><span class="val" id="saDaysV">120</span></div>
+      <div class="ctrl"><label>每日趨勢（漂移）</label><input type="range" id="saDrift" min="-200" max="200" step="2" value="24"><span class="val" id="saDriftV">+0.24%</span></div>
+      <div class="ctrl"><label>每日波動幅度</label><input type="range" id="saVol" min="0" max="400" step="10" value="90"><span class="val" id="saVolV">0.90%</span></div>
+      <canvas id="canvasA" width="960" height="300"></canvas>
+      <div class="legend">
+        <span><span class="swatch" style="background:#9aa6c4"></span>原型（1x）</span>
+        <span><span class="swatch" style="background:#5b8cff"></span>正2（2x 每日重設）</span>
+        <span><span class="swatch" style="background:#f5b13d"></span>「單純 2 倍」直覺值</span>
+      </div>
+      <div class="simout">
+        <div class="oc"><div class="ol">原型累積報酬</div><div class="ov" id="oA1">—</div><div class="od">指數本身</div></div>
+        <div class="oc"><div class="ol">正2 累積報酬</div><div class="ov" id="oA2">—</div><div class="od" id="oA2d">每日 2x 重設</div></div>
+        <div class="oc"><div class="ol">正2 vs 單純2倍</div><div class="ov" id="oA3">—</div><div class="od">正＝單邊趨勢效果／負＝震盪耗損</div></div>
+      </div>
+      <div class="simnote">＊模型為教學示意:每日報酬＝趨勢漂移＋波動幅度×週期性震盪,屬簡化路徑、非真實行情。重點在觀察「同樣的原型終點,正2 因路徑不同而分歧」的方向與量級。</div>
+    </div>
+  </section>
+
+  <!-- S3 -->
+  <section id="s3">
+    <div class="sec-title"><span class="n">3</span>歷史回測 — 過去十年告訴我們什麼</div>
+    <div class="sec-note">00631L（2014 成立）走過完整的多空循環;數據為公開資料近似值,截至 2026 年初。</div>
+    <div class="panel">
+      <table class="tbl">
+        <tr><th>項目</th><th>0050 元大台灣50（原型）</th><th>00631L 元大台灣50正2</th><th>判讀</th></tr>
+        <tr><td class="tname">自 2014/10 成立累積報酬</td><td class="num">約 +560%</td><td class="num u">約 +2,100%</td><td>「單純 2 倍」約 +1,120%；正2 實際遠超 → 長多頭的<b>趨勢紅利</b></td></tr>
+        <tr><td class="tname">近 5 年定期定額年化</td><td class="num">約 +14.4%</td><td class="num u">約 +20.5%</td><td>正2 較高,但非單純 2 倍（14.4×2≈28.8）→ 期間有震盪耗損</td></tr>
+        <tr><td class="tname">近 5 年最大回撤（MDD）</td><td class="num d">約 −36%</td><td class="num d">約 −52%</td><td>回撤幅度明顯放大,接近原型的 1.4–1.5 倍</td></tr>
+        <tr><td class="tname">2020 COVID 急跌</td><td class="num d">約 −30%</td><td class="num d">約 −50%（估）</td><td>快速崩跌 → 正2 接近「單純 2 倍」回撤</td></tr>
+        <tr><td class="tname">產品內扣費用（年）</td><td class="num">約 0.4–0.5%</td><td class="num">約 1%＋</td><td>正2 操作成本較高（00685L 約 0.48% 為同類最低）</td></tr>
+      </table>
+      <div class="key good"><b>回測給的兩句話:</b>① 在台股這十年「長期偏多」的大背景下,正2 的累積報酬<b>不只是 2 倍、而是遠超 2 倍</b>——趨勢站在它這邊時威力驚人。② 但同一段期間,它的<b>最大回撤也放大到約 −52%</b>(原型約 −36%);<span class="hl-w">回測的高報酬與深回撤是一體兩面</span>,不能只看其中一半。</div>
+      <p class="tx tnote">＊加權正2（00685L／00663L）追蹤的是加權指數而非台灣50,長期輪廓類似但母體不同（見第 5 節）。00685L 近年年化報酬同樣呈現「多頭中遠高於原型」的特徵。歷年數字受 2024–2026 AI 行情墊高,空頭年份輪廓會非常不同。</p>
+    </div>
+  </section>
+
+  <!-- S4 -->
+  <section id="s4">
+    <div class="sec-title"><span class="n">4</span>四種市場事件下的反應 — 正2 的「性格」</div>
+    <div class="sec-note">把市場拆成四種典型走法,觀察正2 當下會如何反應、對配比有何啟示。</div>
+    <div class="panel">
+      <table class="tbl">
+        <tr><th>市場事件</th><th>原型（1x）反應</th><th>正2 當下反應</th><th>對配比的啟示</th></tr>
+        <tr>
+          <td class="tname">趨勢大多頭<br><span style="color:var(--dim);font-weight:400">如 2020H2–21、24–26 AI 行情</span></td>
+          <td>穩步走高</td>
+          <td class="u">複利順風 → 累積<b>遠超</b>原型 2 倍;正2 的主場</td>
+          <td>正2 配重的報酬來源;但漲愈久、乖離愈大,愈接近下一次回撤的起點</td>
+        </tr>
+        <tr>
+          <td class="tname">急速崩跌<br><span style="color:var(--dim);font-weight:400">如 2020 COVID,約 1 個月 −30%</span></td>
+          <td class="d">快速重挫</td>
+          <td class="d">時間短、來不及複利分歧 → 回撤<b>接近「單純 2 倍」</b>（原型 −30% → 正2 約 −50%）</td>
+          <td>最考驗「下行期降槓桿」紀律:崩跌又快又狠,事後才反應通常已深套</td>
+        </tr>
+        <tr>
+          <td class="tname">陰跌空頭<br><span style="color:var(--dim);font-weight:400">如 2022,全年高低約 −32%</span></td>
+          <td class="d">緩步走低、夾帶反彈</td>
+          <td class="d">回撤約 −52%;比「單純 2 倍（−64%）」略輕,但<b>仍近腰斬</b>,且反彈段耗損</td>
+          <td>正2 在這裡最磨人:跌幅大、又被反彈的震盪扣血,復原所需漲幅極高</td>
+        </tr>
+        <tr>
+          <td class="tname">區間震盪／V 轉<br><span style="color:var(--dim);font-weight:400">指數來回、終點接近起點</span></td>
+          <td>幾乎打平</td>
+          <td class="w">波動耗損最明顯 → 原型持平,正2 卻<b>淨值下滑</b></td>
+          <td>正2「最不該長抱」的環境:沒有趨勢可吃,只有耗損可付</td>
+        </tr>
+      </table>
+      <div class="key warn"><b>性格總結:</b>正2 是一個<b>「趨勢的放大器、震盪的受害者」</b>。它<span class="hl-up">獎勵看對方向且趨勢延續</span>,<span class="hl-w">懲罰盤整、懲罰深跌、懲罰猶豫</span>。它沒有「對錯」,只有「適不適合當下的市場型態與你的紀律」。</div>
+    </div>
+  </section>
+
+  <!-- S5 -->
+  <section id="s5">
+    <div class="sec-title"><span class="n">5</span>權值型 vs 大盤 — 台灣50 與加權指數的母體差異</div>
+    <div class="sec-note">00631L 與 00663L／00685L 都是「正2」,但<b>追蹤的母體不同</b>——這會帶來不同的集中度與性格。</div>
+    <div class="panel">
+      <table class="tbl">
+        <tr><th>對照項</th><th>台灣50 指數（0050／00631L 的母體）</th><th>發行量加權指數（加權正2 的母體）</th></tr>
+        <tr><td class="tname">成分股數</td><td>50 檔市值最大的上市公司</td><td>全體上市普通股（約 940＋ 檔）</td></tr>
+        <tr><td class="tname">台積電權重</td><td class="em">約 60%（更集中）</td><td>約 40%</td></tr>
+        <tr><td class="tname">產業分布</td><td>科技／半導體約 7 成,大型權值為主</td><td>含金融、傳產、中小型,分布較廣</td></tr>
+        <tr><td class="tname">性格</td><td>大型股、AI／半導體純度高、波動略高</td><td>較貼近「整體市場」、略分散、納入中小型</td></tr>
+        <tr><td class="tname">對應正2</td><td class="em">00631L（規模最大、流動性最好）</td><td>00663L、00675L、00685L（00685L 內扣最低）</td></tr>
+      </table>
+      <div class="grid2" style="margin-top:13px">
+        <div class="mini"><h4>母體差異如何影響正2</h4><p>在「台積電／半導體領軍」的行情（如目前），台灣50 母體更猛 → 00631L 通常強於加權正2;但反過來,當資金輪動到金融、傳產、中小型,加權母體會相對抗跌、相對均衡。00631L 是「更純的大型權值＋AI 槓桿」,加權正2 是「更貼近全市場的槓桿」。</p></div>
+        <div class="mini"><h4>集中度 → 回撤的放大</h4><p>台灣50 因高度集中台積電,單一權值股若重挫,母體與其正2 的回撤會更深。加權母體較分散,理論上同一系統性下跌中的回撤略淺。<b>選哪一種正2,本質是先選「要哪一種母體」,再疊加 2 倍槓桿。</b></p></div>
+      </div>
+      <div class="key"><b>給配比的提醒:</b>同時持有 00631L（台灣50 2x）與 00663L／00685L（加權 2x），<b>分散效果有限</b>——兩者都重壓台積電與台股大盤,高度連動。它們的差別是「母體略不同」,不是「不同的賭注」。若考慮成本,加權 2x 群組裡 00685L 內扣最低;若要的是「最純的大型權值槓桿」,則是 00631L。</div>
+    </div>
+  </section>
+
+  <!-- S6 -->
+  <section id="s6">
+    <div class="sec-title"><span class="n">6</span>如何評價分析 — 六個指標與「復原數學」</div>
+    <div class="sec-note">看正2「健不健康」、適不適合納入,用這組框架。</div>
+    <div class="panel">
+      <div class="grid3">
+        <div class="mini"><h4>① 年化報酬</h4><p>長期累積換算的年化;對正2 要同時看「相對原型」與「相對單純 2 倍」。</p></div>
+        <div class="mini"><h4>② 最大回撤 MDD</h4><p>歷史最慘的高點到低點跌幅。正2 的 MDD 通常是原型的 1.4–2 倍,是風險的核心數字。</p></div>
+        <div class="mini"><h4>③ 波動度</h4><p>年化標準差。正2 約為原型的 2 倍,直接決定持有體驗的顛簸程度。</p></div>
+        <div class="mini"><h4>④ 累積 vs 單純2倍 的偏離</h4><p>正＝趨勢紅利、負＝波動耗損。看正2 過去「賺到趨勢」還是「被震盪扣血」。</p></div>
+        <div class="mini"><h4>⑤ 內扣費用與追蹤誤差</h4><p>正2 內扣高於原型;同類比較費用率（00685L 最低），並看實際貼合「2 倍」的程度。</p></div>
+        <div class="mini"><h4>⑥ 流動性與買賣價差</h4><p>規模大、價差小者交易成本低（00631L 流動性最佳）；大額進出尤其要看。</p></div>
+      </div>
+      <p class="tx" style="margin-top:14px"><b>最該內化的是「復原數學」——</b>下跌與回本不對稱,槓桿讓它更兇:</p>
+      <table class="tbl">
+        <tr><th>部位下跌</th><th>需要漲多少才回本</th><th>對照</th></tr>
+        <tr><td class="num">−10%</td><td class="num">+11.1%</td><td>原型小回檔</td></tr>
+        <tr><td class="num">−30%</td><td class="num">+42.9%</td><td>≈ 原型 2020／2022 級別回撤</td></tr>
+        <tr><td class="num d">−36%</td><td class="num">+56.3%</td><td>≈ 0050 近 5 年 MDD</td></tr>
+        <tr><td class="num d">−52%</td><td class="num w">+108.3%</td><td class="em">≈ 00631L 近 5 年 MDD</td></tr>
+        <tr><td class="num d">−65%</td><td class="num w">+185.7%</td><td>正2 深空頭情境</td></tr>
+        <tr><td class="num d">−75%</td><td class="num w">+300%</td><td>正2 極端崩跌情境</td></tr>
+      </table>
+      <div class="key warn"><b>這就是正2 風險的本質:</b>正2 跌掉一半（−52%），需要<b>翻一倍以上（+108%）</b>才回到原點。原型 −36% 只要 +56%。<b>槓桿在多頭幫你加速、在空頭讓你「回本的門檻」陡升</b>——這也是為什麼「下行期把槓桿降回來」是紀律、不是膽小。</div>
+    </div>
+  </section>
+
+  <!-- S7 -->
+  <section id="s7">
+    <div class="sec-title"><span class="n">7</span>對你的投資配比的啟示</div>
+    <div class="sec-note">把前六節收斂成「正2 該放多少」的判斷,並用工具試算。</div>
+    <div class="panel">
+      <p class="tx"><b>正2 適合放進組合的前提（三者最好同時成立）:</b></p>
+      <div class="grid3" style="margin-top:6px">
+        <div class="mini"><h4>① 對趨勢有信心</h4><p>你判斷市場處於、且將延續單邊趨勢——趨勢盤是正2 唯一真正的主場。</p></div>
+        <div class="mini"><h4>② 扛得住深回撤</h4><p>你能在帳面 −50% 上下時不被迫賣出——無論是心理或資金性質（非短期要用的錢）。</p></div>
+        <div class="mini"><h4>③ 有可執行的紀律</h4><p>你有明確的「何時降槓桿」規則,並做得到——而不是跌下去才猶豫。</p></div>
+      </div>
+      <div class="key" style="margin-top:14px"><b>對照你的策略:</b>你採「<b>趨勢向上維持 1.5–2x 槓桿、下行期槓桿回歸</b>」——這正是把正2 當「趨勢工具」而非「長抱標的」,方向正確。關鍵在<span class="hl">第 ③ 點的執行力</span>:正2 的歷史告訴我們,崩跌又快又狠（2020 一個月 −30%）、陰跌又長又磨（2022），「下行訊號出現時確實降下來」才是這套策略能不能成立的勝負手。配比高低,本質是回答三個問題——對趨勢多有信心、回撤扛得住多深、紀律執行得多徹底。</div>
+    </div>
+
+    <!-- SIMULATOR B -->
+    <div class="sim" style="margin-top:12px">
+      <div class="simhd">⚙ 互動工具 B · 配比情境試算器</div>
+      <div class="simsub">拉動「正2 佔比」,看在五種市場情境下,你的組合報酬會落在哪——其餘部位假設配置於原型（1x）。</div>
+      <div class="ctrl"><label>正2 佔組合比重</label><input type="range" id="sbW" min="0" max="100" step="5" value="40"><span class="val" id="sbWV">40%</span></div>
+      <div class="ctrl" style="font-size:11.5px;color:var(--dim)"><label style="width:120px">＝隱含槓桿率</label><span id="sbLev" style="font-weight:800;color:var(--acc)">1.40x</span><span style="margin-left:8px">（正2佔比×2 ＋ 其餘×1）</span></div>
+      <table class="tbl" id="sbTbl">
+        <tr><th>市場情境</th><th>原型報酬</th><th>正2 報酬</th><th class="em">你的組合報酬</th><th>vs 全原型</th></tr>
+      </table>
+      <div class="simnote">＊各情境的原型／正2 報酬為「示意值」,參考歷史典型量級（趨勢多頭、急跌、陰跌、震盪、緩漲）,非特定期間實績。組合報酬＝正2佔比×正2報酬 ＋ 其餘×原型報酬。此工具示範「同一個配比,在不同市場型態下的結果分布」——正2 佔比愈高,多頭時愈甜、空頭與震盪時愈苦。</div>
+    </div>
+  </section>
+
+  <div class="disc">
+    <b>免責聲明:</b>本指南為投資知識教學與分析框架整理,依公開資訊（ETF 公開說明書、投信與財經媒體資料、證交所與指數公司資訊等）彙整,<b>不構成任何投資建議、買賣指令或獲利保證</b>。文中歷史數據（累積報酬、年化報酬、最大回撤、台積電權重、內扣費用等）為公開資料之近似值,會隨時間與來源不同而變動,且 2024–2026 年數字受台股 AI 多頭行情墊高,空頭期間輪廓將顯著不同;2020 COVID 等正2 回撤數字部分為依槓桿原理之估算,已於文中標註。兩個互動工具為簡化教學模型,所用路徑與情境報酬為示意值、非真實行情或特定期間實績,僅供理解「正2 特性」之用,不可作為報酬預測。槓桿型 ETF 具高波動與本金大幅損失風險,並非適合所有投資人。所有投資決策應自行評估風險、考量自身財務狀況與目標,並諮詢合格專業人士。本人非財務顧問或證券分析師。</div>
+  <div class="foot">槓桿型 ETF 正2 判讀指南 · 製作日 2026-05-25 · Finance Assistant<br>資料來源:ETF 公開說明書、元大投信、群益投信、國泰投信、TWSE 臺灣證券交易所、臺灣指數公司、MoneyDJ、鉅亨網、財經媒體公開資料彙整</div>
+
+</div>
+<script>
+(function(){
+  "use strict";
+  function fmtPct(x){ return (x>=0?"+":"")+(x*100).toFixed(1)+"%"; }
+  function cls(x){ return x>0?"u":(x<0?"d":""); }
+
+  /* ===== Simulator A: path simulator ===== */
+  var presetsA={
+    trend:{days:120,drift:24,vol:90},
+    crash:{days:30,drift:-130,vol:130},
+    bear:{days:200,drift:-22,vol:170},
+    chop:{days:160,drift:0,vol:240},
+    vshape:{days:120,drift:0,vol:320}
+  };
+  function genPath(days,drift,vol){
+    // daily return = drift + vol*oscillation ; returns proto & lev NAV arrays
+    var proto=[1], lev=[1], p=1, l=1;
+    for(var i=1;i<=days;i++){
+      var osc=Math.sin(i*0.7)*0.6 + Math.sin(i*0.21)*0.4;
+      var r=drift + vol*osc;
+      p*=(1+r); l*=(1+2*r);
+      if(l<0.001){ l=0.001; }
+      proto.push(p); lev.push(l);
+    }
+    return {proto:proto, lev:lev};
+  }
+  function drawChart(canvas,series){
+    var ctx=canvas.getContext("2d");
+    var W=canvas.width, H=canvas.height, pad=34;
+    ctx.clearRect(0,0,W,H);
+    var all=[]; series.forEach(function(s){ all=all.concat(s.data); });
+    var mn=Math.min.apply(null,all), mx=Math.max.apply(null,all);
+    if(mn===mx){ mn-=0.1; mx+=0.1; }
+    var rng=mx-mn; mn-=rng*0.08; mx+=rng*0.08;
+    var n=series[0].data.length;
+    function X(i){ return pad + i*(W-pad*1.4)/(n-1); }
+    function Y(v){ return H-pad - (v-mn)*(H-pad*1.7)/(mx-mn); }
+    // baseline at 1.0
+    ctx.strokeStyle="#2a3350"; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+    if(mn<1 && mx>1){ ctx.beginPath(); ctx.moveTo(pad,Y(1)); ctx.lineTo(W-pad*0.4,Y(1)); ctx.stroke(); }
+    ctx.setLineDash([]);
+    ctx.fillStyle="#6b779b"; ctx.font="11px sans-serif";
+    ctx.fillText("起始 1.0", pad+2, Y(1)-4);
+    series.forEach(function(s){
+      ctx.strokeStyle=s.color; ctx.lineWidth=s.w||2; ctx.beginPath();
+      s.data.forEach(function(v,i){ var x=X(i),y=Y(v); if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+      ctx.stroke();
+    });
+  }
+  var elDays=document.getElementById("saDays"), elDrift=document.getElementById("saDrift"), elVol=document.getElementById("saVol");
+  function runA(){
+    var days=+elDays.value, drift=(+elDrift.value)/100/100, vol=(+elVol.value)/100/100;
+    document.getElementById("saDaysV").textContent=days;
+    document.getElementById("saDriftV").textContent=(drift>=0?"+":"")+(drift*100).toFixed(2)+"%";
+    document.getElementById("saVolV").textContent=(vol*100).toFixed(2)+"%";
+    var r=genPath(days,drift,vol);
+    var naive=r.proto.map(function(v){ return 1+2*(v-1); });
+    drawChart(document.getElementById("canvasA"),[
+      {data:r.proto,color:"#9aa6c4",w:2},
+      {data:naive,color:"#f5b13d",w:1.5},
+      {data:r.lev,color:"#5b8cff",w:2.4}
+    ]);
+    var pR=r.proto[r.proto.length-1]-1, lR=r.lev[r.lev.length-1]-1, nR=2*pR;
+    var o1=document.getElementById("oA1"), o2=document.getElementById("oA2"), o3=document.getElementById("oA3");
+    o1.textContent=fmtPct(pR); o1.className="ov "+cls(pR);
+    o2.textContent=fmtPct(lR); o2.className="ov "+cls(lR);
+    var gap=lR-nR;
+    o3.textContent=(gap>=0?"+":"")+(gap*100).toFixed(1)+"pp"; o3.className="ov "+cls(gap);
+    document.getElementById("oA2d").textContent="單純2倍直覺值＝"+fmtPct(nR);
+  }
+  document.getElementById("presetsA").addEventListener("click",function(e){
+    var b=e.target.closest(".pbtn"); if(!b)return;
+    document.querySelectorAll("#presetsA .pbtn").forEach(function(x){ x.classList.remove("on"); });
+    b.classList.add("on");
+    var p=presetsA[b.getAttribute("data-k")];
+    elDays.value=p.days; elDrift.value=p.drift; elVol.value=p.vol;
+    runA();
+  });
+  [elDays,elDrift,elVol].forEach(function(el){
+    el.addEventListener("input",function(){
+      document.querySelectorAll("#presetsA .pbtn").forEach(function(x){ x.classList.remove("on"); });
+      runA();
+    });
+  });
+  runA();
+
+  /* ===== Simulator B: allocation scenarios ===== */
+  var scenB=[
+    {n:"趨勢大多頭",proto:0.60,lev:1.45,note:"單邊上行、趨勢紅利"},
+    {n:"緩漲整理",proto:0.10,lev:0.12,note:"小漲夾震盪、輕微耗損"},
+    {n:"區間震盪",proto:0.00,lev:-0.09,note:"原地來回、波動耗損"},
+    {n:"急速崩跌",proto:-0.30,lev:-0.50,note:"快跌、接近單純2倍"},
+    {n:"陰跌空頭",proto:-0.32,lev:-0.52,note:"長空＋反彈耗損"}
+  ];
+  var elW=document.getElementById("sbW");
+  function runB(){
+    var w=(+elW.value)/100;
+    document.getElementById("sbWV").textContent=(w*100).toFixed(0)+"%";
+    document.getElementById("sbLev").textContent=(w*2+(1-w)).toFixed(2)+"x";
+    var rows="<tr><th>市場情境</th><th>原型報酬</th><th>正2 報酬</th><th class='em'>你的組合報酬</th><th>vs 全原型</th></tr>";
+    scenB.forEach(function(s){
+      var port=w*s.lev+(1-w)*s.proto;
+      var diff=port-s.proto;
+      rows+="<tr><td class='tname'>"+s.n+"<br><span style='color:var(--dim);font-weight:400;font-size:10.5px'>"+s.note+"</span></td>"+
+        "<td class='num "+cls(s.proto)+"'>"+fmtPct(s.proto)+"</td>"+
+        "<td class='num "+cls(s.lev)+"'>"+fmtPct(s.lev)+"</td>"+
+        "<td class='num em "+cls(port)+"'>"+fmtPct(port)+"</td>"+
+        "<td class='num "+cls(diff)+"'>"+(diff>=0?"+":"")+(diff*100).toFixed(1)+"pp</td></tr>";
+    });
+    document.getElementById("sbTbl").innerHTML=rows;
+  }
+  elW.addEventListener("input",runB);
+  runB();
+})();
+</script>
+</body>
+</html>
