@@ -103,6 +103,34 @@
   @media(max-width:680px){.twocol{grid-template-columns:1fr}}
   .flag{background:var(--panel2);border:1px solid #5a4520;border-left:3px solid var(--warn);border-radius:0 9px 9px 0;padding:11px 14px;margin-top:13px;font-size:13px;color:#e8ddc4}
   .flag b{color:var(--warn)}
+  /* table */
+  .tbl{width:100%;border-collapse:collapse;margin-top:4px;font-size:12.5px}
+  .tbl th{background:var(--panel2);color:var(--mut);font-weight:700;text-align:left;padding:8px 9px;border:1px solid var(--line);font-size:11px}
+  .tbl td{padding:8px 9px;border:1px solid var(--line);color:#cdd5ea;vertical-align:top}
+  .tbl td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .tbl tr:nth-child(even) td{background:rgba(255,255,255,.018)}
+  .tbl .tname{font-weight:800;color:var(--txt)}
+  .tbl tr.sum td{background:#222a42;font-weight:800;color:var(--txt)}
+  .tbl-note{font-size:11px;color:var(--dim);margin-top:7px}
+  .s-hi{color:#ff97a3;font-weight:700}
+  .s-mid{color:#f5cd86;font-weight:700}
+  .s-lo{color:#6fe0b6;font-weight:700}
+  /* recommendation */
+  .rec{font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;display:inline-block;white-space:nowrap}
+  .rec.add{background:#3a1820;color:#ff97a3;border:1px solid #5a2b34}
+  .rec.cut{background:#103024;color:#6fe0b6;border:1px solid #1f4f3f}
+  .rec.hold{background:var(--panel2);color:#cdd5ea;border:1px solid var(--line)}
+  .reccard{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px 16px}
+  .reccard .rh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .reccard .rh .nm{font-size:15px;font-weight:800}
+  .reccard .rh .nm small{font-size:10.5px;color:var(--dim);font-weight:600;display:block;margin-top:1px}
+  .reccard .conf{font-size:11px;color:var(--mut);margin-top:8px}
+  .reccard .conf b{color:var(--txt)}
+  .rline{font-size:12.5px;margin-top:7px;color:#cdd5ea}
+  .rline .lb{font-weight:800;font-size:11px;padding:1px 0;margin-right:4px}
+  .rline.pro .lb{color:var(--down)}
+  .rline.con .lb{color:var(--up)}
+  .rline.trg .lb{color:var(--acc)}
 </style>
 </head>
 <body>
@@ -110,24 +138,24 @@
 
   <div class="eyebrow">台股盤前分析 · Personalized Pre-Market</div>
   <h1>台股盤前分析與個人化解讀</h1>
-  <div class="sub">2026-05-25（週一）· 開盤前最後檢視 ╳ 今日台股盤前展望 · AI／半導體焦點 · 整合美股週收、台指期夜盤訊號、週末國際消息與個人持股組合</div>
-  <div class="stamp">資料截至台北時間 5/25 開盤前 · 美股為 5/22（週五）收盤值,5/25 美股因 Memorial Day 休市 · 台指期為 5/22 夜盤收盤值 · 下一個美股交易日為 5/26（週二）</div>
+  <div class="sub">2026-05-25（週一）· 開盤前最後檢視 ╳ 今日台股盤前展望 · 整合美股週收、台指期夜盤訊號、週末國際消息，並依實際持股做比重曝險、多因子題材評分與買賣分析</div>
+  <div class="stamp">資料截至台北時間 5/25 開盤前 · 美股為 5/22（週五）收盤值，5/25 美股因 Memorial Day 休市 · 台股個股／ETF 為 5/22 收盤值 · 台指期為 5/22 夜盤收盤值 · 下一個美股交易日為 5/26（週二）</div>
 
   <!-- TOP CALL -->
   <section>
     <div class="panel topcall">
       <div class="label">本期主軸 — TOP CALL</div>
-      <p>這是今日（5/25 週一）開盤前的<span class="hl">最後一次盤前檢視</span>，距台股 9:00 開盤僅約一小時。台股上週五（5/22）收 <span class="hl-up">42,268 點（+2.18%、+899.76 點）</span>改寫歷史新高;連同 5/21 的 +3.37%,<b>兩日累計大漲 +2,247 點(約 +5.6%)</b>。</p>
-      <p>盤前最關鍵的新訊號是<span class="hl">台指期夜盤的正價差</span>:台指期近月在 5/22 夜盤收約 <span class="hl-up">42,634 點</span>,較加權現貨收盤<b>正價差約 366 點</b>。歷史上明顯正價差傾向引導<b>開盤偏高</b>——這替「美股休市、無隔夜指引」的今日,補上了一個本土的方向性線索;但要提醒,正價差只反映開盤前的期貨情緒,<b>開盤後的日盤方向仍取決於買盤能否延續</b>。</p>
-      <p>週末另一條線索是<span class="hl">美伊談判進展</span>:川普週六表示美伊「停火延長＋荷莫茲海峽重啟」談判進入「最後階段」、雙方談及一份「諒解備忘錄」,但週日他又稱「不會倉促達成協議」、仍有一兩項條款未談妥。<b>淨效果是「氛圍偏正面、但協議未定案」</b>——地緣尾部風險邊際下降,卻未解除。<b>核心矛盾</b>:正價差＋週末偏多氛圍 vs. 連兩日急漲 +5.6% 後自然的<span class="hl-warn">獲利了結與高檔換手壓力</span>,加上今日<span class="hl-warn">美股休市的指引空窗</span>。</p>
+      <p>這是今日（5/25 週一）開盤前的<span class="hl">最後一次盤前檢視</span>。台股上週五（5/22）收 <span class="hl-up">42,268 點（+2.18%、+899.76 點）</span>改寫歷史新高;連同 5/21 的 +3.37%,<b>兩日累計大漲 +2,247 點(約 +5.6%)</b>。</p>
+      <p>盤前最關鍵的新訊號是<span class="hl">台指期夜盤的正價差</span>:台指期近月在 5/22 夜盤收約 <span class="hl-up">42,634 點</span>,較加權現貨收盤<b>正價差約 366 點</b>,歷史上明顯正價差傾向引導<b>開盤偏高</b>。週末另一條線索是<span class="hl">美伊談判進展</span>——川普稱「停火延長＋荷莫茲海峽重啟」談判進入「最後階段」,惟協議未定案。<b>核心矛盾</b>:正價差＋週末偏多氛圍 vs. 連兩日急漲 +5.6% 後的<span class="hl-warn">獲利了結壓力</span>與今日<span class="hl-warn">美股休市的指引空窗</span>。</p>
+      <p>本期報告依你<span class="hl">2026-05-25 同步的實際持股（六檔台股 ETF／個股）</span>,新增三段個人化分析:<b>持股比重與曝險分析</b>(含 ETF 穿透曝險)、<b>多因子題材評分</b>、<b>持股配置與買賣分析</b>(含明確方向建議與信心評等)。最關鍵的發現:組合<span class="hl-warn">帳面六檔看似分散,穿透後其實是高度集中台積電、且帶約 1.44 倍槓桿</span>的單一押注——詳見下方各段。</p>
       <div class="chips">
         <span class="chip up">台股兩日 +5.6% 創新高</span>
         <span class="chip up">台指期夜盤正價差 ~366 點 · 暗示開高</span>
         <span class="chip up">5/22 三大法人合計買超 ~1,068 億</span>
-        <span class="chip up">美股週五創高 · 標普連 8 週紅</span>
-        <span class="chip up">週末美伊談判進入「最後階段」</span>
         <span class="chip warn">今日美股休市 · 台股無隔夜指引</span>
-        <span class="chip warn">漲多 → 開高震盪／獲利了結風險</span>
+        <span class="chip warn">組合實質槓桿 ~1.44x</span>
+        <span class="chip warn">穿透後 TSMC 曝險 ~總曝險 53%</span>
+        <span class="chip down">漲多 → 開高震盪／獲利了結風險</span>
       </div>
     </div>
   </section>
@@ -167,11 +195,10 @@
     </div>
 
     <div class="read">
-      <b>宏觀脈絡解讀:</b>「油價＋殖利率」這組壓抑高本益比 AI 股的宏觀煞車<span class="why">維持鬆動</span>——WTI 原油上週累計下跌逾 4%、守在 $100 之下,10 年期公債殖利率隨之降溫。週末美伊談判進入「最後階段」,雖協議未定案,但方向上延續了「地緣降溫→油價偏弱→殖利率降溫」的有利鏈條。對你持有的高估值半導體組合而言,<b>估值面的宏觀壓力目前是緩解、而非加劇的</b>。<br><br>
-      另一條值得納入的背景線是<b>記憶體超級循環</b>:據產業資料,2026 第一季記憶體報價季增約 80–90%,DRAM／NAND／HBM 全品類創高,原廠把多數資本支出傾向 HBM 與 DDR5,供需失衡 2026 年仍將延續。<span class="why">這對 AI 算力的真實需求是一個強力的旁證</span>——記憶體缺貨不是炒作,而是 AI 伺服器實際拉貨的結果,間接佐證你組合所押注的 AI 資本支出循環尚在進行;但同一枚硬幣的另一面,是 ARM 已警示記憶體缺貨將衝擊手機出貨,顯示成本壓力也開始外溢。
+      <b>宏觀脈絡解讀:</b>「油價＋殖利率」這組壓抑高估值股的宏觀煞車<span class="why">維持鬆動</span>——WTI 原油上週累計下跌逾 4%、守在 $100 之下,10 年期公債殖利率隨之降溫。週末美伊談判進入「最後階段」,雖協議未定案,但延續了「地緣降溫→油價偏弱→殖利率降溫」的有利鏈條。再加上記憶體超級循環(2026 第一季記憶體報價季增約 80–90%,DRAM／NAND／HBM 全品類創高)旁證 AI 算力的真實需求——對你以台股大盤、科技與半導體為主的 ETF 組合而言,<b>宏觀與產業背景目前偏正面</b>。
     </div>
 
-    <div class="flag"><b>＊重要提醒:</b>5/25（週一）美股因 Memorial Day 休市。台股今日<b>沒有美股隔夜盤可參考</b>,盤面更容易由台股自身籌碼（外資、投信、量能）、台指期價差與週末國際／地緣消息主導,單日波動方向較難由外部訊號預判。下一個美股交易日為 5/26（週二）。</div>
+    <div class="flag"><b>＊重要提醒:</b>5/25（週一）美股因 Memorial Day 休市。台股今日<b>沒有美股隔夜盤可參考</b>,盤面更容易由台股自身籌碼（外資、投信、量能）、台指期價差與週末國際／地緣消息主導,單日波動方向較難由外部訊號預判。</div>
   </section>
 
   <!-- TAIWAN CHIPS -->
@@ -188,95 +215,231 @@
       </div>
     </div>
 
-    <div class="twocol">
-      <div class="panel tight">
-        <div style="font-size:12px;color:var(--mut);margin-bottom:9px">籌碼與期貨回顧</div>
-        <div class="bars">
-          <div class="bar g"><span><b style="color:var(--txt)">外資領軍</b>　5/22 外資單日買超約 761 億,是這波創高的籌碼主力</span></div>
-          <div class="bar g"><span><b style="color:var(--txt)">三大法人同步</b>　投信、自營商同向買超,籌碼結構健康、非單一力量拉抬</span></div>
-          <div class="bar g"><span><b style="color:var(--txt)">夜盤正價差</b>　台指期夜盤收高於現貨約 366 點,期貨多方氣盛、暗示今日開盤偏高</span></div>
-          <div class="bar r"><span><b style="color:var(--txt)">隱憂</b>　兩日急漲 +5.6%、指數乖離偏大,短線動能已大幅透支</span></div>
-        </div>
-      </div>
-      <div class="panel tight">
-        <div style="font-size:12px;color:var(--mut);margin-bottom:9px">今日(5/25)盤前要點</div>
-        <div class="bars">
-          <div class="bar r"><span><b style="color:var(--txt)">美股休市</b>　今日無美股隔夜指引,盤面由台股自身籌碼與期貨主導</span></div>
-          <div class="bar g"><span><b style="color:var(--txt)">背景偏多</b>　週五美股創高、週末美伊談判進展,外部氛圍正面</span></div>
-          <div class="bar g"><span><b style="color:var(--txt)">政策活水</b>　金管會「台積電條款」基金單一持股上限 10%→25%,結構性資金支撐</span></div>
-          <div class="bar"><span><b style="color:var(--txt)">技術面</b>　指數處歷史新高區、上方無套牢壓力,但短線乖離偏大</span></div>
-        </div>
-      </div>
-    </div>
-
     <div class="read">
-      <b>給你的解讀:</b>盤前的籌碼面有兩個明確的多方訊號疊加。第一,<b>5/22 三大法人合計大買約 1,068 億</b>(外資 +761、投信 +112、自營 +195),這不是零星回補,而是外資領軍、投信與自營商同步加碼的全面性轉買,籌碼結構健康。第二,<b>台指期夜盤收在現貨之上約 366 點的正價差</b>,期貨市場已先行用真金白銀表態看多今日開盤。<span class="why">指數又站上歷史新高區、上方沒有套牢賣壓</span>,加上金管會「台積電條款」把基金單一持股上限自 10% 放寬至 25%、為台積電等核心權值股注入結構性資金活水——這些都是中多格局的有利條件。<br><br>
-      <span class="why">但今日仍要清醒意識三件事:</span>① 正價差「暗示開高」不等於「保證收高」——<b>開高之後能否走穩、買盤是否延續,才是真正決定日線收紅或收黑的關鍵</b>;② 兩日急漲 +5.6%、乖離偏大,<b>獲利了結與高檔換手</b>是最自然的下一步,連續第三天再現大漲的機率偏低;③ 美股今日休市,台股缺乏外部錨點,單日方向更易被台股自身情緒與週末消息牽動。<b>綜合研判:今日基準情境偏「開高後高檔震盪、量價沉澱」——開高屬期貨價差的自然兌現,但急漲後進入換手整理同屬健康,不宜把開高後的回吐誤判為趨勢轉壞,也不宜把開高誤判為可無腦追價。</b>
+      <b>給你的解讀:</b>盤前的籌碼面有兩個明確的多方訊號疊加:① <b>5/22 三大法人合計大買約 1,068 億</b>(外資領軍 +761 億、投信與自營同步買超),籌碼結構健康、非單一力量拉抬;② <b>台指期夜盤收在現貨之上約 366 點的正價差</b>,期貨市場已先行表態看多今日開盤。指數站上歷史新高區、上方無套牢賣壓,加上金管會「台積電條款」把基金單一持股上限自 10% 放寬至 25%、為核心權值股注入結構性資金活水——中多格局的有利條件齊備。<br><br>
+      <span class="why">但今日仍要清醒意識三件事:</span>① 正價差「暗示開高」不等於「保證收高」,開高後買盤能否延續才是關鍵;② 兩日急漲 +5.6%、乖離偏大,獲利了結與高檔換手是最自然的下一步;③ 美股今日休市,缺乏外部錨點,單日方向更易被台股自身情緒牽動。<b>綜合研判:今日基準情境偏「開高後高檔震盪、量價沉澱」。</b>對你這個帶槓桿、與大盤高度連動的 ETF 組合來說,大盤的方向幾乎就是組合的方向——這一點在下方曝險分析會具體量化。
     </div>
   </section>
 
   <!-- PERSONAL HOLDINGS -->
   <section>
     <div class="sec-title">個人持股組合 · 盤前個股快評</div>
-    <div class="sec-note">持股組合依專案歸檔推定為 AI 半導體四檔（NVDA／AMD／ARM／TSMC）。美股價格為 5/22 收盤之近似值（今日美股休市,價位不變）——個股單日價位各來源差異較大,故以「方向與型態」為主、單一日期價位僅供脈絡參考,請以券商即時報價為準。無實際張數／成本檔案,如提供可加做部位層級損益與權重分析。</div>
+    <div class="sec-note">依使用者 2026-05-25 同步之實際台股持股(六檔)。價格為 5/22 收盤值——0050、00663L、2330 為查得之收盤值;0052、00981A 為以 5/25 盤中價回推之近似值,僅供脈絡參考,請以券商即時報價為準。權重為 5/22 收盤市值佔比。</div>
 
     <div class="cardrow">
-      <!-- NVDA -->
+      <!-- 0050 -->
       <div class="stock">
         <div class="top">
-          <div><span class="tk">NVDA</span><span class="tag">NVIDIA · 核心持股（估值錨）</span></div>
-          <div class="px"><div class="p">~$218</div><div class="c u">5/22 約 -1.9%</div></div>
+          <div><span class="tk">0050</span><span class="tag">元大台灣50 · 市值型 ETF · 6,000 股</span></div>
+          <div class="px"><div class="p">97.30 元</div><div class="c u">5/22 +1.51%</div></div>
         </div>
         <div class="bars">
-          <div class="bar g"><span>FY27Q1 破紀錄:營收 $816 億、資料中心年增 92%、Q2 財測 $910 億</span></div>
-          <div class="bar r"><span>「財報強、股價弱」——財報後連日走弱,自月線高點回落</span></div>
-          <div class="bar"><span>市值仍逾 $5 兆;本益比相對 AMD／ARM 是組合中最合理者</span></div>
+          <div class="bar"><span>組合權重約 20.2%;追蹤台灣50指數,前 10 大成分股佔逾 8 成</span></div>
+          <div class="bar r"><span>台積電權重已逾 6 成——0050 本質已是「台積電 plus」</span></div>
+          <div class="bar"><span>連兩日大盤急漲,0050 同步創高,位階偏高</span></div>
         </div>
-        <div class="qa"><b>盤前快評:</b>今日美股休市,NVDA 價位不動,無新變數。「財報強、股價弱」的格局延續——破紀錄的 FY27Q1 與 $910 億 Q2 財測仍未止住股價回落,市場「利多已反映、Q2 財測不含中國」的疑慮短線蓋過亮眼數字。它仍是組合的<b>基本盤與估值錨</b>,基本面在四檔中最扎實、估值最合理;但短線淪為 AI 輪動的「資金來源」。下一個觀察點是 5/26（週二）美股開盤後 $210–220 一帶支撐能否守住。</div>
+        <div class="qa"><b>盤前快評:</b>組合的市值型核心,長期參與台股大盤最不費神的工具。但須認知它的「分散」名實不符——台積電權重約 60%,等於 0050 有六成在押台積電。今日開盤偏高機率大,不宜在開高第一時間追價。</div>
       </div>
-      <!-- AMD -->
+      <!-- 0052 -->
       <div class="stock">
         <div class="top">
-          <div><span class="tk">AMD</span><span class="tag">Advanced Micro Devices · 動能持股</span></div>
-          <div class="px"><div class="p">~$430</div><div class="c r">5/22 收高創新高</div></div>
+          <div><span class="tk">0052</span><span class="tag">富邦科技 · 科技類股 ETF · 5,500 股</span></div>
+          <div class="px"><div class="p">~57.65 元</div><div class="c fl">5/22 收盤近似</div></div>
         </div>
         <div class="bars">
-          <div class="bar r"><span>5/22 盤中觸 $430+ 歷史新高,市值突破 $7,000 億</span></div>
-          <div class="bar r"><span>上週由「AI 輪動買盤」續推,年初至今漲幅可觀</span></div>
-          <div class="bar"><span>估值極緊——trailing 本益比偏高,漲多後波動度放大</span></div>
+          <div class="bar"><span>組合權重約 11.0%;追蹤台灣資訊科技指數</span></div>
+          <div class="bar r"><span>台積電權重約 7 成,有「小台積」之稱;科技集中度高於 0050</span></div>
+          <div class="bar r"><span>與 0050、直接持有的 2330 底層高度重疊</span></div>
         </div>
-        <div class="qa"><b>盤前快評:</b>AI 輪動的最大受惠者之一,上週延續強勢、創歷史新高。但須警覺——<b>上週急漲多由資金輪動推動,缺乏 AMD 自身重大新利多支撐</b>。先前報告已示警「利多出盡」與估值極端風險,漲幅讓部位權重與波動度進一步放大,<b>現價追高的勝率偏低</b>。今日美股休市,本檔無法調整,先觀察 5/26（週二）開盤後的量價沉澱。記憶體成本上行對 PC／伺服器整機是逆風,須留意是否間接壓縮 AMD 的客戶端利潤。</div>
+        <div class="qa"><b>盤前快評:</b>科技含金量比 0050 更高、台積電權重約 70%。問題是它與 0050、與 2330 高度重疊——在組合整體已極度集中半導體的情況下,0052 帶來的額外「分散」其實有限,反而墊高了科技／台積電的集中度。</div>
       </div>
-      <!-- ARM -->
+      <!-- 00631L -->
       <div class="stock">
         <div class="top">
-          <div><span class="tk">ARM</span><span class="tag">ARM Holdings · 高波動持股</span></div>
-          <div class="px"><div class="p">~$275</div><div class="c r">5/22 收高創新高</div></div>
+          <div><span class="tk">00631L</span><span class="tag">元大台灣50正2 · 槓桿 ETF 2x · 10,000 股</span></div>
+          <div class="px"><div class="p">32.56 元</div><div class="c fl">5/22 收盤</div></div>
         </div>
         <div class="bars">
-          <div class="bar r"><span>上週爆發:5/21 單日 +15%、5/22 盤中觸 $285 新高,市值破 $2,700 億</span></div>
-          <div class="bar r"><span>催化:FY2026 財報創高 ＋ 自研 AGI CPU（台積電 3nm、Meta 採用）熱賣</span></div>
-          <div class="bar r"><span>本益比近 300x、股價淨銷比逾 160x — 組合中估值最極端</span></div>
+          <div class="bar"><span>組合權重約 11.3%;單日追蹤台灣50指數 2 倍報酬</span></div>
+          <div class="bar r"><span>連兩日大盤急漲,本檔以約 2 倍速度跟漲</span></div>
+          <div class="bar warn"><span>單日重設機制 → 盤整／來回震盪會產生波動耗損</span></div>
         </div>
-        <div class="qa"><b>盤前快評:</b>上週組合中表現最猛的一檔——FY2026 全年營收創高、自研 AGI CPU 跨足晶片產品設計、加上 NVDA 揭露今年 CPU 營收上看 $200 億美元(多來自授權 ARM 架構),多重利多疊加推升股價拋物線式急漲。但這也是先前報告點名「<b>風險報酬最不對稱</b>」的一檔。<span class="why">本益比近 300x ＋ 急漲過熱,這是組合中最該評估「鎖利／設定部位上限」的標的;ARM 自身已警示記憶體缺貨衝擊手機出貨,基本面並非全無雜訊。</span>今日美股休市,無法操作,屬「思考、不行動」的一天。</div>
+        <div class="qa"><b>盤前快評:</b>槓桿工具。多頭趨勢盤是它的主場——連兩日 +5.6% 的大盤,2 倍槓桿讓漲勢凌厲。但槓桿 ETF 是「單日」重設,盤整或來回震盪會產生波動耗損(volatility decay),<b>不適合長抱</b>;它也是組合槓桿與波動的來源之一。</div>
       </div>
-      <!-- TSMC -->
+      <!-- 00663L -->
       <div class="stock">
         <div class="top">
-          <div><span class="tk">TSMC</span><span class="tag">台積電 2330.TW / TSM ADR · 供應鏈核心</span></div>
-          <div class="px"><div class="p">2,255 元</div><div class="c r">5/22 +1.12%</div></div>
+          <div><span class="tk">00663L</span><span class="tag">國泰臺灣加權正2 · 槓桿 ETF 2x · 10,000 股</span></div>
+          <div class="px"><div class="p">94.40 元</div><div class="c fl">5/22 收盤</div></div>
         </div>
         <div class="bars">
-          <div class="bar g"><span>2330 於 5/22 收 2,255 元（+25 元、+1.12%）;TSM ADR 收約 $405</span></div>
-          <div class="bar g"><span>4 月營收 NT$4,107 億（年增 17.5%）;前 4 月累計年增 29.9%、全年展望 +30%+</span></div>
-          <div class="bar"><span>5/22 大盤 +2.18% 而 2330 僅 +1.12% — 相對大盤偏弱、未隨輪動補漲</span></div>
+          <div class="bar r"><span>組合權重約 32.6%——<b style="color:var(--txt)">組合最大單一部位</b></span></div>
+          <div class="bar"><span>單日追蹤加權指數 2 倍報酬</span></div>
+          <div class="bar warn"><span>2x 槓桿 × 最大權重 → 組合波動度的最大決定因素</span></div>
         </div>
-        <div class="qa"><b>盤前快評:</b>組合中<b>唯一在台股掛牌</b>的持股,也是今日唯一可直接交易的部位。值得注意——5/22 大盤大漲 +2.18%、台積電卻只 +1.12%,<b>相對大盤偏弱、漲幅落後輪動股</b>;對長期投資人而言,這種「基本面最穩、短線最不被追捧」的狀態,反而是相對溫和的位置。它估值最溫和、終端最分散,是組合的<b>防禦性核心</b>。今日在「無美股指引」下,台積電作為加權指數最大權值股,其開盤後買盤強弱幾乎等同於判讀整體大盤接棒力道的指標——<b>若開高後台積電買盤延續,情境偏 A;若開高走平、量縮,則偏基準情境 B</b>。</div>
+        <div class="qa"><b>盤前快評:</b>組合裡最大的單一部位,且是 2 倍槓桿,幾乎等於「用加倍力道押台股大盤」。連兩日大盤急漲,它是組合報酬的最大貢獻者;但反過來,大盤一旦回檔,它也會是組合的最大拖累。<b>這檔的權重，幾乎決定了整個組合的波動度。</b></div>
+      </div>
+      <!-- 00981A -->
+      <div class="stock">
+        <div class="top">
+          <div><span class="tk">00981A</span><span class="tag">主動統一台股增長 · 主動式 ETF · 9,400 股</span></div>
+          <div class="px"><div class="p">~29.95 元</div><div class="c fl">5/22 收盤近似</div></div>
+        </div>
+        <div class="bars">
+          <div class="bar"><span>組合權重約 9.7%;主動選股、聚焦大型成長股</span></div>
+          <div class="bar g"><span>規模衝上約 1,800 億登頂,YTD 報酬逾 +60%</span></div>
+          <div class="bar r"><span>為突破 10% 持股上限,實際也持有 0050／0052「追積」</span></div>
+        </div>
+        <div class="qa"><b>盤前快評:</b>組合中唯一的主動式 ETF,績效亮眼。但要注意:它為了突破單一持股 10% 法規上限,實際上也持有 0050、0052 來增加台積電曝險——換句話說,它跟你其他持股的底層重疊比表面更高。漲多後估值不低,不宜追高。</div>
+      </div>
+      <!-- 2330 -->
+      <div class="stock">
+        <div class="top">
+          <div><span class="tk">2330</span><span class="tag">台積電 · 個股 · 196 股</span></div>
+          <div class="px"><div class="p">2,255 元</div><div class="c u">5/22 +1.12%</div></div>
+        </div>
+        <div class="bars">
+          <div class="bar g"><span>組合權重約 15.3%;Q1 +35%、全年展望 +30%+、4 月營收年增 17.5%</span></div>
+          <div class="bar"><span>5/22 大盤 +2.18% 而台積電僅 +1.12%、相對落後</span></div>
+          <div class="bar"><span>基本面組合中最扎實、估值在組合中相對溫和</span></div>
+        </div>
+        <div class="qa"><b>盤前快評:</b>唯一的直接持股,也是基本面最扎實的一檔。但關鍵洞察是:你<b>不需要「為了看好台積電而加碼」</b>——因為穿透其餘 5 檔 ETF 後,組合早已重壓台積電(見下節)。直接持有的這 196 股,只是龐大台積電曝險的「冰山一角」。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOLDINGS WEIGHT & EXPOSURE -->
+  <section>
+    <div class="sec-title">持股比重與曝險分析</div>
+    <div class="sec-note">市值＝5/22 收盤價 × 股數。ETF 穿透曝險（look-through）與槓桿曝險為估算值,ETF 成分權重會隨時間變動,僅供結構性參考。未取得成本價,故以市值權重為基礎、未含損益。</div>
+
+    <div class="panel tight" style="margin-bottom:12px">
+      <div style="font-size:12px;color:var(--mut);margin-bottom:8px">① 市值權重總覽</div>
+      <table class="tbl">
+        <tr><th>標的</th><th>類型</th><th>股數</th><th>5/22 收盤</th><th>市值 (NT$)</th><th>權重</th></tr>
+        <tr><td class="tname">0050 元大台灣50</td><td>市值型 ETF</td><td class="num">6,000</td><td class="num">97.30</td><td class="num">583,800</td><td class="num">20.2%</td></tr>
+        <tr><td class="tname">0052 富邦科技</td><td>科技 ETF</td><td class="num">5,500</td><td class="num">57.65</td><td class="num">317,075</td><td class="num">11.0%</td></tr>
+        <tr><td class="tname">00631L 台灣50正2</td><td>槓桿 ETF 2x</td><td class="num">10,000</td><td class="num">32.56</td><td class="num">325,600</td><td class="num">11.3%</td></tr>
+        <tr><td class="tname">00663L 加權正2</td><td>槓桿 ETF 2x</td><td class="num">10,000</td><td class="num">94.40</td><td class="num">944,000</td><td class="num">32.6%</td></tr>
+        <tr><td class="tname">00981A 統一台股增長</td><td>主動式 ETF</td><td class="num">9,400</td><td class="num">29.95</td><td class="num">281,530</td><td class="num">9.7%</td></tr>
+        <tr><td class="tname">2330 台積電</td><td>個股</td><td class="num">196</td><td class="num">2,255</td><td class="num">441,980</td><td class="num">15.3%</td></tr>
+        <tr class="sum"><td>合計</td><td>6 檔</td><td class="num">—</td><td class="num">—</td><td class="num">2,893,985</td><td class="num">100%</td></tr>
+      </table>
+      <div class="tbl-note">＊權重四捨五入至小數一位,合計可能非恰 100%。0052、00981A 收盤價為近似值。</div>
+    </div>
+
+    <div class="panel tight" style="margin-bottom:12px">
+      <div style="font-size:12px;color:var(--mut);margin-bottom:9px">② 槓桿曝險（00631L、00663L 為單日正向 2 倍）</div>
+      <div class="grid g4">
+        <div class="stat"><div class="k">持股市值合計（淨資產）</div><div class="v">~289 萬</div><div class="d fl">NT$2,893,985</div><div class="note">六檔市值加總</div></div>
+        <div class="stat"><div class="k">槓桿調整後總曝險</div><div class="v">~416 萬</div><div class="d u">NT$4,163,585</div><div class="note">槓桿 ETF 以 2 倍名目計</div></div>
+        <div class="stat"><div class="k">整體曝險倍數</div><div class="v">~1.44x</div><div class="d warn">高於 1</div><div class="note">組合對台股 beta 被放大</div></div>
+        <div class="stat"><div class="k">槓桿 ETF 佔總曝險</div><div class="v">~61%</div><div class="d warn">集中</div><div class="note">00631L+00663L 兩檔</div></div>
+      </div>
+    </div>
+
+    <div class="panel tight">
+      <div style="font-size:12px;color:var(--mut);margin-bottom:8px">③ 台積電（2330）穿透曝險 look-through</div>
+      <table class="tbl">
+        <tr><th>曝險來源</th><th>計入基礎 (NT$)</th><th>TSMC 估計權重</th><th>貢獻 TSMC 曝險 (NT$)</th></tr>
+        <tr><td class="tname">2330 直接持有</td><td class="num">441,980</td><td class="num">100%</td><td class="num">441,980</td></tr>
+        <tr><td class="tname">0050</td><td class="num">583,800</td><td class="num">~60%</td><td class="num">350,280</td></tr>
+        <tr><td class="tname">0052</td><td class="num">317,075</td><td class="num">~70%</td><td class="num">221,953</td></tr>
+        <tr><td class="tname">00631L（2x 名目）</td><td class="num">651,200</td><td class="num">~60%</td><td class="num">390,720</td></tr>
+        <tr><td class="tname">00663L（2x 名目）</td><td class="num">1,888,000</td><td class="num">~40%</td><td class="num">755,200</td></tr>
+        <tr><td class="tname">00981A</td><td class="num">281,530</td><td class="num">~10%</td><td class="num">28,153</td></tr>
+        <tr class="sum"><td>TSMC 穿透曝險合計</td><td class="num">—</td><td class="num">—</td><td class="num">~2,188,286</td></tr>
+      </table>
+      <div class="tbl-note">＊TSMC 估計權重:0050／0052 取近期約略值,大盤（00663L 連結）TSMC 權重逾 40%,00981A 取直接持股約略值（其另持 0050／0052,實際穿透略高）。皆為估算,僅供結構判讀。</div>
+    </div>
+
+    <div class="read" style="background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:14px 16px;margin-top:12px">
+      <b>曝險解讀 — 本節最重要的一句話:</b><span class="why">這個組合「帳面分散、實質集中」。</span>表面上你持有六檔不同標的、五檔是 ETF,看起來頗為分散;但穿透之後:① <b>台積電穿透曝險約 NT$219 萬,約佔組合總曝險的 53%、相當於淨資產的 76%</b>——你直接持有的 2330 只佔市值 15.3%,但「真正的台積電曝險」遠超過此;② 把 0050／0052／00981A／兩檔槓桿 ETF 的科技與半導體成分加總,組合幾乎<b>九成押在台股半導體與科技</b>;③ 兩檔 2 倍槓桿 ETF 讓組合的<b>實質曝險達淨資產約 1.44 倍</b>。<br><br>
+      換句話說,這不是一個「六檔分散的台股組合」,而是一個<b>「加了 1.44 倍槓桿、且高度集中台積電的台股大盤押注」</b>。它在多頭時威力強大(這也是 YTD 績效亮眼的原因),但同漲同跌、缺乏避震;組合裡<b>沒有任何非台股、非半導體、或防禦性(債券、現金以外的低相關)資產</b>。理解這個結構,是後面「買賣分析」所有判斷的基礎。
+    </div>
+  </section>
+
+  <!-- MULTI-FACTOR SCORING -->
+  <section>
+    <div class="sec-title">多因子題材評分</div>
+    <div class="sec-note">就五項因子對各持股做相對分級,為盤前觀點整理。<span class="s-hi">紅＝偏高／偏熱</span>、<span class="s-mid">黃＝中性</span>、<span class="s-lo">綠＝偏低／溫和</span>。注意:「估值位階」與「宏觀敏感度」欄位中「偏高」屬風險方,非正面訊號。評分為分析觀點,非買賣建議。</div>
+    <div class="panel tight">
+      <table class="tbl">
+        <tr><th>標的</th><th>基本面動能</th><th>估值位階</th><th>技術位階</th><th>題材熱度</th><th>宏觀敏感度</th><th>綜合定位</th></tr>
+        <tr><td class="tname">0050</td><td class="s-mid">中高</td><td class="s-hi">偏高</td><td class="s-hi">高·創高區</td><td class="s-hi">高</td><td class="s-mid">中</td><td>大盤核心,位階偏高</td></tr>
+        <tr><td class="tname">0052</td><td class="s-hi">高</td><td class="s-hi">偏高</td><td class="s-hi">高·創高區</td><td class="s-hi">很高</td><td class="s-hi">中高</td><td>科技純度高、與 0050 重疊</td></tr>
+        <tr><td class="tname">00631L</td><td class="s-mid">中高·2x 放大</td><td class="s-hi">偏高</td><td class="s-hi">高</td><td class="s-hi">高</td><td class="s-hi">很高·槓桿</td><td>順勢工具,波動極大</td></tr>
+        <tr><td class="tname">00663L</td><td class="s-mid">中高·2x 放大</td><td class="s-hi">偏高</td><td class="s-hi">高</td><td class="s-hi">高</td><td class="s-hi">很高·槓桿</td><td>組合最大波動源</td></tr>
+        <tr><td class="tname">00981A</td><td class="s-hi">高·主動選股</td><td class="s-hi">偏高</td><td class="s-hi">高</td><td class="s-hi">高</td><td class="s-mid">中高</td><td>績效強、漲多估值不低</td></tr>
+        <tr><td class="tname">2330</td><td class="s-lo">很高</td><td class="s-mid">中·相對溫和</td><td class="s-mid">中·近期落後</td><td class="s-hi">高</td><td class="s-mid">中</td><td>基本面最強、位階最不極端</td></tr>
+      </table>
+      <div class="tbl-note">＊評分綜合「持股結構 × 市場動向 × 題材／產業趨勢 × 技術面 × 籌碼面 × 估值面」之觀察,屬主觀分級。</div>
+    </div>
+    <div class="read">
+      <b>題材評分解讀:</b>橫向看,六檔持股的因子輪廓<span class="why">高度雷同</span>——技術位階幾乎全在「高／創高區」、題材熱度全偏熱、估值位階全部「偏高」。這再次印證上一節的結論:組合缺乏因子上的多樣性,因為它們本質上是同一個押注的不同包裝。縱向看,<b>2330</b> 是唯一在「估值位階」與「技術位階」上相對溫和(中)的標的——基本面動能最強、卻是近期最不被追捧的一檔;相對地,<b>00631L／00663L</b> 的宏觀敏感度因槓桿而「很高」,是組合中對大盤波動最敏感的兩檔。<b>單一因子最該留意的是「估值位階」與「宏觀敏感度」同步偏高</b>——代表組合在「貴」與「敏感」兩個風險維度上同時拉滿。
+    </div>
+  </section>
+
+  <!-- ALLOCATION & BUY/SELL ANALYSIS -->
+  <section>
+    <div class="sec-title">持股配置與買賣分析</div>
+    <div class="sec-note">逐檔給出方向傾向（加碼／減碼／中性持有）、信心評等與觸發條件,並同時列支撐理由與反方風險。以下為分析觀點,<b>非具體下單指令</b>,不指定買賣張數、不催促立即執行;請依自身風險承受度與資金性質自行判斷。</div>
+
+    <div class="cardrow">
+      <!-- 0050 -->
+      <div class="reccard">
+        <div class="rh"><div class="nm">0050 元大台灣50<small>市值型 ETF · 權重 20.2%</small></div><span class="rec hold">中性持有</span></div>
+        <div class="conf">信心評等:<b>中</b></div>
+        <div class="rline pro"><span class="lb">支撐</span>市值型核心,長期參與台股趨勢最不費神的工具;台股中多格局未破、籌碼健康。</div>
+        <div class="rline con"><span class="lb">反方</span>台積電權重逾 6 成,「分散」名實不符;位階創高、短線乖離大,開高追價勝率低。</div>
+        <div class="rline trg"><span class="lb">觸發</span>大盤明顯回檔(如回測 41,000 一帶)可分批承接;若目標是「真分散」,0050 不是答案。</div>
+      </div>
+      <!-- 0052 -->
+      <div class="reccard">
+        <div class="rh"><div class="nm">0052 富邦科技<small>科技 ETF · 權重 11.0%</small></div><span class="rec hold">中性持有 · 偏審慎</span></div>
+        <div class="conf">信心評等:<b>中</b></div>
+        <div class="rline pro"><span class="lb">支撐</span>科技純度高、過去績效強,台灣科技指數仍受 AI 題材帶動。</div>
+        <div class="rline con"><span class="lb">反方</span>與 0050、2330、00981A 底層高度重疊;在組合已極度集中半導體下,續抱 0052 主要是「加重」而非「分散」;台積電權重約 7 成、估值偏高。</div>
+        <div class="rline trg"><span class="lb">觸發</span>不宜在創高區加碼;若要降低組合重疊度,0052 是可優先考慮減碼的標的之一。</div>
+      </div>
+      <!-- 00631L -->
+      <div class="reccard">
+        <div class="rh"><div class="nm">00631L 元大台灣50正2<small>槓桿 ETF 2x · 權重 11.3%</small></div><span class="rec cut">減碼傾向 · 風險管理</span></div>
+        <div class="conf">信心評等:<b>中</b>（屬風險管理考量,非看空大盤）</div>
+        <div class="rline pro"><span class="lb">維持的理由</span>多頭趨勢盤是槓桿 ETF 的主場,連兩日大盤急漲它貢獻凌厲;若大盤延續多頭,留著續強。</div>
+        <div class="rline con"><span class="lb">減碼的理由</span>槓桿 ETF 單日重設、盤整有波動耗損,不適合長抱;組合已含約 1.44x 槓桿。</div>
+        <div class="rline trg"><span class="lb">觸發</span>若大盤轉入區間震盪、耗損加速 → 為降槓桿可優先調節;趨勢明確向上時可暫留觀察。</div>
+      </div>
+      <!-- 00663L -->
+      <div class="reccard">
+        <div class="rh"><div class="nm">00663L 國泰臺灣加權正2<small>槓桿 ETF 2x · 權重 32.6%</small></div><span class="rec cut">減碼傾向 · 較明確</span></div>
+        <div class="conf">信心評等:<b>中高</b>（風險管理角度的明確度較高）</div>
+        <div class="rline pro"><span class="lb">維持的理由</span>連兩日報酬的最大貢獻者,多頭續行時續抱最賺。</div>
+        <div class="rline con"><span class="lb">減碼的理由</span>32.6% 市值的最大部位 ＋ 2x 槓桿,單一檔就貢獻組合約 45% 的曝險,是波動與回檔風險的最大集中點;減此檔對「降集中度＋降槓桿」雙重最有效。</div>
+        <div class="rline trg"><span class="lb">觸發</span>連兩日急漲 +5.6% 後是評估減碼的合理時點;宜在開高後分批調節,而非開盤一次大砍。</div>
+      </div>
+      <!-- 00981A -->
+      <div class="reccard">
+        <div class="rh"><div class="nm">00981A 主動統一台股增長<small>主動式 ETF · 權重 9.7%</small></div><span class="rec hold">中性持有</span></div>
+        <div class="conf">信心評等:<b>中</b></div>
+        <div class="rline pro"><span class="lb">支撐</span>主動選股、績效亮眼,提供與被動 ETF 不同的 alpha 來源。</div>
+        <div class="rline con"><span class="lb">反方</span>它持有 0050／0052「追積」,與組合其他持股重疊度比表面高;YTD +60%+、估值不低。</div>
+        <div class="rline trg"><span class="lb">觸發</span>漲多不追高;長期可續抱,觀察主動經理人能否持續創造超額報酬。</div>
+      </div>
+      <!-- 2330 -->
+      <div class="reccard">
+        <div class="rh"><div class="nm">2330 台積電<small>個股 · 權重 15.3%</small></div><span class="rec hold">中性持有 · 基本面正向</span></div>
+        <div class="conf">信心評等:<b>中高</b>（對基本面;配置上已足）</div>
+        <div class="rline pro"><span class="lb">支撐</span>基本面組合中最強(Q1 +35%、全年 +30%+),估值最溫和,5/22 相對落後、位階最不極端。</div>
+        <div class="rline con"><span class="lb">反方</span>不是「2330 不好」,而是「組合早已重壓台積電」——穿透後 TSMC 已佔總曝險約 53%;再為看好台積電而加碼直接持股,只會讓集中度雪上加霜。</div>
+        <div class="rline trg"><span class="lb">觸發</span>若有新資金,優先考慮的不是再買 2330,而是組合所缺的「非台積電、非半導體、防禦性」資產。</div>
       </div>
     </div>
 
     <div class="read" style="background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:14px 16px;margin-top:13px">
-      <b>組合層級洞察 — 今日最關鍵的一點:</b><span class="why">組合的「內部輪動」持續加劇,且方向越來越清楚。</span>NVDA(基本面最強、估值最合理)財報後走弱回落、TSMC 上週相對大盤偏弱;而 AMD(市值破 $7,000 億)與 ARM(本益比近 300x)卻持續創高噴出。<b>結果是:組合中「最貴、最熱的兩個部位變得更貴、權重更大」,而「最穩、最便宜的兩個部位反而落後」,整體波動度被動再升高。</b>這不是基本面變化,而是資金面的輪動——但它實實在在改變了組合的風險結構。連續多週觀察到同一現象,意味這已不是單日噪音,而是值得正視的「<b>再平衡／鎖利</b>」評估時點:在不否定長期論點的前提下,思考是否將部分 AMD／ARM 的帳面獲利,移回估值較合理、近期落後的 NVDA／TSMC,以降低組合集中度與波動度。<b>今日美股休市、四檔中三檔無法操作,正好是「只思考、不出手」的冷靜評估窗——把減碼比例、再平衡價位想清楚,等 5/26 美股開盤再決定。</b>
+      <b>組合層級再平衡 — 方向建議:</b><span class="why">組合的核心課題不是「選股」,而是「結構」。</span>六檔持股帳面看似分散,實際是「高度集中台積電 ＋ 台股大盤、且帶約 1.44 倍槓桿」的單一押注:穿透後 TSMC 約佔總曝險 53%、半導體＋科技近九成、且無任何非台股或防禦性資產。在連兩日 +5.6%、台指期正價差暗示開高的此刻,組合的「進攻性」拉得很滿。<br><br>
+      <b>若要降低風險集中度</b>,最有效率的順序是:① 先評估減碼 <b>00663L</b>(最大部位、2x,降集中度與降槓桿一次到位)→ ② 視大盤型態調節 <b>00631L</b>(若轉震盪盤、耗損風險升高)→ ③ <b>0052</b> 若想降低與 0050／2330 的重疊亦可一併考慮。真正的「分散」無法在現有六檔內完成——它需要組合目前完全沒有的東西:<b>非台股、非半導體、或低相關／防禦性的資產類別</b>。<br><br>
+      <b>但反方必須並陳:</b>以上全是「風險管理」角度。若台股多頭延續(背景偏多、籌碼強、政策有活水),槓桿 ETF 與高 beta 部位會續強,此時減碼等於少賺——組合過去的亮眼績效正是這個結構在多頭中換來的。<b>是否調整、調整多少,取決於你能承受的波動度與這筆資金的時間性質,這是風險偏好問題,不是市場預測問題。</b>本段為分析觀點,非買賣指令。
     </div>
   </section>
 
@@ -292,29 +455,29 @@
       </div>
 
       <div class="tabbody on" id="t1">
-        <div class="concl warn">立場結論:續抱、不追高,把握美股休市這天「只思考、不出手」的冷靜窗。</div>
+        <div class="concl warn">立場結論:續抱核心、不追高;把今日美股休市這天當作「評估降槓桿與降集中度」的冷靜窗。</div>
         <div class="body-txt">
-          <p>四檔基本面都通過了本季財報檢驗,<b>沒有「賣出論點」被觸發</b>;台積電 4 月營收、全年 +30%+ 展望、宏觀煞車(油價、殖利率)降溫,加上記憶體超級循環旁證 AI 需求真實——對既有持有者,外部條件偏正面。5/22 三大法人領軍大買與台指期夜盤正價差,也是支撐既有部位的正面訊號。</p>
-          <p>但連續多週觀察到同一現象:輪動正在改變組合的<b>風險結構</b>。ARM、AMD 漲幅驚人、雙雙創高,若你帳上這兩檔獲利豐厚,現在是評估「<b>部分減碼鎖利、把重心移回估值較合理且近期落後的 NVDA／TSMC</b>」的合理時點——不是因為看壞它們,而是純粹為了降低組合的集中度與波動度。</p>
-          <p><b>今日操作傾向:</b>台股這邊,唯一可交易的台積電,在期貨正價差下預期開高,但連兩日大漲後,<b>不在開高的第一時間追價</b>;觀察開盤後 10–15 分鐘台積電買盤是否延續、外資是否續買,再決定是否續抱或微調。美股因今日休市,NVDA／AMD／ARM 三檔無法操作——把減碼比例與再平衡價位先想清楚,等 5/26（週二）美股開盤再執行。</p>
+          <p>組合的基本面與外部條件偏正面:台股中多格局未破、5/22 三大法人領軍大買、台指期正價差暗示開高、記憶體超級循環與宏觀煞車降溫都支撐 AI／半導體背景。對既有持有者,<b>沒有「全面撤退」的理由</b>。</p>
+          <p>但今日盤前最該正視的不是「漲不漲」,而是<b>組合的風險結構</b>:約 1.44 倍槓桿、穿透後 TSMC 佔總曝險約 53%、近九成押台股半導體與科技、零防禦性資產。連兩日急漲後,這個高進攻性結構的波動度被推得更滿。合理的動作是評估「<b>把最大、帶 2x 槓桿的 00663L 部分減碼</b>」——這對降集中度與降槓桿一次到位;不是因為看空,而是純粹為了讓組合的波動度回到你睡得著的水準。</p>
+          <p><b>今日操作傾向:</b>台股預期開高,但連兩日大漲後<b>不在開高第一時間追價或加碼</b>;觀察開盤後 10–15 分鐘台積電與大盤買盤是否延續、外資是否續買。要調節槓桿 ETF,宜開高後分批進行,而非開盤一次大砍。</p>
         </div>
       </div>
 
       <div class="tabbody" id="t2">
-        <div class="concl">立場結論:想佈局先等表態,標的順序 NVDA ≧ TSMC ＞ AMD ＞ ARM。</div>
+        <div class="concl">立場結論:若投入新資金,不要再加碼這六檔的同類曝險;優先補組合所缺的部分。</div>
         <div class="body-txt">
-          <p><b>NVDA</b> 在四檔中估值最合理(相對 AMD、ARM 的極端估值),且股價「最未反映利多」——破紀錄財報後仍走弱。若要切入 AI 半導體,NVDA 的風險報酬最對稱,近期的回落反而提供相對較好的觀察切入區。可等 5/26 美股開盤後觀察 $210–220 支撐。</p>
-          <p><b>TSMC</b> 是估值溫和、終端最分散的選擇,且今日可直接在台股交易;上週相對大盤偏弱、未隨輪動補漲,位置相對不過熱。但台股剛走完連兩日 +5.6% 強漲、今日又預期開高,<b>在開高的第一時間追價勝率偏低</b>——宜等開盤後觀察台積電能否守穩、量能是否健康,採<b>分批、預設回檔承接價位</b>優於追高。</p>
-          <p><b>AMD／ARM</b> 在上週各自噴出、雙雙創高後,現價屬「輪動推升後的高基期」,新買方此時切入是<b>承接別人獲利了結的風險</b>,不建議追。若真要佈局這兩檔,宜等急漲後的量價沉澱、波動收斂;且今日美股休市本就無法進場。</p>
+          <p>關鍵提醒:你現有六檔持股雖然代號不同,<b>本質是同一個押注</b>——台股大盤＋半導體＋台積電,還帶 1.44 倍槓桿。此時若再投入新資金買 0050、0052、00631L、00663L 或 2330,<b>只是把同一個押注加得更大、更集中</b>,而不是「投資組合」意義上的佈局。</p>
+          <p>若真的想擴大部位,較有意義的順序是:先補組合<b>完全缺席</b>的東西——非台股(美股、其他市場)、非半導體的產業、或債券／防禦性等低相關資產;讓組合先有「分散」,再談加碼。</p>
+          <p>若仍想在台股加碼,台股剛走完連兩日 +5.6%、今日又預期開高,<b>開高第一時間追價的勝率偏低</b>;宜等開盤後量價沉澱、或預設回檔承接價位分批進場,優於追高。<b>槓桿 ETF（00631L／00663L）尤其不建議在此時加碼</b>——它們會把組合的槓桿與波動推得更高。</p>
         </div>
       </div>
 
       <div class="tabbody" id="t3">
-        <div class="concl good">立場結論:長期論點完好,單週輪動、急漲與單日開高皆屬噪音,不改變持有計畫。</div>
+        <div class="concl good">立場結論:市值型 ETF 長期參與台股趨勢的邏輯成立;但槓桿 ETF 不是長抱工具,長線應以非槓桿部位為主。</div>
         <div class="body-txt">
-          <p>AI 算力被客戶視為「基礎設施而非選配」的結構性趨勢未變;台積電 Q1 +35%、上調全年展望、4 月營收年增 17.5%、前 4 月累計年增 29.9%——從供應鏈端佐證需求真實。NVDA 破紀錄的 FY27Q1 與 $910 億 Q2 財測直接驗證循環尚未見頂;記憶體報價的超級循環,則從另一條供應鏈再度旁證 AI 伺服器的實際拉貨力道。</p>
-          <p>「NVDA 跌、AMD／ARM 噴」是<b>資金面輪動</b>,台股連兩日 +5.6%、今日台指期正價差暗示開高是<b>短線情緒與期貨價差</b>,5/22 三大法人大買則反映<b>機構認同台灣 AI 供應鏈的核心地位</b>。輪動、急漲與單日開高屬<span class="why">循環性／情緒性噪音</span>,不構成推翻長期論點的訊號。長線投資人不需要對單週輪動、單日開高做反應。</p>
-          <p><b>長線做法:</b>以「分批、逢明顯回檔承接」累積部位,避免被單週波動與單日開高牽動。真正該追蹤的是<b>論點檢核點</b>——本週 Dell／HP 財報(AI 伺服器需求)、6/3 博通財報、6/10 台股 5 月營收、6/16 甲骨文財報、6 月底美光財報(記憶體供需與報價)。這些才是會改變長期判斷的變數。</p>
+          <p>就長期而言,持有 0050、0052、00981A 這類非槓桿 ETF 參與台股與台灣科技業的長期成長,是合理且可長抱的——AI 算力的結構性需求、台積電 Q1 +35% 與全年 +30%+ 展望、記憶體超級循環,都從基本面支撐這個方向。單週的輪動與單日的開高,屬<span class="why">情緒性噪音</span>,不需反應。</p>
+          <p>但長期投資人要特別認清一件事:<b>00631L、00663L 這類單日正向 2 倍槓桿 ETF,設計上就不是長期持有工具</b>。它們每日重設槓桿,在盤整或來回震盪的行情中會產生「波動耗損」——即使大盤幾年後回到原點,槓桿 ETF 的淨值仍可能明顯低於起點。它們適合「看準趨勢的波段」,不適合「放著不管的長抱」。</p>
+          <p><b>長線做法:</b>把長期核心放在非槓桿部位(0050／0052／00981A／2330),槓桿 ETF 則明確定位為「波段工具」並設定部位上限;同時逐步為組合加入非台股、防禦性資產,降低「單一市場＋單一產業＋槓桿」的長期尾部風險。真正該追蹤的論點檢核點:6/10 台股 5 月營收、台積電月營收動能、AI 資本支出循環是否延續。</p>
         </div>
       </div>
     </div>
@@ -323,22 +486,22 @@
   <!-- SCENARIOS -->
   <section>
     <div class="sec-title">今日(5/25)情境劇本</div>
-    <div class="sec-note">針對台股 5/25 開盤,三種可能路徑與對你 AI 半導體組合的對應反應。台指期夜盤正價差使「開高」成為較可能的起點;但今日美股休市、外部錨點減少,開盤後的走勢不確定性較平日高。</div>
+    <div class="sec-note">針對台股 5/25 開盤的三種路徑與對你組合的對應反應。台指期夜盤正價差使「開高」成為較可能的起點;今日美股休市、外部錨點減少,開盤後走勢不確定性較平日高。組合帶約 1.44x 槓桿,漲跌對組合的影響都會被放大。</div>
     <div class="scn">
       <div class="scnc">
         <h4>情境 A · 開高走高</h4>
-        <p>承接夜盤正價差開高後,外資續買、台積電守穩,台股無視「美股休市」的資訊真空,靠週五美股創高餘溫與週末偏多氛圍延續中多格局。</p>
-        <div class="imp u">對組合:偏多,台積電受惠;惟連三日衝高,難度與透支程度偏高,追價勝率低。</div>
+        <p>承接夜盤正價差開高後,外資續買、台積電守穩,台股無視「美股休市」的資訊真空,延續中多格局。</p>
+        <div class="imp u">對組合:偏多,且因約 1.44x 槓桿放大、漲幅可觀;惟這也是組合波動度被推到最滿的情境,連三日衝高追價勝率低。</div>
       </div>
       <div class="scnc b">
         <h4>情境 B · 開高震盪（基準情境）</h4>
-        <p>順著正價差開高,但連兩日大漲後獲利了結與接棒買盤拉鋸,在缺乏美股指引下高檔量價沉澱、換手整理,台積電區間整理、漲幅收斂。</p>
-        <div class="imp fl">對組合:中性,台積電隨大盤震盪,宜按兵不動、不追價,視為健康換手。</div>
+        <p>順著正價差開高,但連兩日大漲後獲利了結與接棒買盤拉鋸,高檔量價沉澱、換手整理。</p>
+        <div class="imp fl">對組合:中性,但對槓桿 ETF 略不利——來回震盪正是 00631L／00663L 波動耗損的來源;宜按兵不動、不追價。</div>
       </div>
       <div class="scnc c">
         <h4>情境 C · 開高走低／獲利了結</h4>
-        <p>開高後賣壓湧現,正價差成為「開高就是賣點」的兌現點,外資由買轉賣或週末地緣消息生變,台股回吐部分本週漲幅、收盤翻黑。</p>
-        <div class="imp dn">對組合:偏空,台積電回測支撐;長線投資人可視為分批承接的觀察窗。</div>
+        <p>開高後賣壓湧現,正價差成為「開高即賣點」的兌現,外資由買轉賣或週末地緣消息生變,台股回吐本週漲幅。</p>
+        <div class="imp dn">對組合:偏空,且兩檔槓桿 ETF 以約 2 倍速度回吐,組合回檔幅度會大於大盤;長線投資人可視為分批承接非槓桿部位的觀察窗。</div>
       </div>
     </div>
   </section>
@@ -348,12 +511,13 @@
     <div class="sec-title">盤前風險清單</div>
     <div class="panel">
       <div class="risk"><div class="ico">🇺🇸</div><div class="t"><b>今日美股休市:</b>5/25 美股因 Memorial Day 休市,台股今日缺乏美股隔夜指引,盤面方向較難由外部訊號預判,波動更易受台股自身籌碼與週末消息主導。</div></div>
-      <div class="risk"><div class="ico">📈</div><div class="t"><b>漲多拉回:</b>台股連兩日大漲 +5.6%（+2,247 點）已大幅透支短線動能,指數乖離偏大,獲利了結與高檔換手是接下來最自然的反應。</div></div>
-      <div class="risk"><div class="ico">⚖️</div><div class="t"><b>正價差是雙面刃:</b>台指期夜盤正價差約 366 點固然暗示開高,但「開高」也常成為短多獲利了結的兌現點;<b>開高不等於收高</b>,須留意「開高走低」的反向風險。</div></div>
-      <div class="risk"><div class="ico">🔄</div><div class="t"><b>強籌碼是雙面刃:</b>5/22 外資大買約 761 億固然偏多,但外資部位變大後,一旦獲利了結,<b>賣壓規模同樣可觀</b>——買超數字越大,反向風險越需留意。</div></div>
-      <div class="risk"><div class="ico">🎯</div><div class="t"><b>輪動加劇組合波動:</b>ARM（本益比近 300x）、AMD 上週雙雙創高後估值更極端,組合中「最貴部位」權重被動放大,整體波動度升高。</div></div>
-      <div class="risk"><div class="ico">🛢️</div><div class="t"><b>美伊談判尾部風險:</b>週末談判進入「最後階段」卻仍有一兩項條款未談妥、川普稱「不會倉促」。協議若生變或破局,油價與地緣風險將回升,台股今日將最先反應。</div></div>
-      <div class="risk"><div class="ico">🧩</div><div class="t"><b>組合集中度:</b>四檔同屬「AI 半導體」單一主題,與台股高度連動,缺乏避震;記憶體成本上行亦可能間接壓縮整機客戶利潤,同漲同跌特性在震盪與資訊真空盤中更明顯。</div></div>
+      <div class="risk"><div class="ico">⚙️</div><div class="t"><b>組合槓桿放大:</b>00631L＋00663L 為單日正向 2 倍槓桿,使組合實質曝險達淨資產約 1.44 倍——大盤漲跌對組合的衝擊都被放大,回檔時尤其明顯。</div></div>
+      <div class="risk"><div class="ico">🎯</div><div class="t"><b>穿透集中度極高:</b>帳面六檔看似分散,穿透後台積電約佔總曝險 53%、半導體＋科技近九成。組合幾乎等於「單一個股＋單一產業」的押注,缺乏分散。</div></div>
+      <div class="risk"><div class="ico">📈</div><div class="t"><b>漲多拉回 × 槓桿:</b>台股連兩日大漲 +5.6% 已透支短線動能,獲利了結是自然反應;一旦回檔,槓桿 ETF 會以約 2 倍速度回吐。</div></div>
+      <div class="risk"><div class="ico">🌀</div><div class="t"><b>槓桿 ETF 波動耗損:</b>00631L／00663L 每日重設槓桿,在盤整／來回震盪行情中淨值會被侵蝕,不適合長期持有——今日若走「開高震盪」,正是耗損情境。</div></div>
+      <div class="risk"><div class="ico">🧩</div><div class="t"><b>無避震資產:</b>組合全為台股、且高度集中科技與半導體,沒有任何非台股、債券或防禦性部位,缺乏在系統性下跌時的緩衝。</div></div>
+      <div class="risk"><div class="ico">⚖️</div><div class="t"><b>正價差是雙面刃:</b>台指期夜盤正價差約 366 點暗示開高,但「開高」也常成為短多獲利了結的兌現點;<b>開高不等於收高</b>,須留意「開高走低」。</div></div>
+      <div class="risk"><div class="ico">🛢️</div><div class="t"><b>美伊談判尾部風險:</b>週末談判進入「最後階段」卻仍有條款未談妥。協議若生變,油價與地緣風險回升,高 beta 的台股組合今日將最先反應。</div></div>
     </div>
   </section>
 
@@ -365,7 +529,7 @@
         <div style="font-size:12px;color:var(--mut);margin-bottom:9px">今日(5/25)開盤重點</div>
         <div class="bars">
           <div class="bar"><span><b style="color:var(--txt)">開高幅度 vs 正價差</b>　開盤跳空幅度若明顯小於 366 點正價差,代表現貨買盤保守、宜留意走弱</span></div>
-          <div class="bar"><span><b style="color:var(--txt)">開盤 10–15 分鐘買盤</b>　台積電能否守穩、買盤是否放大,是判斷大盤接棒力道的首要訊號</span></div>
+          <div class="bar"><span><b style="color:var(--txt)">台積電開盤買盤</b>　2330 是組合穿透後最大曝險,其開盤 10–15 分鐘買盤強弱幾乎等同組合方向</span></div>
           <div class="bar"><span><b style="color:var(--txt)">外資動向</b>　5/22 外資大買 761 億後,今日能否延續買超是籌碼面關鍵</span></div>
           <div class="bar"><span><b style="color:var(--txt)">量能</b>　連兩日兆元級大量後若量縮,代表進入換手整理（屬健康）</span></div>
         </div>
@@ -373,19 +537,18 @@
       <div class="panel tight">
         <div style="font-size:12px;color:var(--mut);margin-bottom:9px">本週／後續催化劑</div>
         <div class="cat"><div class="dte">5/25</div><div class="ev"><b>美股休市</b> — Memorial Day,台股今日無美股隔夜指引</div></div>
-        <div class="cat"><div class="dte">5/26</div><div class="ev"><b>美股恢復交易</b> — 下一個美股交易日,組合三檔美股的觀察重啟點</div></div>
-        <div class="cat"><div class="dte">~5/26-28</div><div class="ev"><b>Dell／HP 財報（本週）</b> — AI 伺服器需求,直接關聯台廠廣達、緯穎、鴻海等供應鏈</div></div>
-        <div class="cat"><div class="dte">6/03</div><div class="ev"><b>博通 Broadcom 財報</b> — AI 客製晶片（ASIC）指引,繼 NVDA 後驗證 capex 循環</div></div>
-        <div class="cat"><div class="dte">6/10</div><div class="ev"><b>台股 5 月營收</b> — 台積電、AI 伺服器供應鏈動能的高頻檢驗</div></div>
-        <div class="cat"><div class="dte">6/16</div><div class="ev"><b>甲骨文 Oracle 財報</b> — AI 雲端 capex 與 Helios 進展,關聯 AMD 訂單</div></div>
-        <div class="cat"><div class="dte">~6/25</div><div class="ev"><b>美光 Micron 財報</b> — HBM 與記憶體供需,對應本波記憶體超級循環報價</div></div>
+        <div class="cat"><div class="dte">5/26</div><div class="ev"><b>美股恢復交易</b> — 下一個美股交易日,外部指引重啟</div></div>
+        <div class="cat"><div class="dte">~5/26-28</div><div class="ev"><b>Dell／HP 財報</b> — AI 伺服器需求,關聯台廠供應鏈與台股科技權值</div></div>
+        <div class="cat"><div class="dte">6/03</div><div class="ev"><b>博通 Broadcom 財報</b> — AI 客製晶片指引,驗證 capex 循環</div></div>
+        <div class="cat"><div class="dte">6/10</div><div class="ev"><b>台股 5 月營收</b> — 台積電與 AI 供應鏈動能高頻檢驗,與你組合最直接相關</div></div>
+        <div class="cat"><div class="dte">~6/25</div><div class="ev"><b>美光 Micron 財報</b> — HBM 與記憶體供需,對應記憶體超級循環</div></div>
       </div>
     </div>
   </section>
 
   <div class="disc">
-    <b>免責聲明:</b>本報告為台股開盤前的資訊整理與個人化分析觀點,依公開資訊(市場新聞、財報行事曆、券商與財經媒體資料、台灣證券交易所與期貨交易所統計等)彙整,<b>不構成任何投資建議、買賣指令或獲利保證</b>。本報告於 5/25（週一）開盤前製作,美股指數與個股為 5/22（週五）收盤之近似值(今日美股因 Memorial Day 休市);台指期為 5/22 夜盤收盤之近似值,正價差數值會隨盤勢變動。個股單日價位各來源存在差異,單一日期價位僅供脈絡參考,請以官方／券商即時報價為準。三大法人買賣超為集中市場統計值,確切數字以證交所官方公告為準。利率、商品與地緣消息為週末觀察之近似值,會隨盤勢變動。「個人持股組合」係依專案歸檔推定,非實際持股部位與成本;如需部位層級的損益與權重分析,請提供實際張數與成本。所有投資決策應自行評估風險並諮詢合格專業人士。本人非財務顧問或證券分析師。</div>
-  <div class="foot">台股盤前分析 · 2026-05-25（週一）· 本交易日 5/25 · Finance Assistant<br>資料來源:經濟日報、鉅亨網、TechNews、Yahoo 股市、TradingEconomics、TWSE 臺灣證券交易所、CNN、Washington Post、NPR、工商時報、TrendForce 等公開資訊彙整</div>
+    <b>免責聲明:</b>本報告為台股開盤前的資訊整理與個人化分析觀點,依公開資訊(市場新聞、財報行事曆、券商與財經媒體資料、台灣證券交易所與期貨交易所統計等)彙整,<b>不構成任何投資建議、買賣指令或獲利保證</b>。「持股配置與買賣分析」段落之方向傾向、信心評等為分析觀點,非具體下單指令,未指定買賣張數;投資決策與時點應由您自行判斷。本報告於 5/25（週一）開盤前製作,美股指數與個股為 5/22（週五）收盤之近似值(今日美股因 Memorial Day 休市);台股個股／ETF 為 5/22 收盤值,其中 0052、00981A 為近似值;台指期為 5/22 夜盤收盤之近似值。個人持股組合為使用者於 2026-05-25 同步之實際持股(0050／0052／00631L／00663L／00981A／2330);ETF 成分權重、穿透曝險與槓桿曝險為估算值,會隨時間與淨值變動;因未提供成本價,全部以市值權重為基礎、未含個別損益。三大法人買賣超為集中市場統計值,以證交所官方公告為準。所有投資決策應自行評估風險並諮詢合格專業人士。本人非財務顧問或證券分析師。</div>
+  <div class="foot">台股盤前分析 · 2026-05-25（週一）· 本交易日 5/25 · Finance Assistant<br>資料來源:經濟日報、鉅亨網、Yahoo 股市、TradingEconomics、TWSE 臺灣證券交易所、元大投信、富邦投信、國泰投信、統一投信、MoneyDJ、CNN、Washington Post、工商時報、TrendForce 等公開資訊彙整</div>
 
 </div>
 <script>
