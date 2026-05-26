@@ -19,7 +19,7 @@
 
 啟用 GitHub Pages 後,可透過下列網址瀏覽財報觀察日曆首頁:
 
-> https://yuhuan0216.github.io/FinanceAssistant/
+> https://yuhuan183.github.io/FinanceAssistant/
 
 ## 免責聲明
 

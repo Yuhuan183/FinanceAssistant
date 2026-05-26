@@ -64,6 +64,6 @@ description: Analyze a public company's quarterly earnings report and produce a 
    - `git commit -m "feat: …"`（Conventional Commits 格式，描述新增的報告）
    - `git push origin main`；推送後 GitHub Pages 會自動更新。
    remote URL 已內嵌 PAT，**切勿在輸出或任何檔案中顯示 token**。
-4. **回報**：確認 `git status` 乾淨、`git log origin/main..main` 無未推送 commit 後，將線上網址（`https://yuhuan0216.github.io/FinanceAssistant/`）回報給使用者，告知日曆已可點進新報告。
+4. **回報**：確認 `git status` 乾淨、`git log origin/main..main` 無未推送 commit 後，將線上網址（`https://yuhuan183.github.io/FinanceAssistant/`）回報給使用者，告知日曆已可點進新報告。
 
 若專案沒有 index.html 日曆或未設定 git 遠端，略過本步驟，僅完成第 5 步交付。完成後可主動詢問是否要設定下季財報日自動更新。

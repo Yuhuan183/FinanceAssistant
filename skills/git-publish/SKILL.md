@@ -6,7 +6,7 @@ description: FinanceAssistant 專案的 git 操作規範 — 在 Cowork 沙箱�
 # git-publish — FinanceAssistant git 發布規範
 
 本 skill 規範 FinanceAssistant 專案的所有 git 操作。專案是 git repo，遠端
-`github.com/Yuhuan0216/FinanceAssistant`，透過 GitHub Pages 發布；repo 根目錄
+`github.com/Yuhuan183/FinanceAssistant`，透過 GitHub Pages 發布；repo 根目錄
 `index.html` 為網站首頁。所有自動排程（盤前分析等）在發布前都應讀並遵循本規範。
 
 ## 兩種執行環境
@@ -72,7 +72,7 @@ git ls-remote "$URL" refs/heads/main
 cd / && rm -rf /tmp/fa-pub
 ```
 
-push 成功後 GitHub Pages 會自動重建，網址 `https://yuhuan0216.github.io/FinanceAssistant/`。
+push 成功後 GitHub Pages 會自動重建，網址 `https://yuhuan183.github.io/FinanceAssistant/`。
 
 ### 若 push 被拒（non-fast-forward）
 
