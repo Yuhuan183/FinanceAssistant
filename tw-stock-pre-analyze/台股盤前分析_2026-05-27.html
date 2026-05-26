@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股盤前分析 · 2026-05-27</title>
+<style>
+  :root{
+    --bg:#0b0f1a; --panel:#141a2b; --panel2:#1b2236; --line:#2a3350;
+    --txt:#e8ecf6; --mut:#9aa6c4; --dim:#6b779b;
+    --up:#ff5b6e; --down:#22c08a; --warn:#f5b13d; --acc:#5b8cff; --acc2:#9d7bff;
+    --good:#22c08a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:2px;color:var(--acc);font-weight:700;text-transform:uppercase}
+  h1{font-size:30px;font-weight:800;margin:8px 0 6px;letter-spacing:.5px}
+  .sub{color:var(--mut);font-size:14px}
+  .stamp{color:var(--dim);font-size:12px;margin-top:6px}
+  .src-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;background:#103024;color:#6fe0b6;border:1px solid #1f4f3f;letter-spacing:.5px;margin-top:8px}
+  section{margin-top:30px}
+  .sec-title{font-size:19px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:9px}
+  .sec-title::before{content:"";width:4px;height:19px;background:linear-gradient(var(--acc),var(--acc2));border-radius:3px}
+  .sec-note{color:var(--dim);font-size:12px;margin:2px 0 14px 13px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .panel.tight{padding:16px 18px}
+  .topcall{background:linear-gradient(135deg,#1a2138,#171c2e);border:1px solid #34406b}
+  .topcall .label{font-size:12px;letter-spacing:1.5px;color:var(--acc);font-weight:700}
+  .topcall p{margin-top:9px;font-size:15.5px}
+  .hl-up{color:var(--up);font-weight:700}
+  .hl-down{color:var(--down);font-weight:700}
+  .hl-warn{color:var(--warn);font-weight:700}
+  .hl{color:var(--acc);font-weight:700}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .chip{font-size:12px;padding:5px 11px;border-radius:20px;border:1px solid var(--line);background:var(--panel2);color:var(--mut)}
+  .chip.up{border-color:#5a2b34;color:#ff97a3}
+  .chip.down{border-color:#1f4f3f;color:#6fe0b6}
+  .chip.warn{border-color:#5a4520;color:#f5cd86}
+  .grid{display:grid;gap:12px}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:760px){.g3,.g4,.g2{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.g3,.g4,.g2{grid-template-columns:1fr}}
+  .stat{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:13px 14px}
+  .stat .k{font-size:12px;color:var(--mut)}
+  .stat .v{font-size:21px;font-weight:800;margin:3px 0 1px}
+  .stat .d{font-size:12.5px;font-weight:700}
+  .stat .note{font-size:11px;color:var(--dim);margin-top:2px}
+  .u{color:var(--up)} .dn{color:var(--down)} .fl{color:var(--mut)} .w{color:var(--warn)}
+  .read{margin-top:13px;font-size:14px;color:#cdd5ea}
+  .read b{color:var(--txt)}
+  .read .why{color:var(--acc);font-weight:700}
+  .cardrow{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+  @media(max-width:680px){.cardrow{grid-template-columns:1fr}}
+  .stock{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 17px}
+  .stock .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .tk{font-size:17px;font-weight:800}
+  .tag{font-size:10.5px;color:var(--dim);font-weight:600;display:block;margin-top:1px}
+  .px{text-align:right}
+  .px .p{font-size:17px;font-weight:800}
+  .px .c{font-size:12px;font-weight:700}
+  .bars{margin:11px 0 0;display:flex;flex-direction:column;gap:5px}
+  .bar{font-size:11.5px;color:var(--mut);display:flex;gap:7px;align-items:baseline}
+  .bar::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--acc);flex:none;transform:translateY(-1px)}
+  .bar.r::before{background:var(--up)}
+  .bar.g::before{background:var(--down)}
+  .bar.warn::before{background:var(--warn)}
+  .qa{margin-top:11px;font-size:13px;color:#cdd5ea;border-top:1px solid var(--line);padding-top:10px}
+  .qa b{color:var(--txt)}
+  .scn{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:760px){.scn{grid-template-columns:1fr}}
+  .scnc{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:15px;border-top:3px solid var(--acc)}
+  .scnc.b{border-top-color:var(--up)}
+  .scnc.c{border-top-color:var(--mut)}
+  .scnc h4{font-size:14px;font-weight:800}
+  .scnc p{font-size:12.5px;color:var(--mut);margin-top:7px}
+  .scnc .imp{font-size:12.5px;margin-top:9px;font-weight:700}
+  .risk{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .risk:last-child{border-bottom:none}
+  .risk .ico{flex:none;width:26px;height:26px;border-radius:7px;background:var(--panel2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px}
+  .risk .t{font-size:13.5px}
+  .risk .t b{color:var(--warn)}
+  .cat{display:flex;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .cat:last-child{border-bottom:none}
+  .cat .dte{flex:none;width:62px;font-weight:800;color:var(--acc);font-size:12px}
+  .cat .ev b{color:var(--txt)}
+  .cat .ev{color:var(--mut)}
+  .disc{margin-top:26px;font-size:11px;color:var(--dim);background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:14px 16px}
+  .foot{margin-top:14px;text-align:center;color:var(--dim);font-size:11px}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+  @media(max-width:680px){.twocol{grid-template-columns:1fr}}
+  .tbl{width:100%;border-collapse:collapse;margin-top:4px;font-size:12.5px}
+  .tbl th{background:var(--panel2);color:var(--mut);font-weight:700;text-align:left;padding:8px 9px;border:1px solid var(--line);font-size:11px}
+  .tbl td{padding:8px 9px;border:1px solid var(--line);color:#cdd5ea;vertical-align:top}
+  .tbl td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .tbl tr:nth-child(even) td{background:rgba(255,255,255,.018)}
+  .tbl .tname{font-weight:800;color:var(--txt)}
+  .tbl tr.sum td{background:#222a42;font-weight:800;color:var(--txt)}
+  .tbl-note{font-size:11px;color:var(--dim);margin-top:7px}
+  .rec{font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;display:inline-block;white-space:nowrap}
+  .rec.hold{background:var(--panel2);color:#cdd5ea;border:1px solid var(--line)}
+  .reccard{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px 16px}
+  .reccard .rh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .reccard .rh .nm{font-size:15px;font-weight:800}
+  .reccard .rh .nm small{font-size:10.5px;color:var(--dim);font-weight:600;display:block;margin-top:1px}
+  .reccard .conf{font-size:11px;color:var(--mut);margin-top:8px}
+  .reccard .conf b{color:var(--txt)}
+  .rline{font-size:12.5px;margin-top:7px;color:#cdd5ea}
+  .rline .lb{font-weight:800;font-size:11px;padding:1px 0;margin-right:4px}
+  .rline.pro .lb{color:var(--down)}
+  .rline.con .lb{color:var(--up)}
+  .rline.trg .lb{color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">台股盤前分析 · Personalized Pre-Market</div>
+  <h1>台股盤前分析與個人化解讀</h1>
+  <div class="sub">2026-05-27（週三）· 開盤前最後檢視 ╳ 5/27 台股盤前展望 · 5/26 收盤後最新整理 · AI／半導體 ＋ 槓桿策略</div>
+  <div class="stamp">資料截至台北時間 5/26 收盤後 · 台股為 5/26 收盤值 · 美股為 5/22 收盤（5/25 Memorial Day 休市，5/26 美股盤中、最新值要等 5/27 早盤後） · 美國總經為 FRED 最新可得值</div>
+  <span class="src-badge">📡 資料來源:TWSE 官方 / FRED / Stooq / MOPS OpenAPI(透過本機 finance-local MCP)</span>
+
+  <!-- TOP CALL -->
+  <section>
+    <div class="panel topcall">
+      <div class="label">本期主軸 — TOP CALL</div>
+      <p>本週開盤的「正價差→開高走高」劇本完美驗證:5/22 收 42,268 → <span class="hl-up">5/25 跳開且全日強漲收 43,644（+3.26%、+1,376 點）</span> → 5/26 微幅整理收 <span class="hl">43,525（-0.27%、-119 點）</span>。<b>兩日累計 +1,257 點（+2.97%）</b>,5/24 報告的情境 A「開高走高」應驗,5/26 則進入合理的高檔換手。</p>
+      <p>5/26 籌碼面解讀:<span class="hl">三大法人合計仍買超 +474 億</span>(外資 +355 億、投信 +69 億、自營合計 +49 億),金額較 5/22 的 +1,068 億<span class="hl-warn">減半</span>但<b>方向仍維持多方</b>。台積電 5/26 收 <span class="hl-up">2,270 元(-1.73%)</span>,自 5/25 的 2,310 高點回吐,屬「漲多後的健康沉澱」。</p>
+      <p>5/27 看點:① 高檔換手能不能延續、量能會否進一步縮減;② 5/27 凌晨美股 5/26 收盤(Memorial Day 後恢復交易)會給隔夜指引;③ <span class="hl-warn">油價已悄悄回升至 $112+</span>(FRED 5/18 latest),不再是 5/24 報告時的「<$100」,宏觀煞車輕微回壓——這是新訊號。</p>
+      <div class="chips">
+        <span class="chip up">5/25 大漲 +3.26% 驗證開高情境</span>
+        <span class="chip up">5/26 微幅整理 -0.27% 屬健康</span>
+        <span class="chip up">兩日 +1,257 點 / +2.97%</span>
+        <span class="chip up">三大法人續買 +474 億(縮量)</span>
+        <span class="chip warn">WTI 回升至 $112+</span>
+        <span class="chip warn">台積電 5/26 -1.73% 回吐</span>
+        <span class="chip">組合實質槓桿 ~1.44x</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- GLOBAL DASHBOARD -->
+  <section>
+    <div class="sec-title">全球市場儀表板</div>
+    <div class="sec-note">美股指數以 ETF proxy 顯示(SPY≈S&P500、DIA≈Dow、QQQ≈Nasdaq、SMH≈SOX),Stooq 端;FRED 提供美國利率／商品／DXY 等。</div>
+
+    <div class="panel tight" style="margin-bottom:12px">
+      <div style="font-size:12px;color:var(--mut);margin-bottom:9px">美股指數 ETF proxy(Stooq · 5/22 收盤)</div>
+      <div class="grid g4">
+        <div class="stat"><div class="k">SPY (≈S&P500)</div><div class="v">745.64</div><div class="d fl">5/22 收</div><div class="note">日內高 748.94、低 744.48</div></div>
+        <div class="stat"><div class="k">DIA (≈Dow)</div><div class="v">506.12</div><div class="d fl">5/22 收</div><div class="note">日內高 508.74、低 505.69</div></div>
+        <div class="stat"><div class="k">QQQ (≈Nasdaq)</div><div class="v">717.54</div><div class="d fl">5/22 收</div><div class="note">日內高 722.12、低 715.95</div></div>
+        <div class="stat"><div class="k">SMH (≈SOX)</div><div class="v">576.32</div><div class="d fl">5/22 收</div><div class="note">半導體 ETF</div></div>
+      </div>
+    </div>
+
+    <div class="panel tight" style="margin-bottom:12px">
+      <div style="font-size:12px;color:var(--mut);margin-bottom:9px">美國利率／商品／FX(FRED · 最新可得值)</div>
+      <div class="grid g4">
+        <div class="stat"><div class="k">10y 公債殖利率</div><div class="v">4.57%</div><div class="d fl">5/21 latest</div><div class="note">月初 4.31% → +0.26pp</div></div>
+        <div class="stat"><div class="k">2y 公債殖利率</div><div class="v">4.08%</div><div class="d fl">5/21</div><div class="note">10y−2y 利差 0.43pp(微縮)</div></div>
+        <div class="stat"><div class="k">WTI 西德州原油</div><div class="v">$112.25</div><div class="d u">5/18 latest</div><div class="note">5/15 $108.99 → 續升</div></div>
+        <div class="stat"><div class="k">Fed Funds 有效</div><div class="v">3.62%</div><div class="d fl">5/21</div><div class="note">月內小幅下滑 2bps</div></div>
+      </div>
+    </div>
+
+    <div class="read">
+      <b>宏觀脈絡解讀(新訊號):</b><span class="why">WTI 油價從 5/24 報告時的「<$100」回升到 $112.25(5/18 FRED latest),一週多漲約 4–5 美元</span>。這跟之前我們追蹤的「美伊談判進入最後階段→油價回落→殖利率降溫」鏈條方向相反——油價回升暗示<b>地緣風險未完全消除</b>,或市場開始定價「美伊協議若不成」的尾部風險。10 年期殖利率 4.57% 與月初 4.31% 比,<b>升了 26bp</b>;對高估值 AI 股是溫和壓抑,但目前還未轉成嚴重壓力。<br><br>
+      美股 5/22 創高後,5/25 休市,<b>5/27 凌晨會看到 5/26 美股 Memorial Day 後恢復交易的首日表現</b>——這是台股 5/27 早盤的關鍵外部指引。FRED 的 DXY 還是 5/15 latest 119.28(因週末延遲);若美股 5/26 走強且油價回穩,台股 5/27 開盤偏多;反之亦然。
+    </div>
+  </section>
+
+  <!-- TAIWAN CHIPS -->
+  <section>
+    <div class="sec-title">台股籌碼與盤前動向</div>
+    <div class="sec-note">5/26 為最近交易日,以下為 5/27 開盤前的籌碼檢視。所有數字直接來自 TWSE 官方 OpenAPI(MI_5MINS_HIST、BFI82U、STOCK_DAY)。</div>
+
+    <div class="panel tight" style="margin-bottom:12px">
+      <div class="grid g4">
+        <div class="stat"><div class="k">加權指數 TWII(5/26 收)</div><div class="v">43,525</div><div class="d dn">−119.03（−0.27%）</div><div class="note">日內 43,350–44,098;5/25 高點 43,644 後微整理</div></div>
+        <div class="stat"><div class="k">兩日累計(5/25+26)</div><div class="v">+2.97%</div><div class="d u">+1,257 點</div><div class="note">5/22 42,268 → 5/26 43,525</div></div>
+        <div class="stat"><div class="k">5/26 三大法人合計</div><div class="v">+474 億</div><div class="d u">續買超</div><div class="note">外資+355｜投信+69｜自營+49</div></div>
+        <div class="stat"><div class="k">vs 5/22 籌碼</div><div class="v">~44%</div><div class="d warn">縮量</div><div class="note">5/22 +1,068 億 → 5/26 +474 億</div></div>
+      </div>
+    </div>
+
+    <div class="twocol">
+      <div class="panel tight">
+        <div style="font-size:12px;color:var(--mut);margin-bottom:9px">籌碼回顧(本週兩日)</div>
+        <div class="bars">
+          <div class="bar g"><span><b style="color:var(--txt)">5/25 大漲 +3.26%</b>　TWII 43,644.4(從 42,268 跳開);驗證 5/24 報告「正價差→開高」</span></div>
+          <div class="bar"><span><b style="color:var(--txt)">5/26 微整理 -0.27%</b>　43,525,日內 43,350–44,098,屬高檔換手</span></div>
+          <div class="bar g"><span><b style="color:var(--txt)">外資 5/26 +355 億</b>　仍買方,單日金額較 5/22 縮小但方向一致</span></div>
+          <div class="bar warn"><span><b style="color:var(--txt)">縮量訊號</b>　三大法人合計從 +1,068 億縮到 +474 億,熱度降溫,屬正常</span></div>
+        </div>
+      </div>
+      <div class="panel tight">
+        <div style="font-size:12px;color:var(--mut);margin-bottom:9px">5/27 盤前要點</div>
+        <div class="bars">
+          <div class="bar"><span><b style="color:var(--txt)">外部指引重啟</b>　5/26 美股 Memorial Day 後恢復交易,5/27 早盤前會有完整隔夜訊號</span></div>
+          <div class="bar warn"><span><b style="color:var(--txt)">WTI 回升 $112+</b>　地緣風險未完全消除,溫和壓抑高估值 AI 股</span></div>
+          <div class="bar"><span><b style="color:var(--txt)">技術面</b>　43,525 處新高區,5/26 日內最高 44,097.63 為短期阻力</span></div>
+          <div class="bar"><span><b style="color:var(--txt)">2330 5/26 -1.73%</b>　自 5/25 高點 2,310 回吐至 2,270,需觀察接棒</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="read">
+      <b>給你的解讀:</b>三大法人 5/26 仍買超 +474 億但較 5/22 縮量近半,<span class="why">這是「熱度降溫但方向未變」的典型訊號</span>:急漲後第一個整理日,法人沒有翻轉、外資也續買,符合「健康換手、不轉空」的判讀。台積電 5/26 -1.73% 回到 2,270,是 5/25 +2.44% 漲幅的小幅吐回(連兩日淨 +15 元、+0.66%),沒有破壞中多結構。<br><br>
+      <span class="why">5/27 觀察重點:</span>① 美股 5/26(Memorial Day 後)能不能延續多頭氛圍 — 這是台股 5/27 早盤外部變數;② 油價是否續升 — 若 WTI 突破 $115,殖利率走升疊加會更明顯壓抑科技股;③ 量能 — 連兩日大量後若 5/27 進一步量縮、跌深,代表進入更長時間的整理;反之若量增推升,趨勢延續機率高。
+    </div>
+  </section>
+
+  <!-- PERSONAL HOLDINGS -->
+  <section>
+    <div class="sec-title">個人持股組合 · 5/26 盤後個股快評</div>
+    <div class="sec-note">六檔台股實際持股,5/26 收盤數據來自 TWSE STOCK_DAY 官方端點。盤後 5/26 整體呈「微幅整理」,跌幅 -0.27% 到 -1.73% 之間。</div>
+
+    <div class="cardrow">
+      <!-- 0050 -->
+      <div class="stock">
+        <div class="top">
+          <div><span class="tk">0050</span><span class="tag">元大台灣50 · 市值型 ETF</span></div>
+          <div class="px"><div class="p">100.10 元</div><div class="c dn">-0.69%</div></div>
+        </div>
+        <div class="bars">
+          <div class="bar"><span>5/22 97.30 → 5/25 100.80 → 5/26 100.10;兩日 +2.88%</span></div>
+          <div class="bar warn"><span>5/26 跌破百元心理整數失敗、收 100.10,但維持百元上方</span></div>
+          <div class="bar"><span>當日量 9,356 萬股,屬高檔換手量級</span></div>
+        </div>
+        <div class="qa"><b>5/27 觀點:</b>跟 TWII 同向。連兩日跑贏 TWII(因為 0050 重壓台積電,而 TSMC 5/25 +2.44% 也是領漲)。5/26 −0.69% 跟 TWII −0.27% 相比,跌幅多一點,反映台積電當日比指數弱。今日若大盤回穩,0050 大致也回穩。</div>
+      </div>
+      <!-- 0052 -->
+      <div class="stock">
+        <div class="top">
+          <div><span class="tk">0052</span><span class="tag">富邦科技 · 科技類股 ETF</span></div>
+          <div class="px"><div class="p">59.25 元</div><div class="c dn">-0.59%</div></div>
+        </div>
+        <div class="bars">
+          <div class="bar"><span>5/22 ~57.65 → 5/26 59.25;週累計 +2.78%</span></div>
+          <div class="bar warn"><span>跌幅小於 0050,但仍與 TWII 跌幅相近</span></div>
+          <div class="bar"><span>科技純度高,直接受 TSMC 5/26 -1.73% 影響</span></div>
+        </div>
+        <div class="qa"><b>5/27 觀點:</b>跟 0050 走勢類似,但波動會放大(因 TSMC 權重更高,7 成)。5/27 若 TSMC 反彈,0052 漲幅會略大於 0050。</div>
+      </div>
+      <!-- 00631L -->
+      <div class="stock">
+        <div class="top">
+          <div><span class="tk">00631L</span><span class="tag">元大台灣50正2 · 槓桿 ETF 2x</span></div>
+          <div class="px"><div class="p">34.40 元</div><div class="c dn">-0.46%</div></div>
+        </div>
+        <div class="bars">
+          <div class="bar"><span>5/22 32.56 → 5/26 34.40;兩日 +5.65%(≈ 0050 +2.88% 的 2 倍,符合槓桿特性)</span></div>
+          <div class="bar"><span>當日量 1.82 億股,屬高量級</span></div>
+          <div class="bar warn"><span>5/26 -0.46% 比 0050 -0.69% 跌得「比較少」 — 因 5/26 是震盪日、槓桿耗損還沒充分發酵</span></div>
+        </div>
+        <div class="qa"><b>5/27 觀點:</b>多頭趨勢盤的最大受益者,2 日漲 +5.65%。依你「多頭維持 1.5–2x 槓桿」策略,維持。若 5/27 大盤延續高檔震盪,要留意波動耗損;若回測,本檔以約 2 倍速度回吐。</div>
+      </div>
+      <!-- 00663L -->
+      <div class="stock">
+        <div class="top">
+          <div><span class="tk">00663L</span><span class="tag">國泰臺灣加權正2 · 槓桿 ETF 2x</span></div>
+          <div class="px"><div class="p">100.50 元</div><div class="c dn">-0.30%</div></div>
+        </div>
+        <div class="bars">
+          <div class="bar r"><span>5/22 94.40 → 5/26 100.50;兩日 +6.46%(≈ TWII +2.97% 的 ~2.2 倍,優於 naive 2x)</span></div>
+          <div class="bar"><span>組合最大部位、單日 -0.30% 與 TWII -0.27% 一致(2x 加權)</span></div>
+          <div class="bar warn"><span>5/25 強烈趨勢日對它最有利,跑贏 naive-2x</span></div>
+        </div>
+        <div class="qa"><b>5/27 觀點:</b>這檔的方向幾乎等於組合的方向(權重 32.6% × 2x = 組合曝險最大來源)。依你的策略此檔維持;當前 5/27 凌晨美股 5/26 表現會決定它早盤跳開幅度。</div>
+      </div>
+      <!-- 00981A -->
+      <div class="stock">
+        <div class="top">
+          <div><span class="tk">00981A</span><span class="tag">主動統一台股增長 · 主動式 ETF</span></div>
+          <div class="px"><div class="p">31.49 元</div><div class="c dn">-0.38%</div></div>
+        </div>
+        <div class="bars">
+          <div class="bar"><span>5/22 ~29.95 → 5/26 31.49;兩日 +5.14%</span></div>
+          <div class="bar"><span>5/26 量 2.89 億股,持續吸金</span></div>
+          <div class="bar"><span>主動經理人選股策略,本週跑贏 0050(+5.14% vs +2.88%)</span></div>
+        </div>
+        <div class="qa"><b>5/27 觀點:</b>本週主動式策略明顯優於市值型,績效兩日 +5.14% 顯示經理人選的成長股表現更強。漲多後估值要更謹慎,不建議在創高區追加碼。</div>
+      </div>
+      <!-- 2330 -->
+      <div class="stock">
+        <div class="top">
+          <div><span class="tk">2330</span><span class="tag">台積電 · 個股</span></div>
+          <div class="px"><div class="p">2,270 元</div><div class="c dn">-1.73%</div></div>
+        </div>
+        <div class="bars">
+          <div class="bar g"><span>5/22 2,255 → 5/25 2,310(+2.44%) → 5/26 2,270(-1.73%);淨 +0.66%</span></div>
+          <div class="bar g"><span>4 月營收 NT$4,107 億 / MoM −1.08% / YoY +17.50% / YTD YoY +29.95%(MOPS 最新)</span></div>
+          <div class="bar warn"><span>5/26 為當週最弱日,被資金輪動到其他 AI 供應鏈標的</span></div>
+        </div>
+        <div class="qa"><b>5/27 觀點:</b>基本面繼續強(4 月營收 YoY +17.5%、YTD YoY +30%,維持高成長),但 5/26 弱於大盤需留意。如果 5/27 美股 NVDA 表現強勁,台積電早盤多半反彈;反之要看本檔能否守在 2,250 一帶支撐。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOLDINGS WEIGHT & EXPOSURE -->
+  <section>
+    <div class="sec-title">持股比重與曝險分析</div>
+    <div class="sec-note">為保護隱私(本報告為 GitHub Pages 公開網頁),一律以「比例／淨資產＝100 為基準」呈現,不揭露絕對金額與股數。所有數值由本機 MCP 工具 `etf_lookthrough_tsmc` 計算。</div>
+
+    <div class="panel tight" style="margin-bottom:12px">
+      <div style="font-size:12px;color:var(--mut);margin-bottom:8px">① 組合權重總覽 · 5/26 收盤後</div>
+      <table class="tbl">
+        <tr><th>標的</th><th>類型</th><th>5/26 收盤</th><th>5/26 漲跌</th><th>組合權重</th></tr>
+        <tr><td class="tname">0050 元大台灣50</td><td>市值型 ETF</td><td class="num">100.10</td><td class="num dn">-0.69%</td><td class="num">20.2%</td></tr>
+        <tr><td class="tname">0052 富邦科技</td><td>科技 ETF</td><td class="num">59.25</td><td class="num dn">-0.59%</td><td class="num">11.0%</td></tr>
+        <tr><td class="tname">00631L 台灣50正2</td><td>槓桿 ETF 2x</td><td class="num">34.40</td><td class="num dn">-0.46%</td><td class="num">11.3%</td></tr>
+        <tr><td class="tname">00663L 加權正2</td><td>槓桿 ETF 2x</td><td class="num">100.50</td><td class="num dn">-0.30%</td><td class="num">32.6%</td></tr>
+        <tr><td class="tname">00981A 統一台股增長</td><td>主動式 ETF</td><td class="num">31.49</td><td class="num dn">-0.38%</td><td class="num">9.7%</td></tr>
+        <tr><td class="tname">2330 台積電</td><td>個股</td><td class="num">2,270</td><td class="num dn">-1.73%</td><td class="num">15.3%</td></tr>
+        <tr class="sum"><td>合計</td><td>6 檔</td><td class="num">—</td><td class="num">—</td><td class="num">100%</td></tr>
+      </table>
+      <div class="tbl-note">＊權重四捨五入至小數一位,合計可能非恰 100%;權重以記憶中同步的持股比例,5/26 收盤價未重新計算市值權重(短期內變動極小)。</div>
+    </div>
+
+    <div class="panel tight" style="margin-bottom:12px">
+      <div style="font-size:12px;color:var(--mut);margin-bottom:9px">② 槓桿曝險(以淨資產＝100 為基準 · `etf_lookthrough_tsmc` 計算)</div>
+      <div class="grid g4">
+        <div class="stat"><div class="k">淨資產(基準)</div><div class="v">100</div><div class="d fl">六檔權重加總</div><div class="note">本節數值皆以此為基準</div></div>
+        <div class="stat"><div class="k">槓桿後總曝險</div><div class="v">~144</div><div class="d u">基準 100 下</div><div class="note">槓桿 ETF 以 2 倍名目計</div></div>
+        <div class="stat"><div class="k">整體曝險倍數</div><div class="v">~1.44x</div><div class="d fl">目標 1.5–2x</div><div class="note">仍落在目標區間下緣</div></div>
+        <div class="stat"><div class="k">TSMC 穿透曝險佔總曝險</div><div class="v">~53%</div><div class="d warn">高度集中</div><div class="note">相當於淨資產的 76%</div></div>
+      </div>
+      <div class="tbl-note">＊穿透 TSMC: 直接 2330 (15.3) + 0050 ×60% (12.12) + 0052 ×70% (7.7) + 00631L 2x ×60% (13.56) + 00663L 2x ×40% (26.08) + 00981A ×10% (0.97) = 75.73。佔總曝險 144 的 52.6%,佔淨資產 100 的 75.7%。</div>
+    </div>
+
+    <div class="read" style="background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:14px 16px;margin-top:12px">
+      <b>結構提醒:</b>組合的「帳面分散、實質集中」狀態與前報告一致 — 1.44x 槓桿、TSMC 穿透 53% 佔總曝險。<span class="why">5/26 整理日 -0.30% 到 -1.73% 的跌幅分布,直接驗證了這個結構特性</span>:跟 TSMC 重疊愈高的部位(2330 直接持有 -1.73%、0052 -0.59% 因 7 成 TSMC),跌得愈多;跟 TSMC 重疊較低的(00981A -0.38%、00663L -0.30% 因 TSMC 只佔加權 40%),跌得相對少。這也是為何 00663L 雖然是 2x 槓桿、跌幅反而最小 — 因為它連結的母體 TSMC 比重最低。
+    </div>
+  </section>
+
+  <!-- ALLOCATION & BUY/SELL ANALYSIS -->
+  <section>
+    <div class="sec-title">持股配置與買賣分析</div>
+    <div class="sec-note">逐檔給方向、信心評等與觸發條件,並列支撐與反方風險。以下為分析觀點、非具體下單指令。槓桿 ETF 對齊使用者「多頭維持 1.5–2x、下行期槓桿回歸」之策略。</div>
+
+    <div class="cardrow">
+      <div class="reccard">
+        <div class="rh"><div class="nm">0050 元大台灣50<small>市值型 · 權重 20.2%</small></div><span class="rec hold">中性持有</span></div>
+        <div class="conf">信心評等:<b>中</b></div>
+        <div class="rline pro"><span class="lb">支撐</span>市值型核心、長期參與台股趨勢的最不費神工具;週累計 +2.88% 結構健康。</div>
+        <div class="rline con"><span class="lb">反方</span>5/26 跌幅 -0.69% 略大於 TWII -0.27%,顯示 TSMC 拖累;再次提醒台積電權重逾 6 成的集中度。</div>
+        <div class="rline trg"><span class="lb">觸發</span>若大盤回測 5/22 跳開缺口(42,268),分批承接;短線追高勝率低。</div>
+      </div>
+      <div class="reccard">
+        <div class="rh"><div class="nm">0052 富邦科技<small>科技 ETF · 權重 11.0%</small></div><span class="rec hold">中性持有 · 偏審慎</span></div>
+        <div class="conf">信心評等:<b>中</b></div>
+        <div class="rline pro"><span class="lb">支撐</span>科技純度高,本週 +2.78%。</div>
+        <div class="rline con"><span class="lb">反方</span>TSMC 7 成 + 與 0050 / 00981A / 2330 底層大量重疊,組合分散意義有限。</div>
+        <div class="rline trg"><span class="lb">觸發</span>若要降低組合重疊度,本檔可優先考慮減持。</div>
+      </div>
+      <div class="reccard">
+        <div class="rh"><div class="nm">00631L 元大台灣50正2<small>槓桿 ETF 2x · 權重 11.3%</small></div><span class="rec hold">維持 · 符合槓桿策略</span></div>
+        <div class="conf">信心評等:<b>中</b>(對齊使用者「多頭維持 1.5–2x」策略)</div>
+        <div class="rline pro"><span class="lb">維持的理由</span>本週兩日 +5.65% 領跑(2× 0050 兩日 +2.88%);多頭趨勢盤的主場。</div>
+        <div class="rline con"><span class="lb">反方風險</span>連兩日已享受趨勢紅利,進入震盪則波動耗損啟動;槓桿 ETF 不適合長抱。</div>
+        <div class="rline trg"><span class="lb">觸發</span>趨勢轉弱訊號(跌破關鍵均線、外資由買轉賣、量價背離)為策略中的「槓桿回歸」啟動點。</div>
+      </div>
+      <div class="reccard">
+        <div class="rh"><div class="nm">00663L 國泰臺灣加權正2<small>槓桿 ETF 2x · 權重 32.6%</small></div><span class="rec hold">維持 · 槓桿回歸主要調節閥</span></div>
+        <div class="conf">信心評等:<b>中</b>(對齊既定槓桿策略;此檔是組合最大波動源)</div>
+        <div class="rline pro"><span class="lb">維持的理由</span>本週兩日 +6.46%,跑贏 naive-2x(TWII +2.97% × 2 = +5.94%);趨勢盤的最大貢獻者。</div>
+        <div class="rline con"><span class="lb">反方風險</span>32.6% 權重 + 2x = 約 45% 總曝險集中於此檔;單一檔波動決定組合方向。</div>
+        <div class="rline trg"><span class="lb">觸發</span>下行期啟動時,因本檔曝險佔比最大,是降槓桿最有效的調節閥。</div>
+      </div>
+      <div class="reccard">
+        <div class="rh"><div class="nm">00981A 主動統一台股增長<small>主動式 ETF · 權重 9.7%</small></div><span class="rec hold">中性持有</span></div>
+        <div class="conf">信心評等:<b>中</b></div>
+        <div class="rline pro"><span class="lb">支撐</span>本週 +5.14% 跑贏 0050 +2.88%;主動經理人選股有效。</div>
+        <div class="rline con"><span class="lb">反方</span>持有 0050/0052「追積」,與組合其他標的底層重疊比表面高;估值已不低。</div>
+        <div class="rline trg"><span class="lb">觸發</span>漲多不追;長期可續抱觀察主動經理人能否持續創造超額報酬。</div>
+      </div>
+      <div class="reccard">
+        <div class="rh"><div class="nm">2330 台積電<small>個股 · 權重 15.3%</small></div><span class="rec hold">中性持有 · 基本面正向</span></div>
+        <div class="conf">信心評等:<b>中高</b>(對基本面;配置上已足)</div>
+        <div class="rline pro"><span class="lb">支撐</span>4 月營收 4,107 億、YoY +17.5%、YTD YoY +30%,基本面強;5/22→5/26 仍淨 +0.66%。</div>
+        <div class="rline con"><span class="lb">反方</span>5/26 -1.73% 為當日組合最弱;穿透後 TSMC 已佔總曝險 53%,加碼直接持股只會雪上加霜。</div>
+        <div class="rline trg"><span class="lb">觸發</span>新資金不要再投 2330,優先補組合所缺(非台股、防禦性)。</div>
+      </div>
+    </div>
+
+    <div class="read" style="background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:14px 16px;margin-top:13px">
+      <b>組合層級觀點:</b><span class="why">本週的價格行為再次驗證了組合結構的兩個事實:</span>① 1.44x 槓桿在多頭趨勢盤<b>放大了報酬</b>(00631L 兩日 +5.65%、00663L +6.46%);② TSMC 集中度在<b>個股震盪日放大了痛點</b>(5/26 跌幅前三:2330 -1.73%、0050 -0.69%、0052 -0.59%,都是 TSMC 重疊高的部位)。<br><br>
+      <b>5/27 操作傾向:</b>① 在 5/27 早盤前(美股 5/26 收盤資料出爐前)不做大動作;② 觀察美股恢復交易後的方向、油價是否續升;③ 若 5/27 出現「趨勢轉弱」訊號(TWII 跌破 5/25 開盤跳空缺口、外資轉賣),依使用者策略開始評估降槓桿(優先 00663L);④ 若 5/27 維持中多,則照舊。本段為分析觀點,非具體下單指令。
+    </div>
+  </section>
+
+  <!-- AI SUPPLY CHAIN MONTHLY -->
+  <section>
+    <div class="sec-title">AI 供應鏈 4 月營收(MOPS OpenAPI · 最新一期)</div>
+    <div class="sec-note">透過 `mops_ai_supply_chain` 一次抓五檔 AI 供應鏈核心 4 月營收。YoY% 是判讀 AI 資本支出循環是否延續的高頻指標。</div>
+    <div class="panel tight">
+      <table class="tbl">
+        <tr><th>個股</th><th>4 月營收</th><th>MoM</th><th>YoY</th><th>YTD YoY</th><th>判讀</th></tr>
+        <tr><td class="tname">2330 台積電</td><td class="num">NT$4,107 億</td><td class="num dn">-1.08%</td><td class="num u">+17.50%</td><td class="num u">+29.95%</td><td>結構性成長,4 月基期高小幅季節整理</td></tr>
+        <tr><td class="tname">2317 鴻海</td><td class="num">NT$8,321 億</td><td class="num u">+3.53%</td><td class="num u">+29.74%</td><td class="num u">+29.70%</td><td>AI 伺服器拉貨強勁,月增＋年增雙正</td></tr>
+        <tr><td class="tname">2382 廣達</td><td class="num">NT$3,399 億</td><td class="num dn">-6.31%</td><td class="num u">+120.71%</td><td class="num u">+79.64%</td><td><b style="color:var(--up)">爆發性年增 +120%</b>,YTD +80%,AI server 龍頭</td></tr>
+        <tr><td class="tname">6669 緯穎</td><td class="num">NT$827 億</td><td class="num dn">-16.14%</td><td class="num u">+29.67%</td><td class="num u">+53.22%</td><td>月減幅大但 YTD 仍 +53%,結構未變</td></tr>
+        <tr><td class="tname">2308 台達電</td><td class="num">NT$587 億</td><td class="num dn">-1.82%</td><td class="num u">+43.92%</td><td class="num u">+36.53%</td><td>AI 電源／散熱拉貨,年增 +44%</td></tr>
+      </table>
+      <div class="tbl-note">＊資料時間:2026 年 4 月(MOPS 於 5/10 前公布最新已公布期)。下次更新點:6/10 公布 5 月營收。</div>
+    </div>
+    <div class="read">
+      <b>新發現:</b><span class="why">廣達 4 月年增 +120.71%、YTD 年增 +79.64%</span> — AI 伺服器供應鏈的爆發力遠超台積電本身(YoY +17.5%)。這支持兩個觀察:① AI 算力的真實需求仍未見頂(廣達、緯穎、台達電都呈 30%+ 年增);② 你組合穿透後台積電佔 53% — 雖然集中,但這個位置依然是 AI 循環的核心。本月營收<b>從供應鏈端再次驗證 AI 資本支出循環延續</b>,對台積電與整體台股的中長期支撐維持。
+    </div>
+  </section>
+
+  <!-- SCENARIOS -->
+  <section>
+    <div class="sec-title">5/27 情境劇本</div>
+    <div class="sec-note">針對 5/27 開盤的三種劇本與對組合的反應。5/26 美股 Memorial Day 後恢復交易,其凌晨 4 點台北時間左右收盤,將是 5/27 早盤最重要的外部變數。</div>
+    <div class="scn">
+      <div class="scnc">
+        <h4>情境 A · 美股 5/26 強漲 → 台股 5/27 接棒</h4>
+        <p>若 5/26 美股(恢復交易首日)走強、油價回穩,台股 5/27 早盤跳開,延續本週多頭。</p>
+        <div class="imp u">對組合:偏多,1.44x 槓桿續放大;惟連三日創高難度與透支程度極高。</div>
+      </div>
+      <div class="scnc b">
+        <h4>情境 B · 高檔震盪延續(基準情境)</h4>
+        <p>美股 5/26 小漲或小跌、台股 5/27 量縮整理,在 43,400–43,700 區間換手;台積電持平或微幅反彈。</p>
+        <div class="imp fl">對組合:中性,槓桿 ETF 波動耗損啟動,宜按兵不動;不追價、不殺低。</div>
+      </div>
+      <div class="scnc c">
+        <h4>情境 C · 美股回吐 ＋ 油價突破 $115 → 台股回測</h4>
+        <p>若 5/26 美股因油價／殖利率回升而修正,台股 5/27 早盤跳低,回測 5/22 跳開缺口(42,268)。</p>
+        <div class="imp dn">對組合:偏空,槓桿 ETF 以約 2x 速度回吐;<b>此即使用者策略中的「槓桿回歸」啟動訊號</b>,優先評估減 00663L。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RISK LIST -->
+  <section>
+    <div class="sec-title">盤前風險清單</div>
+    <div class="panel">
+      <div class="risk"><div class="ico">🛢️</div><div class="t"><b>油價回升新訊號:</b>WTI 從先前 $100 之下回升至 $112+(FRED 5/18 latest);若續升,殖利率走升疊加會壓抑高估值科技股。<b>這是 5/24 報告後新出現的宏觀變數,要密切追蹤。</b></div></div>
+      <div class="risk"><div class="ico">📉</div><div class="t"><b>連三日創高難度高:</b>5/25 +3.26% 與 5/26 -0.27% 結構健康,但兩日累計 +2.97% 已透支不少短線動能,5/27 連續第三日大漲機率低。</div></div>
+      <div class="risk"><div class="ico">⚙️</div><div class="t"><b>槓桿雙向放大(屬刻意策略):</b>00631L+00663L 使組合實質曝險約 1.44 倍。本週多頭中放大報酬;一旦回檔以約 2 倍速度吐回。「下行期槓桿回歸」的紀律執行是關鍵。</div></div>
+      <div class="risk"><div class="ico">🎯</div><div class="t"><b>穿透集中度極高:</b>穿透後台積電佔總曝險約 53%、半導體＋科技近 9 成;5/26 個股弱於指數的現象再次驗證這個結構痛點。</div></div>
+      <div class="risk"><div class="ico">🇺🇸</div><div class="t"><b>美股 Memorial Day 後恢復交易:</b>5/26 美股是本週首個交易日,5/27 早盤前才看得到收盤數據;若收墨會影響台股 5/27 早盤情緒。</div></div>
+      <div class="risk"><div class="ico">🌍</div><div class="t"><b>地緣風險未消除:</b>油價回升暗示美伊談判可能未如預期順利;若週末有突發消息,5/27 早盤直接反應。</div></div>
+    </div>
+  </section>
+
+  <!-- CATALYSTS -->
+  <section>
+    <div class="sec-title">5/27 待觀察與後續催化劑</div>
+    <div class="twocol">
+      <div class="panel tight">
+        <div style="font-size:12px;color:var(--mut);margin-bottom:9px">5/27 開盤重點</div>
+        <div class="bars">
+          <div class="bar"><span><b style="color:var(--txt)">美股 5/26 收盤</b>　台北時間 5/27 凌晨 4:00 左右出爐,Memorial Day 後恢復交易首日</span></div>
+          <div class="bar"><span><b style="color:var(--txt)">油價</b>　WTI 是否續升突破 $115;若是,殖利率與成長股壓力會加大</span></div>
+          <div class="bar"><span><b style="color:var(--txt)">台積電開盤</b>　2,270 能否守穩;若早盤站回 2,290 以上,組合穩定</span></div>
+          <div class="bar"><span><b style="color:var(--txt)">量能</b>　5/26 已小幅縮量,若 5/27 進一步縮且收綠 → 整理週期啟動</span></div>
+        </div>
+      </div>
+      <div class="panel tight">
+        <div style="font-size:12px;color:var(--mut);margin-bottom:9px">本週／後續催化劑</div>
+        <div class="cat"><div class="dte">~5/28-29</div><div class="ev"><b>Dell / HP 財報</b> — AI 伺服器需求,直接關聯台廠廣達／緯穎／鴻海(廣達 4 月已 YoY +120%、印證強勁)</div></div>
+        <div class="cat"><div class="dte">6/03</div><div class="ev"><b>博通 Broadcom 財報</b> — AI 客製晶片(ASIC)指引,驗證 capex 循環是否延續</div></div>
+        <div class="cat"><div class="dte">6/10</div><div class="ev"><b>台股 5 月營收</b> — 透過 `mops_ai_supply_chain` 一次抓五檔,AI 供應鏈動能高頻檢驗</div></div>
+        <div class="cat"><div class="dte">6/16</div><div class="ev"><b>甲骨文 Oracle 財報</b> — OCI 與 AMD Helios 訂單進展</div></div>
+        <div class="cat"><div class="dte">~6/25</div><div class="ev"><b>美光 Micron 財報</b> — HBM 與記憶體供需</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="disc">
+    <b>免責聲明:</b>本報告為台股開盤前的資訊整理與個人化分析觀點。<b>本期所有市場數據透過本機 MCP server `finance-local` 抓取的官方／第一手公開資料:TWSE OpenAPI(加權指數、三大法人、個股)、FRED 聖路易聯邦準備銀行(美國利率、油價、DXY、通膨)、Stooq(美股 ETF proxy 報價)、MOPS OpenAPI(台灣月營收)、`etf_lookthrough_tsmc` MCP 工具計算槓桿與穿透曝險。</b>不構成任何投資建議、買賣指令或獲利保證。「持股配置與買賣分析」段落之方向傾向、信心評等為分析觀點,非具體下單指令,未指定買賣張數;投資決策與時點應由您自行判斷。為保護隱私,個人持股一律以權重百分比、倍數、淨資產＝100 的相對基準呈現,不揭露絕對金額與股數。ETF 成分權重、穿透曝險為估算值,會隨時間變動;因未提供成本價,以市值權重為基礎、未含個別損益。所有投資決策應自行評估風險並諮詢合格專業人士。本人非財務顧問或證券分析師。</div>
+  <div class="foot">台股盤前分析 · 2026-05-27(週三)· 本交易日 5/27 · Finance Assistant<br>📡 資料來源(MCP 整合):TWSE OpenAPI / FRED / Stooq / MOPS OpenAPI / 本機 etf_lookthrough_tsmc 計算</div>
+
+</div>
+</body>
+</html>
