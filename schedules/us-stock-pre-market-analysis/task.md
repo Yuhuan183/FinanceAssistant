@@ -9,6 +9,18 @@ enabled: true
 
 產出為自帶樣式、可離線開啟的互動式 HTML 儀表板（繁體中文），涵蓋：全球市場、美股籌碼、個人持股盤前快評、**持股比重與曝險分析**、**多因子題材評分**、**持股配置與買賣分析**、多角度分析（持有者／買方／長期投資人）、情境劇本與風險清單。務必含免責聲明，並聲明本人非財務顧問或證券分析師。歸檔至 `/Users/zack/Documents/Claude/Projects/FinanceAssistant/us-stock-pre-analyze/美股盤前分析_YYYY-MM-DD.html`。
 
+## 資料來源優先順序（必守）
+
+**優先呼叫本機 MCP 工具 `mcp__finance-local__*`（finance-mcp-bridge）**，比 WebSearch 抓的「公開資料近似值」更權威可審計：
+
+- 個股／ETF 報價 → `stooq_quote`（NVDA／AMD／GOOGL／QQQ／SMH／VOO／VT 等）
+- 全球指數（S&P／Dow／Nasdaq／SOX）→ `stooq_quote` 或 `stooq_preset us-indices`（S&P 走 SPY 等 ETF proxy）
+- 美國利率、油價、DXY、通膨 → `fred_series` 或 `fred_macro_dashboard`
+- US ETF 穿透成分 → `yf_holdings`（受 Yahoo 429 影響時 fallback）
+- 加權指數（背景觀察）→ `twse_taiex`
+
+工具不可用時（使用者 Mac 離線、ToolSearch 找不到 `mcp__finance-local__*`）才退回 **WebSearch**，並於報告中註明「資料來源：WebSearch 公開資料近似值」。**資料來源在報告免責聲明中應明確標出**：使用 MCP 時標「Stooq / FRED 等官方／第一手」，使用 WebSearch 時標「公開資料近似值」。
+
 ## 個人持股
 
 以 auto-memory 中最新同步的實際美股持股清單為準（持股已於 2026-05-25 同步，記憶檔 `us-stock-holdings`：個股 NVDA／AMD／GOOGL ＋ ETF QQQ／SMH／VOO／VT；ARM 已出清、未持有 TSMC）。**請勿再以財報歸檔推定持股。** 若記憶與使用者最新提供者不一致，以使用者最新提供者為準，並更新記憶。如使用者尚未提供成本價，損益／報酬類分析從略並註明，改以「市值權重」為基礎。

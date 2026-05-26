@@ -9,6 +9,19 @@ enabled: true
 
 產出為自帶樣式、可離線開啟的互動式 HTML 儀表板（繁體中文），涵蓋：全球市場、台股籌碼、個人持股盤前快評、**持股比重與曝險分析**、**多因子題材評分**、**持股配置與買賣分析**、多角度分析（持有者／買方／長期投資人）、情境劇本與風險清單。務必含免責聲明，並聲明本人非財務顧問或證券分析師。歸檔至 `/Users/zack/Documents/Claude/Projects/FinanceAssistant/tw-stock-pre-analyze/台股盤前分析_YYYY-MM-DD.html`。
 
+## 資料來源優先順序（必守）
+
+**優先呼叫本機 MCP 工具 `mcp__finance-local__*`（finance-mcp-bridge）**，比 WebSearch 抓的「公開資料近似值」更權威可審計：
+
+- 加權指數收盤 → `twse_taiex`
+- 三大法人 → `twse_three_institutional`
+- 個股／ETF 收盤 → `twse_stock`（TW）／`stooq_quote`（美股、全球指數透過 SPY 等 ETF proxy）
+- 美國利率、油價、DXY、通膨 → `fred_series` 或 `fred_macro_dashboard`
+- 組合穿透 TSMC 曝險與槓桿率 → `etf_lookthrough_tsmc`（傳入記憶中的權重）
+- 台積電與 AI 供應鏈月營收 → `mops_monthly_revenue` 或 `mops_ai_supply_chain`
+
+工具不可用時（使用者 Mac 離線、ToolSearch 找不到 `mcp__finance-local__*`）才退回 **WebSearch**，並於報告中註明「資料來源：WebSearch 公開資料近似值」。**資料來源在報告免責聲明中應明確標出**：使用 MCP 時標「TWSE 官方 / FRED / Stooq / MOPS OpenAPI」，使用 WebSearch 時標「公開資料近似值」。
+
 ## 個人持股
 
 以 auto-memory 中最新同步的實際台股持股清單為準（持股已於 2026-05-25 同步，記憶檔 `tw-stock-holdings`）。若記憶與使用者最新提供者不一致，以使用者最新提供者為準，並更新記憶。如使用者尚未提供成本價，損益／報酬類分析從略並註明。
