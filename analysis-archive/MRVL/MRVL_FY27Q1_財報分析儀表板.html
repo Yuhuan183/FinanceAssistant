@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<!-- Marvell Technology FY2027 Q1 財報分析互動式儀表板 -->
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marvell Technology (NASDAQ: MRVL) FY2027 第一季 財報分析儀表板</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
+<style>
+:root{
+  --bg:#0b0e14; --panel:#141925; --panel2:#1c2333; --line:#2a3346;
+  --txt:#e8ecf3; --txt2:#9aa6bd; --txt3:#6b7689;
+  --green:#76b900; --green2:#9ed320;
+  --pos:#34d399; --neg:#f87171; --warn:#fbbf24; --blue:#60a5fa;
+  --radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);color:var(--txt);line-height:1.65;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1240px;margin:0 auto;padding:20px 18px 60px;}
+.hd{background:linear-gradient(135deg,#141925 0%,#1c2333 60%,#10331a 100%);
+  border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;}
+.hd .eyebrow{color:var(--green2);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.hd h1{font-size:25px;font-weight:800;margin:6px 0 4px;}
+.hd .sub{color:var(--txt2);font-size:13.5px;}
+.hd .meta{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+.chip{background:var(--panel2);border:1px solid var(--line);border-radius:999px;
+  padding:5px 13px;font-size:12px;color:var(--txt2);}
+.chip b{color:var(--txt);}
+.chip.g{border-color:#3a5c10;background:#16240a;color:var(--green2);}
+.verdict{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--green);
+  border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;}
+.verdict h2{font-size:14px;color:var(--green2);margin-bottom:6px;letter-spacing:1px;}
+.verdict p{font-size:14px;color:var(--txt);}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.tab{background:var(--panel);border:1px solid var(--line);color:var(--txt2);
+  padding:9px 16px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s;}
+.tab:hover{color:var(--txt);border-color:#3a4760;}
+.tab.on{background:var(--green);color:#0b0e14;border-color:var(--green);}
+.panel-view{display:none;}
+.panel-view.on{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(186px,1fr));gap:12px;margin-bottom:16px;}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;}
+.kpi .l{font-size:11.5px;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;}
+.kpi .v{font-size:26px;font-weight:800;margin:5px 0 3px;}
+.kpi .d{font-size:12.5px;font-weight:600;}
+.kpi .d.pos{color:var(--pos);}.kpi .d.neg{color:var(--neg);}.kpi .d.neu{color:var(--txt2);}
+.kpi .v.green{color:var(--green2);}
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 22px;margin-bottom:16px;}
+.sec h3{font-size:15.5px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.sec h3::before{content:"";width:4px;height:16px;background:var(--green);border-radius:2px;}
+.sec h4{font-size:13.5px;color:var(--green2);margin:14px 0 7px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr;}}
+.chartbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;}
+.chartbox h3{font-size:14px;font-weight:700;margin-bottom:4px;}
+.chartbox .cap{font-size:11.5px;color:var(--txt3);margin-bottom:12px;}
+.cv{position:relative;height:270px;}
+ul.clean{list-style:none;}
+ul.clean li{padding:8px 0 8px 22px;position:relative;font-size:13.5px;border-bottom:1px solid var(--line);}
+ul.clean li:last-child{border-bottom:none;}
+ul.clean li::before{content:"\25B8";position:absolute;left:2px;color:var(--green);font-size:12px;top:9px;}
+ul.clean li b{color:var(--txt);}
+.txt2{color:var(--txt2);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:9px 11px;text-align:right;border-bottom:1px solid var(--line);}
+th:first-child,td:first-child{text-align:left;}
+thead th{color:var(--txt3);font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;
+  border-bottom:2px solid #313b50;}
+tbody tr:hover{background:var(--panel2);}
+td.pos{color:var(--pos);}td.neg{color:var(--neg);}
+.rowhi{background:#16240a !important;}
+.rowhi td{color:var(--green2);font-weight:700;}
+.note{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:13px 16px;
+  font-size:12.8px;color:var(--txt2);margin-top:10px;}
+.note b{color:var(--txt);}
+.note.warn{border-color:#5c4a10;background:#241d08;}
+.note.warn b{color:var(--warn);}
+.anglecard{background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:18px;}
+.anglecard .tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;margin-bottom:9px;}
+.tag.hold{background:#1a2f12;color:var(--green2);border:1px solid #3a5c10;}
+.tag.buy{background:#0e2440;color:var(--blue);border:1px solid #1d4675;}
+.tag.long{background:#2a1f08;color:var(--warn);border:1px solid #5c4a10;}
+.anglecard h4{font-size:14.5px;color:var(--txt);margin:0 0 8px;}
+.anglecard p{font-size:12.8px;color:var(--txt2);margin-bottom:8px;}
+.anglecard .mini{font-size:11.5px;color:var(--txt3);border-top:1px dashed var(--line);padding-top:8px;margin-top:4px;}
+.anglecard ul.al{list-style:none;margin:2px 0 0;}
+.anglecard ul.al li{font-size:12px;color:var(--txt2);padding:3px 0 3px 15px;position:relative;line-height:1.55;}
+.anglecard ul.al li::before{content:"\2013";position:absolute;left:2px;color:var(--txt3);}
+.anglecard ul.al li b{color:var(--txt);}
+.anglecard .blk{margin-top:10px;}
+.anglecard .blk>b{font-size:11.5px;letter-spacing:.3px;}
+.blk.bp>b{color:var(--pos);}
+.blk.bn>b{color:var(--neg);}
+.blk.bt>b{color:var(--blue);}
+.anglecard .stance{color:var(--txt);font-size:12.6px;font-weight:600;
+  border-left:3px solid var(--green);padding-left:10px;margin:3px 0 4px;}
+.bullcard{background:#10240e;border-color:#2c5223;}
+.bearcard{background:#241011;border-color:#5c2526;}
+.bullcard>h4{color:var(--pos);}
+.bearcard>h4{color:var(--neg);}
+.scen{border-top:3px solid var(--line);}
+.scen.up{border-top-color:var(--pos);}
+.scen.bs{border-top-color:var(--blue);}
+.scen.dn{border-top-color:var(--neg);}
+.scen .px{font-size:22px;font-weight:800;margin:3px 0 1px;}
+.scen.up .px{color:var(--pos);}
+.scen.bs .px{color:var(--blue);}
+.scen.dn .px{color:var(--neg);}
+.scen .prob{font-size:10.5px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;}
+.scen .delta{font-size:12px;color:var(--txt2);margin-bottom:2px;}
+.risk{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;}
+.risk:last-child{border-bottom:none;}
+.risk .nm{flex:1;}
+.dots{display:flex;gap:3px;}
+.dot{width:9px;height:9px;border-radius:2px;background:var(--line);}
+.dot.on{background:var(--neg);}
+.dot.on.m{background:var(--warn);}
+.quote{border-left:3px solid var(--green);padding:6px 0 6px 16px;margin:10px 0;
+  font-style:italic;color:var(--txt);font-size:13.5px;}
+.quote span{display:block;font-style:normal;color:var(--txt3);font-size:11.5px;margin-top:4px;}
+.foot{color:var(--txt3);font-size:11.5px;text-align:center;margin-top:8px;line-height:1.8;}
+.disc{background:var(--panel);border:1px solid #5c4a10;border-radius:9px;padding:13px 16px;
+  font-size:11.8px;color:var(--txt2);margin-top:14px;}
+.disc b{color:var(--warn);}
+.backlink{display:inline-block;margin-bottom:14px;color:var(--green2);font-size:12px;text-decoration:none;
+  background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 14px;transition:.12s;}
+.backlink:hover{background:var(--green);color:#0b0e14;border-color:var(--green);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="backlink" href="../../index.html">← 返回財報日曆</a>
+
+  <!-- ===== 標題列 ===== -->
+  <div class="hd">
+    <div class="eyebrow">Marvell Technology · NASDAQ: MRVL</div>
+    <h1>FY2027 第一季 財報分析儀表板</h1>
+    <div class="sub">會計期間：FY2027 第一季（季結束於 2026 年 5 月 3 日）· 財報於 2026-05-27 盤後發布</div>
+    <div class="meta">
+      <span class="chip g">營收 <b>$2.418B（+28% YoY · 創高）</b></span>
+      <span class="chip">資料中心 <b>$1.833B（+27% YoY · 占 76%）</b></span>
+      <span class="chip">Non-GAAP EPS <b>$0.80（+29% YoY · 超預期）</b></span>
+      <span class="chip">下季營收財測 <b>~$2.70B（+35% YoY）</b></span>
+      <span class="chip">FY27 全年 <b>~$11.5B（+40% YoY）</b></span>
+      <span class="chip">收盤股價 <b>$198.75</b></span>
+    </div>
+  </div>
+
+  <!-- ===== 核心結論 ===== -->
+  <div class="verdict">
+    <h2>核心結論</h2>
+    <p>一份「成長加速＋全年大幅上修」的優質財報。營收年增 +28% 創歷史新高，Non-GAAP EPS 超越市場預期，下季財測指引營收加速到 +35% YoY；管理層更同步調升 FY27 至 ~$11.5B（+40% YoY）、FY28 至 ~$16.5B（+45% YoY）。動能完全由「客製 AI 矽（XPU/ASIC）+ 資料中心光通訊」雙引擎驅動，已拿下 3 家美系一線雲端業者的 ASIC 設計案、50+ 新設計案在 10+ 客戶。張力在於股價：YTD 已漲逾 130%，市場對「客製 AI 矽」題材定價極高，盤後僅 +3.5% 反映多頭情緒在獲利兌現後出現遲疑。基本面與題材皆無破口，但短線估值與兌現節奏是觀察重點。</p>
+  </div>
+
+  <!-- ===== 分頁列 ===== -->
+  <div class="tabs" id="tabs">
+    <div class="tab on" data-t="0">總覽</div>
+    <div class="tab" data-t="1">財報細節</div>
+    <div class="tab" data-t="2">未來展望與方向</div>
+    <div class="tab" data-t="3">股價與估值</div>
+    <div class="tab" data-t="4">三角度投資觀點</div>
+  </div>
+
+  <!-- ============ 分頁 0：總覽 ============ -->
+  <div class="panel-view on" data-v="0">
+    <div class="kpis">
+      <div class="kpi"><div class="l">總營收</div><div class="v green">$2.418B</div><div class="d pos">+28% YoY · 創歷史新高 · 超過原財測中點 $18M</div></div>
+      <div class="kpi"><div class="l">資料中心營收</div><div class="v">$1.833B</div><div class="d pos">+27% YoY · 占營收 76%</div></div>
+      <div class="kpi"><div class="l">Non-GAAP EPS</div><div class="v">$0.80</div><div class="d pos">+29% YoY · 優於市場預估 $0.75（+6.7%）</div></div>
+      <div class="kpi"><div class="l">Non-GAAP 毛利率</div><div class="v">58.9%</div><div class="d neu">GAAP 毛利率 52.1% · GAAP EPS $0.04</div></div>
+      <div class="kpi"><div class="l">下季營收財測</div><div class="v">~$2.70B</div><div class="d pos">±5% · 約 +35% YoY · +12% QoQ</div></div>
+      <div class="kpi"><div class="l">全年展望</div><div class="v" style="font-size:20px">大幅上修</div><div class="d pos">FY27 ~$11.5B · FY28 ~$16.5B</div></div>
+    </div>
+    <div class="grid2">
+      <div class="chartbox">
+        <h3>營收趨勢（含財測）</h3>
+        <div class="cap">單位：十億美元（$B）· 灰色為公司財測（中點）</div>
+        <div class="cv"><canvas id="cRev"></canvas></div>
+      </div>
+      <div class="chartbox">
+        <h3>本季營收組成</h3>
+        <div class="cap">資料中心一柱擎天，已占整體營收逾四分之三</div>
+        <div class="cv"><canvas id="cMix"></canvas></div>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>財報重點</h3>
+      <ul class="clean">
+        <li><b>營收全面超標：</b>Q1 FY27 營收 $2.418B（+28% YoY），創歷史新高，較公司前次財測中點高 $1,800 萬美元。</li>
+        <li><b>資料中心扛大旗：</b>資料中心營收 $1.833B（+27% YoY），占整體營收約 76%，由客製 ASIC、光通訊 DSP、AEC／retimer 三大產品共同驅動。</li>
+        <li><b>AI 訂單能見度爆發：</b>管理層形容當季為「exceptional AI-related bookings」，已在 3 家美系 Tier-1 雲端業者拿到客製 ASIC 設計案，並有 50+ 新設計案分布於 10+ 客戶。</li>
+        <li><b>EPS 雙位數增長：</b>Non-GAAP EPS $0.80（+29% YoY），優於市場預估 $0.75；GAAP 淨利 $34.5M、GAAP EPS 僅 $0.04，反映重整／併購攤提費用仍大。</li>
+        <li><b>Q2 加速：</b>下季營收財測 ~$2.70B（±5%、約 +35% YoY），毛利率指引 GAAP 52.1–53.1%、Non-GAAP 58.25–59.25%，雙位數成長動能未見鈍化。</li>
+        <li><b>全年大幅上調：</b>FY27 由先前約 $10.5B 拉升至 ~$11.5B（+40% YoY）；FY28 上看 ~$16.5B（+45% YoY），全年成長故事完成「再加速」校準。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ 分頁 1：財報細節 ============ -->
+  <div class="panel-view" data-v="1">
+    <div class="sec">
+      <h3>財報摘要</h3>
+      <table>
+        <thead><tr><th>項目</th><th>Q1 FY2027</th><th>年增</th></tr></thead>
+        <tbody>
+          <tr class="rowhi"><td>營收</td><td>$2,418M</td><td>+28%</td></tr>
+          <tr><td>資料中心</td><td>$1,833M</td><td class="pos">+27%</td></tr>
+          <tr><td>通訊與其他（Enterprise / Carrier / Auto / Consumer）</td><td>$585M</td><td class="pos">+29%</td></tr>
+          <tr><td>GAAP 毛利率</td><td>52.1%</td><td>—</td></tr>
+          <tr><td>Non-GAAP 毛利率</td><td>58.9%</td><td>—</td></tr>
+          <tr><td>GAAP 淨利</td><td>$34.5M</td><td>—</td></tr>
+          <tr><td>GAAP EPS</td><td>$0.04</td><td>—</td></tr>
+          <tr><td>Non-GAAP EPS</td><td>$0.80</td><td class="pos">+29%</td></tr>
+        </tbody>
+      </table>
+      <div class="note warn"><b>關鍵眉角：</b>Marvell 揭露 GAAP 與 Non-GAAP 兩套口徑落差極大——本季 GAAP 淨利僅 $34.5M（EPS $0.04），但 Non-GAAP EPS 達 $0.80。差異來源主要為股票薪酬、Inphi／Innovium 等併購相關之無形資產攤提，以及重整費用。市場與管理層財測（EPS、毛利率）皆以 Non-GAAP 口徑溝通，引用與比較時務必確認口徑一致；長線投資人也應留意 Non-GAAP 與 GAAP 何時收斂。</div>
+    </div>
+    <div class="grid2">
+      <div class="sec" style="margin:0">
+        <h3>分部營收</h3>
+        <table><thead><tr><th>分部</th><th>營收</th><th>年增</th><th>占比</th></tr></thead>
+          <tbody>
+            <tr class="rowhi"><td>資料中心</td><td>$1,833M</td><td>+27%</td><td>~76%</td></tr>
+            <tr><td>通訊與其他</td><td>$585M</td><td class="pos">+29%</td><td>~24%</td></tr>
+            <tr><td>合計</td><td>$2,418M</td><td class="pos">+28%</td><td>100%</td></tr>
+          </tbody></table>
+        <div class="note">Marvell 自 FY25 重新整併產品線，目前對外揭露主要分為「Data Center」與「Other（Enterprise Networking / Carrier Infrastructure / Consumer / Automotive & Industrial）」。資料中心包含客製 ASIC、光通訊 DSP、PAM4、AEC、retimer、儲存控制器；「其他」涵蓋企業 / 電信網通、車用乙太、消費型儲存等較成熟業務，本季表現亦回升。</div>
+      </div>
+      <div class="chartbox" style="margin:0">
+        <h3>各分部年增率</h3>
+        <div class="cap">資料中心 +27% 維持高檔；非資料中心業務本季 +29% 同步回溫</div>
+        <div class="cv"><canvas id="cMargin"></canvas></div>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>獲利能力與現金流</h3>
+      <div class="grid3">
+        <div class="anglecard"><h4>毛利率走勢</h4><p>Non-GAAP 毛利率 58.9%，與前次相近；下季財測指引 58.25–59.25%。GAAP 毛利率 52.1%、Non-GAAP/GAAP 落差約 680bps，反映併購攤提仍重。</p><div class="mini">毛利率仍受客製 ASIC 高量產比重所拖累的「結構性壓力」與光通訊高價值產品的「結構性拉抬」拉扯。</div></div>
+        <div class="anglecard"><h4>獲利雙口徑</h4><p>GAAP 淨利僅 $34.5M（EPS $0.04），Non-GAAP EPS $0.80。Non-GAAP 排除股票薪酬、併購攤提、重整費用等項目；兩套口徑落差極大，務必確認比較基礎。</p><div class="mini">需追蹤 GAAP 與 Non-GAAP 何時收斂——這是判斷「真實獲利能力」的關鍵。</div></div>
+        <div class="anglecard"><h4>研發與資本配置</h4><p>持續加碼客製矽（XPU/ASIC）與光通訊產品研發，並擴大與 NVIDIA、台積電在客製運算和光網路上的合作。資本配置以研發為主，輔以選擇性回購。</p><div class="mini">研發投入是維持 ASIC／光通訊技術領先的命脈，費用率短期難以下行。</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 分頁 2：未來展望與方向 ============ -->
+  <div class="panel-view" data-v="2">
+    <div class="kpis">
+      <div class="kpi"><div class="l">下季營收財測</div><div class="v green">~$2.70B</div><div class="d pos">±5% · 約 +35% YoY · +12% QoQ</div></div>
+      <div class="kpi"><div class="l">下季毛利率財測</div><div class="v" style="font-size:20px">58.25–59.25%</div><div class="d pos">Non-GAAP · 與本季相當</div></div>
+      <div class="kpi"><div class="l">FY27 全年營收展望</div><div class="v">~$11.5B</div><div class="d pos">約 +40% YoY · 較原財測上修</div></div>
+      <div class="kpi"><div class="l">FY28 全年營收展望</div><div class="v">~$16.5B</div><div class="d pos">約 +45% YoY · 大幅上修</div></div>
+    </div>
+    <div class="sec">
+      <h3>成長動能</h3>
+      <ul class="clean">
+        <li><b>客製 AI 矽（XPU／ASIC）：</b>已拿下 3 家美系 Tier-1 雲端業者的設計案，量產進度啟動；管理層揭露 50+ 新設計案分布於 10+ 客戶，預示中長線多個 ramp wave。</li>
+        <li><b>光通訊與資料中心連接：</b>PAM4 DSP、AEC（active electrical cable）、retimer 為 AI cluster 訊號完整性的關鍵，本季 ramp 加速；管理層表示 AEC + retimer 合計營收 FY27 可望「年增逾一倍」。</li>
+        <li><b>NVIDIA 生態系合作：</b>宣布與 NVIDIA 在客製矽與光網路整合上的合作，為 NVL72／scale-out cluster 提供高速網路解，鞏固在 NVIDIA 體系中的關鍵供應商角色。</li>
+        <li><b>非資料中心業務回升：</b>通訊與其他分部 +29% YoY，企業網路、電信基礎設施、車用乙太逐步走出底部，提供成長基礎。</li>
+        <li><b>全年財測雙重上修：</b>FY27 由原預期 ~$10.5B 拉升到 ~$11.5B；FY28 由先前隱含的 ~$13–14B 大幅拉到 ~$16.5B，意味管理層對 AI bookings 的兌現速度有信心。</li>
+      </ul>
+      <h4>較長線的選擇權</h4>
+      <p class="txt2" style="font-size:13px">當前 ASIC／客製矽是「AI 第三條路」——當超大型雲端業者意識到必須降低對 NVIDIA 通用 GPU 的單一依賴，Marvell 與 Broadcom 是同時擁有「ASIC 設計能力 + 高速 SerDes IP + 光通訊整合」的少數玩家。50+ 新設計案在 10+ 客戶意味未來 3–5 年有多個 ramp wave 待釋放；NVIDIA 體系結盟亦讓 Marvell 從單純「替代品」變成「補位品」，雙路徑同時受惠。光通訊上的 1.6T／3.2T PAM4 DSP、共封裝光學（CPO）、矽光子，皆為長線題材。</p>
+    </div>
+    <div class="sec">
+      <h3>管理層評論</h3>
+      <div class="quote">「我們在當季看到 exceptional AI-related bookings，並據此大幅上修 FY27 與 FY28 的營收展望；客製矽業務的設計活動目前已達 50+ 個新機會、橫跨 10+ 家客戶，量產正在啟動。」<span>— Matt Murphy，Marvell 董事長暨執行長（重點轉述）</span></div>
+      <div class="quote">「AEC 與 retimer 的營收在 FY27 將較去年至少倍增，光通訊 DSP 持續是 hyperscaler AI cluster 的關鍵組件。」<span>— Matt Murphy，重點轉述</span></div>
+    </div>
+    <div class="sec">
+      <h3>方向研判（專業推斷）</h3>
+      <ul class="clean">
+        <li><b>成長故事從「能否兌現」轉為「兌現速度」：</b>（推斷）FY27、FY28 同步大幅上修意味管理層對 ramp 排程已具高能見度；後續市場焦點是「實際 ramp 是否守住 +40% / +45%」，而非「能否成長」。</li>
+        <li><b>客戶集中度將續升：</b>（推斷）3 家美系 Tier-1 客戶對客製 ASIC 比重高，意味前 2–3 大客戶營收占比短期難下；客戶集中度是 ASIC 商業模式的結構性張力。</li>
+        <li><b>Non-GAAP / GAAP 收斂仍慢：</b>（推斷）併購攤提與股票薪酬規模仍大，GAAP 獲利短期難快速貼近 Non-GAAP，估值仍以 Non-GAAP 為主軸定價。</li>
+        <li><b>核心監控變數：</b>（推斷）3 家 Tier-1 ASIC 客戶的量產出貨節奏、光通訊 DSP 1.6T 升級、AEC/retimer 倍增能否兌現、毛利率能否守在 58%+，將是未來 4 季決定多空的關鍵。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ 分頁 3：股價與估值 ============ -->
+  <div class="panel-view" data-v="3">
+    <div class="kpis">
+      <div class="kpi"><div class="l">最新收盤</div><div class="v">$198.75</div><div class="d neu">2026-05-27 收盤 · 盤中曾觸 $196.25 · 盤後 +3.5%</div></div>
+      <div class="kpi"><div class="l">YTD 漲幅</div><div class="v" style="font-size:22px">+131%~+142%</div><div class="d pos">AI 客製矽題材推升 · 顯著跑贏 SOX／費半</div></div>
+      <div class="kpi"><div class="l">分析師目標價（區間）</div><div class="v" style="font-size:20px">$172–$300</div><div class="d neu">12 個月共識均價 ~$178 · 盤前多家上修</div></div>
+      <div class="kpi"><div class="l">市場評級</div><div class="v" style="font-size:20px">Strong Buy</div><div class="d pos">28 位分析師共識 · HSBC 上修至 Buy</div></div>
+    </div>
+    <div class="chartbox">
+      <h3>關鍵價位地圖</h3>
+      <div class="cap">單位：美元 · 現價 $198.75 · 上方共識均價 ~$178 已被現價超過，須仰賴上修才能再推升；HSBC $300 為當前最樂觀目標</div>
+      <div class="cv" style="height:300px"><canvas id="cPrice"></canvas></div>
+    </div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="sec" style="margin:0">
+        <h3>技術面解讀</h3>
+        <ul class="clean">
+          <li><b>波動極端、財報日當天大幅震盪：</b>2026-05-27 盤中開盤 $217.98、最低觸 $196.25、收 $198.75；單日下跌 ~9%，反映市場在財報前的獲利了結與多頭情緒卸力。</li>
+          <li><b>盤後溫和反應：</b>EPS、營收、財測全數超預期，但盤後僅 +3.5%，說明大量利多已在盤前定價。</li>
+          <li><b>YTD 動能仍強：</b>2026 年迄今漲逾 130%，過去一年股價區間自約 $60 到 $220，技術面屬「過熱後盤整」格局。</li>
+          <li><b>短線壓力與支撐：</b>上方壓力為近期高 ~$220、再往上是 HSBC PT $300；下方支撐落在 50 日均線一帶（概估 ~$170）與心理整數 $180。</li>
+        </ul>
+      </div>
+      <div class="sec" style="margin:0">
+        <h3>估值評析</h3>
+        <p class="txt2" style="font-size:13px">2026 YTD +131%，市場已 price in 客製 AI 矽放量的「再加速」劇本。以 FY27 ~$11.5B、FY28 ~$16.5B 計算，當前隱含的 forward P/S 約 13–14 倍，相對 Broadcom（半導體部分 P/S）與 NVIDIA 屬偏高水位；以 Non-GAAP EPS 全年估約 $3.3–3.7 推算，forward P/E 約 54–60 倍，屬「成長股估值」。</p>
+        <div class="note">真正的估值課題：FY27/FY28 雙上修已被市場吃下，後續多頭新糧須來自「再上修」。一旦 ASIC ramp 延遲、AEC/retimer 倍增不如預期，或 hyperscaler capex 出現訊號雜訊，倍數壓縮對股價的殺傷力會比 EPS 本身波動大得多。</div>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>財報後股價反應與原因</h3>
+      <ul class="clean">
+        <li><b>盤後上漲但有限：</b>全面超預期但盤後僅 +3.5%，反映市場在盤前對「beat-and-raise」的期待已被多家券商目標價大幅上修所定價（HSBC $85→$300、Susquehanna $100→$230 等）。</li>
+        <li><b>「賣靴子」效應：</b>盤中股價自 $217.98 跌至 $196.25，是典型「事件前獲利了結」行為；盤後低基期再 +3.5%，整體仍屬偏多但動能不強。</li>
+        <li><b>市場仍信成長故事：</b>FY27、FY28 雙重上修強化長線多頭定價基礎；客製 ASIC 已從「未來故事」走入「已兌現」階段。</li>
+        <li><b>後續關注：</b>下一季法說會的設計案 ramp 進度、是否能進一步上修，以及 ASIC 客戶集中度的變化。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ 分頁 4：三角度投資觀點 ============ -->
+  <div class="panel-view" data-v="4">
+    <div class="sec">
+      <h3>多空對決</h3>
+      <div class="grid2">
+        <div class="anglecard bullcard">
+          <h4>&#9650; 多方論點（Bull Case）</h4>
+          <ul class="al">
+            <li><b>AI 客製矽爆發：</b>3 家 Tier-1 美系雲端客戶 ASIC 量產啟動，50+ 設計案分布 10+ 客戶。</li>
+            <li><b>光通訊雙引擎：</b>PAM4 DSP、AEC、retimer 在 AI cluster 中是必選元件，AEC+retimer FY27 倍增。</li>
+            <li><b>NVIDIA 生態結盟：</b>客製矽與光網路整合進入 NVIDIA 體系，雙路徑同時受惠。</li>
+            <li><b>全年雙重上修：</b>FY27 ~$11.5B（+40%）、FY28 ~$16.5B（+45%），管理層對能見度有信心。</li>
+            <li><b>非資料中心同步回升：</b>通訊／其他分部 +29%，企業網路與車用乙太走出底部。</li>
+            <li><b>分析師共識 Strong Buy：</b>盤前多家券商大幅上修目標價（HSBC、Susquehanna、Morgan Stanley、Cantor、Stifel）。</li>
+          </ul>
+        </div>
+        <div class="anglecard bearcard">
+          <h4>&#9660; 空方論點（Bear Case）</h4>
+          <ul class="al">
+            <li><b>估值偏高：</b>forward P/E 約 54–60 倍、P/S 約 13–14 倍，屬「成長股估值」，容錯空間有限。</li>
+            <li><b>YTD 漲幅大、波動極大：</b>2026 YTD +131%，過去一年區間 $60–$220，部位管理難度提高。</li>
+            <li><b>客戶集中度：</b>3 家 Tier-1 ASIC 客戶占客製矽營收極大比例，單一客戶調整對營收衝擊明顯。</li>
+            <li><b>GAAP 獲利仍薄：</b>GAAP EPS 僅 $0.04、與 Non-GAAP $0.80 落差極大，併購攤提與股票薪酬規模大。</li>
+            <li><b>同業競爭：</b>Broadcom 在客製 ASIC 市場仍是最大對手，且擁有更深的客戶綁定。</li>
+            <li><b>AI capex 循環：</b>若 hyperscaler 資本支出步調放緩，客製矽 ramp 排程恐順延。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note">多空張力核心：基本面、財測、生態系定位都接近「滿格」，但估值已 price in 一輪上修。觀察重點不是「能否成長」，而是 ASIC ramp 是否能在下一季法說會交出比目前財測更亮的數字，否則倍數壓縮風險升高。</div>
+    </div>
+    <div class="sec">
+      <h3>三角度投資觀點</h3>
+      <p class="txt2" style="font-size:13px;margin-bottom:14px">依「已持有／考慮買進／長期投資」三種立場整理觀察重點與決策觸發點，作為自行判斷的依據，並非買賣建議。</p>
+      <div class="grid3">
+        <div class="anglecard">
+          <span class="tag hold">已持有 · 是否續抱</span>
+          <h4>基本面無破口，估值已過度反應</h4>
+          <div class="stance">財測雙重上修、ASIC ramp 進入兌現期，續抱基礎扎實；但 YTD +131%、估值偏高，課題在估值紀律與部位大小。</div>
+          <div class="blk bp"><b>&#10003; 支持續抱</b><ul class="al"><li>FY27、FY28 同步上修，成長劇本已轉入「兌現」階段。</li><li>NVIDIA 結盟＋ASIC 雙路徑，題材護城河擴大。</li></ul></div>
+          <div class="blk bn"><b>&#9888; 該留意</b><ul class="al"><li>forward P/E 54–60 倍、P/S 13–14 倍，估值偏高。</li><li>單日波動 ~9% 的紀錄反映情緒過熱與獲利了結。</li></ul></div>
+          <div class="blk bt"><b>&#127919; 決策觸發點</b><ul class="al"><li>下一季法說 ASIC ramp 進度若不如預期，或 FY27 沒進一步上修，考慮部分獲利了結。</li><li>檢視部位大小是否與高波動相稱。</li></ul></div>
+        </div>
+        <div class="anglecard">
+          <span class="tag buy">考慮買進 · 進場時機</span>
+          <h4>核心 AI 受惠股，但現價追高不利</h4>
+          <div class="stance">MRVL 是 AI ASIC＋光通訊的少數雙引擎玩家，但 YTD +131% 後現價追高的風險報酬比不佳。</div>
+          <div class="blk bp"><b>&#10003; 進場理由</b><ul class="al"><li>50+ ASIC 設計案在 10+ 客戶，長線 ramp wave 多。</li><li>AEC+retimer FY27 倍增，光通訊維持結構性成長。</li></ul></div>
+          <div class="blk bn"><b>&#9888; 風險報酬</b><ul class="al"><li>估值高，倍數壓縮風險大於 EPS 風險。</li><li>波動極大，單日 ~9% 跌幅並不罕見。</li></ul></div>
+          <div class="blk bt"><b>&#127919; 操作參考</b><ul class="al"><li>等待回測 50 日均線（~$170）或 $180 心理價附近分批進場。</li><li>單一部位上限建議偏保守，搭配 stop-loss 紀律。</li></ul></div>
+        </div>
+        <div class="anglecard">
+          <span class="tag long">長期投資 · 3–5 年</span>
+          <h4>賭 AI 客製矽與光網路的結構份額</h4>
+          <div class="stance">賭 MRVL 在客製 ASIC 與資料中心光通訊兩條路徑同時擴張，享受多年 ramp wave。</div>
+          <div class="blk bp"><b>&#10003; 長線多頭邏輯</b><ul class="al"><li>客製 ASIC 是 AI 加速器的「第三條路」，超大型雲端客戶有結構性需求。</li><li>1.6T／3.2T PAM4 DSP、CPO、矽光子的長線升級題材。</li></ul></div>
+          <div class="blk bn"><b>&#9888; 長線風險</b><ul class="al"><li>客戶集中度高，1–2 個 ASIC 客戶調整即顯著衝擊。</li><li>Broadcom 仍是 ASIC 領頭羊，競爭壓力存在。</li></ul></div>
+          <div class="blk bt"><b>&#127919; 每季追蹤</b><ul class="al"><li>3 家 Tier-1 ASIC 客戶量產進度與營收占比。</li><li>Non-GAAP 毛利率守在 58%+ 的能力、GAAP 與 Non-GAAP 收斂速度。</li></ul></div>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>12 個月情境分析（情境推演，非價格預測）</h3>
+      <p class="txt2" style="font-size:13px;margin-bottom:14px">以「forward P/E × 前瞻 EPS」為錨，並對照分析師目標價區間（$172–$300，均價 ~$178）與最新收盤 $198.75。三情境僅為相對推演，非價格保證。</p>
+      <div class="grid3">
+        <div class="anglecard scen up"><div class="prob">機率傾向 · 中</div><h4>樂觀情境</h4>
+          <div class="px">$260–300</div><div class="delta">約 +31%~+51%（較現價 $198.75）</div>
+          <div class="blk"><b>成立條件</b><ul class="al"><li>下一季法說 ASIC ramp 大幅超預期，FY27 再上修。</li><li>第 4 家 Tier-1 雲端業者 ASIC 設計案公告。</li><li>市場對 AI 客製矽估值倍數維持高檔。</li></ul></div></div>
+        <div class="anglecard scen bs"><div class="prob">機率傾向 · 最高</div><h4>基準情境</h4>
+          <div class="px">$190–230</div><div class="delta">約 -4%~+16%（較現價 $198.75）</div>
+          <div class="blk"><b>成立條件</b><ul class="al"><li>FY27 兌現 +40%、FY28 兌現 +45% 的當前財測。</li><li>毛利率守在 58–59% Non-GAAP。</li><li>估值倍數維持 forward P/E 50–55 倍區間。</li></ul></div></div>
+        <div class="anglecard scen dn"><div class="prob">機率傾向 · 中</div><h4>保守情境</h4>
+          <div class="px">$140–170</div><div class="delta">約 -30%~-14%（較現價 $198.75）</div>
+          <div class="blk"><b>成立條件</b><ul class="al"><li>ASIC ramp 出現延遲或單一大客戶調整。</li><li>AI capex 步調放緩，題材冷卻、倍數壓縮。</li><li>毛利率因 ASIC 量產占比升高被稀釋至 56–57%。</li></ul></div></div>
+      </div>
+      <div class="note warn"><b>提醒：</b>情境機率為相對傾向的定性判斷，非精算結果，請勿視為價格保證。</div>
+    </div>
+    <div class="sec">
+      <h3>風險因素一覽（紅色＝高，黃色＝中）</h3>
+      <div class="risk"><span class="nm"><b>估值已 price in 雙重上修</b>：forward P/E 50–60 倍，再上修空間靠 ASIC ramp 速度。</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>客戶集中度</b>：3 家 Tier-1 美系雲端客戶占客製矽營收極大比例，單一客戶調整影響顯著。</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>ASIC ramp 執行風險</b>：50+ 設計案能否準時進入量產，先進製程／HBM／封裝產能皆是變數。</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>Broadcom 競爭</b>：AVGO 仍是 ASIC 客製矽市場龍頭，份額重新分配是長線變數。</span>
+        <div class="dots"><span class="dot on m"></span><span class="dot on m"></span><span class="dot on m"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>GAAP／Non-GAAP 落差</b>：本季 GAAP EPS 僅 $0.04，併購攤提與股票薪酬規模大。</span>
+        <div class="dots"><span class="dot on m"></span><span class="dot on m"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="risk"><span class="nm"><b>AI capex 循環</b>：若 hyperscaler 資本支出放緩，ASIC 與光通訊 ramp 排程恐延後。</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></div>
+    </div>
+    <div class="sec">
+      <h3>後續追蹤清單</h3>
+      <ul class="clean">
+        <li><b>ASIC ramp 進度：</b>3 家 Tier-1 雲端客戶 ASIC 量產出貨節奏與占比變化。</li>
+        <li><b>新設計案開花：</b>下一季法說會是否揭露 50+ 設計案中有新客戶從設計階段進入量產。</li>
+        <li><b>光通訊倍增：</b>AEC + retimer 是否守住「FY27 倍增」的成長路徑、1.6T DSP 上市進度。</li>
+        <li><b>毛利率：</b>Non-GAAP 毛利率能否守在 58–59% 不被 ASIC 量產比重稀釋。</li>
+        <li><b>NVIDIA 結盟兌現：</b>客製矽 + 光網路整合方案的具體訂單與營收貢獻時程。</li>
+        <li><b>競爭份額：</b>相對 Broadcom 在 ASIC 市佔的變化，與 Marvell 在 hyperscaler 的滲透深度。</li>
+      </ul>
+    </div>
+    <div class="disc">
+      <b>免責聲明：</b>本儀表板為財報資訊整理與分析，內容根據公開資料彙整，<b>不構成投資建議、不保證準確性</b>。所有投資決策應自行評估風險承受度與財務狀況，並諮詢合格專業人士。股票投資可能損失本金，過往績效不代表未來表現。
+    </div>
+  </div>
+
+  <div class="foot">
+    資料來源：Marvell 官方財報新聞稿與法說會、SEC 8-K Filing、公開市場行情與分析師資料彙整<br>
+    財報期間：FY2027 第一季（季結束於 2026-05-03）· 數據截至 2026-05-28 · 儀表板產製日：2026-05-28
+  </div>
+</div>
+
+<script>
+const GREEN='#76b900',GREEN2='#9ed320',TXT2='#9aa6bd',LINE='#2a3346';
+Chart.defaults.color=TXT2;
+Chart.defaults.font.family="-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif";
+Chart.defaults.font.size=11.5;
+
+/* ===== 分頁切換（原樣沿用，勿改）===== */
+const tabs=document.querySelectorAll('.tab'),views=document.querySelectorAll('.panel-view');
+let drawn={0:true};
+tabs.forEach(t=>t.addEventListener('click',()=>{
+  const i=t.dataset.t;
+  tabs.forEach(x=>x.classList.remove('on'));t.classList.add('on');
+  views.forEach(v=>v.classList.toggle('on',v.dataset.v===i));
+  if(!drawn[i]){drawn[i]=true;setTimeout(()=>renderFor(i),30);}
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+/* ===== 圖表 ===== */
+function chartRev(){
+  new Chart(document.getElementById('cRev'),{
+    type:'bar',
+    data:{labels:['Q1 FY26','Q4 FY26','Q1 FY27','Q2 FY27（財測）'],
+      datasets:[{data:[1.89,1.82,2.418,2.70],
+        backgroundColor:[GREEN+'66',GREEN+'99',GREEN,'#5b6577'],
+        borderColor:[GREEN,GREEN,GREEN2,'#7a8499'],borderWidth:1.5,borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'營收 $'+c.parsed.y+'B'}}},
+      scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:LINE},ticks:{callback:v=>'$'+v+'B'}}}}
+  });
+}
+function chartMix(){
+  new Chart(document.getElementById('cMix'),{
+    type:'doughnut',
+    data:{labels:['資料中心','通訊與其他'],
+      datasets:[{data:[1.833,0.585],
+        backgroundColor:[GREEN,GREEN2],borderColor:'#141925',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+      plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:14}},
+        tooltip:{callbacks:{label:c=>{const t=c.dataset.data.reduce((a,b)=>a+b,0);
+          return ' '+c.label+'：$'+c.parsed+'B（'+(c.parsed/t*100).toFixed(1)+'%）';}}}}}
+  });
+}
+function chartMargin(){
+  new Chart(document.getElementById('cMargin'),{
+    type:'bar',
+    data:{labels:['資料中心','通訊與其他'],
+      datasets:[{label:'年增率',data:[27,29],
+        backgroundColor:[GREEN,GREEN2],
+        borderColor:[GREEN,GREEN2],borderWidth:1.5,borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'年增率 '+c.parsed.y+'%'}}},
+      scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:LINE},ticks:{callback:v=>v+'%'}}}}
+  });
+}
+function chartPrice(){
+  const labels=['共識均價(~12個月)','Morgan Stanley','Cantor','Stifel','Susquehanna','HSBC(最樂觀)','目前股價'];
+  const data=[178,172,190,210,230,300,198.75];
+  const colors=['#5b6577','#5b6577','#5b6577','#60a5fa','#60a5fa','#fbbf24',GREEN2];
+  new Chart(document.getElementById('cPrice'),{
+    type:'bar',
+    data:{labels:labels,datasets:[{data:data,backgroundColor:colors.map(c=>c+'cc'),
+      borderColor:colors,borderWidth:1.5,borderRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+c.parsed.x}}},
+      scales:{x:{grid:{color:LINE},ticks:{callback:v=>'$'+v}},y:{grid:{display:false}}}}
+  });
+}
+
+/* 依分頁延遲繪製圖表 */
+function renderFor(i){
+  if(i==='1')chartMargin();
+  if(i==='3')chartPrice();
+}
+chartRev();chartMix();
+</script>
+</body>
+</html>
