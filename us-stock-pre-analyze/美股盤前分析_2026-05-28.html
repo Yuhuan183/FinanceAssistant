@@ -16,7 +16,6 @@ body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystem
   background:var(--bg);color:var(--txt);line-height:1.65;-webkit-font-smoothing:antialiased;}
 .wrap{max-width:1100px;margin:0 auto;padding:20px 18px 60px;}
 
-/* header */
 .hd{background:linear-gradient(135deg,#141925 0%,#1c2333 60%,#10331a 100%);
   border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:14px;}
 .hd .eyebrow{color:var(--green2);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
@@ -24,24 +23,21 @@ body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystem
 .hd .sub{color:var(--txt2);font-size:13px;}
 .hd .clock{display:inline-block;margin-top:9px;background:#1c3a0a;border:1px solid #3a5c10;
   color:var(--green2);font-size:11.5px;font-weight:700;padding:3px 11px;border-radius:999px;}
-.hd .clock.hot{background:#3a1414;border-color:#6b2020;color:var(--neg);margin-left:6px;}
-.hd .clock.event{background:#0e1f3a;border-color:#1d3a6b;color:var(--blue);margin-left:6px;}
+.hd .clock.hol{background:#3a2a08;border-color:#5c4a10;color:var(--warn);margin-left:6px;}
+.hd .clock.bear{background:#3a1414;border-color:#6b2020;color:var(--neg);margin-left:6px;}
 
-/* section */
 .sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
   padding:18px 20px;margin-bottom:14px;}
 .sec h2{font-size:15.5px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
 .sec h2::before{content:"";width:4px;height:16px;background:var(--green);border-radius:2px;}
 .sec .shint{font-size:11.5px;color:var(--txt3);margin-bottom:13px;}
 
-/* top call */
-.topcall{background:var(--panel2);border:1px solid var(--line);border-left:4px solid var(--green);
+.topcall{background:var(--panel2);border:1px solid var(--line);border-left:4px solid var(--warn);
   border-radius:10px;padding:14px 17px;margin-bottom:13px;}
-.topcall .tag{font-size:10.5px;font-weight:800;letter-spacing:1.5px;color:var(--green2);text-transform:uppercase;}
+.topcall .tag{font-size:10.5px;font-weight:800;letter-spacing:1.5px;color:var(--warn);text-transform:uppercase;}
 .topcall p{font-size:13.3px;color:var(--txt);margin-top:5px;}
-.topcall p b{color:var(--green2);}
+.topcall p b{color:var(--warn);}
 
-/* signal chips */
 .sigrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
 .chip{font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid var(--line);
   background:var(--panel2);color:var(--txt2);}
@@ -50,7 +46,6 @@ body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystem
 .chip.warn{background:#3a2a08;border-color:#5c4a10;color:var(--warn);}
 .chip.blu{background:#0e1f3a;border-color:#1d3a6b;color:var(--blue);}
 
-/* market grid */
 .mkt{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
 .mcard{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:11px 13px;}
 .mcard .ml{font-size:11px;color:var(--txt3);font-weight:700;}
@@ -59,28 +54,22 @@ body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystem
 .mcard .mc.pos{color:var(--pos);}.mcard .mc.neg{color:var(--neg);}.mcard .mc.flat{color:var(--txt2);}
 .mcard .mn{font-size:10.5px;color:var(--txt3);margin-top:3px;line-height:1.45;}
 
-/* sub-heading inside section */
 .subh{font-size:12px;font-weight:800;color:var(--green2);margin:15px 0 8px;
   border-top:1px dashed var(--line);padding-top:11px;}
 .subh:first-of-type{border-top:none;padding-top:0;margin-top:6px;}
 
-/* narrative blocks */
 .nb{font-size:12.8px;color:var(--txt2);}
 .nb b{color:var(--txt);}
 .nb+.nb{margin-top:7px;}
 
-/* tables */
 table.tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px;}
 table.tbl th,table.tbl td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
 table.tbl th{font-size:11px;font-weight:700;color:var(--txt3);background:var(--panel2);letter-spacing:.4px;text-transform:uppercase;}
 table.tbl td.num{text-align:right;font-variant-numeric:tabular-nums;}
 table.tbl tr:hover td{background:#181f2e;}
-.bar{display:inline-block;height:8px;background:var(--green2);border-radius:3px;vertical-align:middle;margin-right:6px;}
-.bar.sm{background:#3a5c10;}
-.bar.bl{background:var(--blue);}
-.bar.pu{background:var(--purple);}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;}
+.dot.pos{background:var(--pos);}.dot.neg{background:var(--neg);}.dot.warn{background:var(--warn);}.dot.flat{background:var(--txt3);}
 
-/* position cards */
 .pcard{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px;}
 .pcard .ph{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;}
 .pcard .pname{font-size:14px;font-weight:800;}
@@ -93,9 +82,10 @@ table.tbl tr:hover td{background:#181f2e;}
 .ract.add{background:#0e2d20;color:var(--pos);border:1px solid #1d5c40;}
 .ract.cut{background:#3a1414;color:var(--neg);border:1px solid #6b2020;}
 .ract.hold{background:#1c2333;color:var(--txt2);border:1px solid var(--line);}
-.ract.lev{background:#2a1a3a;color:var(--purple);border:1px solid #4a2a6b;}
+.ract.conf-h{background:#0e2d20;color:var(--pos);border:1px solid #1d5c40;}
+.ract.conf-m{background:#3a2a08;color:var(--warn);border:1px solid #5c4a10;}
+.ract.conf-l{background:#1c2333;color:var(--txt3);border:1px solid var(--line);}
 
-/* scenario */
 .scgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
 .scbox{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:12px 14px;}
 .scbox .scl{font-size:11px;font-weight:800;letter-spacing:1px;}
@@ -103,20 +93,17 @@ table.tbl tr:hover td{background:#181f2e;}
 .scbox .scd{font-size:12.5px;color:var(--txt2);margin-top:6px;}
 .scbox .scd b{color:var(--txt);}
 
-/* risk list */
 .rlist{font-size:12.5px;color:var(--txt2);padding-left:18px;}
 .rlist li{margin-bottom:5px;}
 .rlist li b{color:var(--warn);}
 
-/* exposure bar chart */
 .expb{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:13px 15px;margin-top:6px;}
 .expb .exprow{display:flex;align-items:center;font-size:12.3px;padding:5px 0;}
-.expb .expn{flex:0 0 95px;color:var(--txt2);font-weight:600;}
+.expb .expn{flex:0 0 110px;color:var(--txt2);font-weight:600;}
 .expb .expb2{flex:1;background:#0b0e14;border-radius:4px;height:18px;position:relative;overflow:hidden;}
 .expb .expfill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:11px;font-weight:800;color:#0b0e14;}
-.expb .expnote{font-size:10.5px;color:var(--txt3);margin-left:8px;flex:0 0 90px;text-align:right;}
+.expb .expnote{font-size:10.5px;color:var(--txt3);margin-left:8px;flex:0 0 100px;text-align:right;}
 
-/* footer */
 .foot{font-size:11px;color:var(--txt3);padding:18px 4px 0;text-align:center;line-height:1.65;}
 .foot b{color:var(--warn);}
 
@@ -134,8 +121,8 @@ table.tbl tr:hover td{background:#181f2e;}
 <div class="hd">
   <div class="eyebrow">US PRE-MARKET BRIEFING</div>
   <h1>美股盤前分析 · 2026/05/28（週四）</h1>
-  <div class="sub">資料日：上一交易日 2026/05/27（週三）收盤 ｜ 美東開盤 9:30 ET ｜ <b style="color:var(--warn);">今日 08:30 ET 4 月 PCE 通膨數據</b></div>
-  <span class="clock">交易日</span><span class="clock event">PCE 公布日</span><span class="clock hot">NVDA 4 連黑</span>
+  <div class="sub">資料日：上一交易日 2026/05/27（週三）收盤 ｜ 美東開盤 9:30 ET（台北時間 21:30）</div>
+  <span class="clock">交易日</span><span class="clock bear">半導體承壓</span>
 </div>
 
 <!-- TOP CALL -->
@@ -144,72 +131,77 @@ table.tbl tr:hover td{background:#181f2e;}
   <div class="shint">用最短篇幅交代今天最該看的事</div>
   <div class="topcall">
     <span class="tag">KEY CALL</span>
-    <p><b>本週最大事件日：4 月 PCE 將揭曉，組合首要風險源來自利率敏感度而非個股。</b>週二（5/26）半導體＋4.48%、AMD 單日噴出 +7.78% 創波段新高後，週三立即出現分歧：道瓊收 506.88 創歷史新高、SPY／QQQ 幾乎持平、<b>NVDA 收 $212.60 第 4 個交易日連黑</b>、AMD 拉回 -1.66%、SMH 收 $595.55 跌破 600 整數關。今日 08:30 ET 4 月 PCE 公布——市場共識核心 PCE YoY 約 3.0%、MoM 0.2-0.3%；油價自月高 $114 以下回落雖然有助通膨溫和，但 Cleveland Fed Nowcast 顯示通膨可能因油價反彈出現上行驚奇。<b>建議今日 PCE 公布前不主動加減碼</b>，數據確認後再判斷利率與科技股估值方向。</p>
+    <p><b>半導體深度賣壓 × 大型科技軟著陸 × 5/29 PCE 倒數。</b>昨日（5/27）美股出現「典型 risk-off 內部輪動」：<b>SMH 盤中急殺至 $584.93、收盤 -2.69%</b>，MRVL -8.9%、ARM -5.6%、MU -2.9%、AMD -2.5%、ASML -2.4% 共振下殺；同時 <b>META +4.3%、AMZN +2.1%、AAPL +0.8%</b> 形成「賣 AI 硬體、買 AI 應用」典型輪動。10Y 殖利率回落到 <b>4.50%（-6bp）</b>對估值有利、但顯然不是科技股的多頭訊號。今日盤前焦點：原油持續疲弱（WTI $90 區）反映需求／伊朗緩和、明日（5/29）4 月 PCE 物價是本週決勝點。<b>組合配置：半導體曝險已過度集中，今日不主動加碼任何半導體部位，靜待 PCE 與 SMH $585 支撐確認。</b></p>
   </div>
   <div class="sigrow">
-    <span class="chip warn">PCE 數據日（08:30 ET）</span>
-    <span class="chip neg">NVDA 4 連黑、跌破 215</span>
-    <span class="chip pos">Dow 新高（道瓊獨強）</span>
-    <span class="chip pos">伊朗 Hormuz 通航進展</span>
-    <span class="chip warn">10Y 殖利率 4.56% 高位</span>
-    <span class="chip warn">30Y 殖利率 5.03%</span>
-    <span class="chip neg">黃金 -1.33%、避險解倉</span>
+    <span class="chip neg">SMH 單日 -2.69%</span>
+    <span class="chip neg">MRVL -8.9% / ARM -5.6%</span>
+    <span class="chip pos">META +4.3% / AMZN +2.1%</span>
+    <span class="chip pos">10Y 4.50%（-6bp）</span>
+    <span class="chip warn">WTI $90.66 弱勢</span>
+    <span class="chip blu">5/29 4 月 PCE 物價</span>
+    <span class="chip blu">Q1 GDP 二次估數</span>
   </div>
 </div>
 
 <!-- GLOBAL MARKET -->
 <div class="sec">
   <h2>全球市場儀表板</h2>
-  <div class="shint">5/27 收盤｜利率與通膨：FRED 5/26-27 最新值｜ETF 報價：Stooq</div>
-
+  <div class="shint">5/27 美股收盤 ｜ 利率／通膨：FRED 最新值 ｜ 期貨：盤前即時</div>
   <div class="subh">美國主要指數 ETF（5/27 收盤）</div>
   <div class="mkt">
-    <div class="mcard"><div class="ml">SPY（S&amp;P 500）</div><div class="mv">750.45</div><div class="mc flat">－0.02%</div><div class="mn">記錄高位附近</div></div>
-    <div class="mcard"><div class="ml">QQQ（Nasdaq 100）</div><div class="mv">729.44</div><div class="mc flat">－0.11%</div><div class="mn">大型科技分歧</div></div>
-    <div class="mcard"><div class="ml">DIA（道瓊）</div><div class="mv">506.88</div><div class="mc pos">＋0.32% · 新高</div><div class="mn">指數 50,461 創高</div></div>
-    <div class="mcard"><div class="ml">SMH（半導體）</div><div class="mv">595.56</div><div class="mc neg">－1.09%</div><div class="mn">跌破 600 關卡</div></div>
-    <div class="mcard"><div class="ml">IWM（小型股）</div><div class="mv">290.35</div><div class="mc flat">－0.06%</div><div class="mn">利率敏感、區間整理</div></div>
-    <div class="mcard"><div class="ml">TLT（20Y+ 公債）</div><div class="mv">85.29</div><div class="mc pos">＋0.22%</div><div class="mn">殖利率小回</div></div>
-    <div class="mcard"><div class="ml">GLD（黃金）</div><div class="mv">408.49</div><div class="mc neg">－1.33%</div><div class="mn">PCE 前避險解倉</div></div>
-    <div class="mcard"><div class="ml">VIX（恐慌指數）</div><div class="mv">~16</div><div class="mc flat">推估</div><div class="mn">資料源暫缺、中性區</div></div>
+    <div class="mcard"><div class="ml">SPY（S&P 500）</div><div class="mv">750.46</div><div class="mc flat">-0.06%</div><div class="mn">盤中區間 748-751，極窄</div></div>
+    <div class="mcard"><div class="ml">QQQ（Nasdaq 100）</div><div class="mv">729.45</div><div class="mc neg">-0.48%</div><div class="mn">大型科技撐盤 / 半導體拖累</div></div>
+    <div class="mcard"><div class="ml">DIA（道瓊）</div><div class="mv">506.88</div><div class="mc pos">+0.19%</div><div class="mn">防禦型輪動受益</div></div>
+    <div class="mcard"><div class="ml">SMH（半導體）</div><div class="mv">595.50</div><div class="mc neg">-2.69%</div><div class="mn">盤中低 584.93，深度回測</div></div>
+    <div class="mcard"><div class="ml">IWM（小型股）</div><div class="mv">290.37</div><div class="mc neg">-0.27%</div><div class="mn">區間震盪</div></div>
+    <div class="mcard"><div class="ml">XLK（科技）</div><div class="mv">184.43</div><div class="mc neg">-0.94%</div><div class="mn">半導體權重壓低</div></div>
+    <div class="mcard"><div class="ml">XLF（金融）</div><div class="mv">51.42</div><div class="mc neg">-0.62%</div><div class="mn">隨利率回落而走弱</div></div>
+    <div class="mcard"><div class="ml">XLV（醫療保健）</div><div class="mv">148.79</div><div class="mc pos">+0.07%</div><div class="mn">防禦型避險</div></div>
+  </div>
+
+  <div class="subh">風險避險商品（5/27 收盤 / 盤前期貨）</div>
+  <div class="mkt">
+    <div class="mcard"><div class="ml">TLT（20Y+ 公債）</div><div class="mv">85.30</div><div class="mc pos">+0.06%</div><div class="mn">10Y 殖利率回落</div></div>
+    <div class="mcard"><div class="ml">HYG（高收益債）</div><div class="mv">80.13</div><div class="mc flat">-0.05%</div><div class="mn">信用利差未擴張</div></div>
+    <div class="mcard"><div class="ml">VXX（VIX 期貨）</div><div class="mv">25.02</div><div class="mc neg">-1.5%</div><div class="mn">盤中曾觸 25.69</div></div>
+    <div class="mcard"><div class="ml">GLD（黃金期貨）</div><div class="mv">$4428</div><div class="mc neg">-1.4%</div><div class="mn">盤前急殺，反 USD 走弱</div></div>
+    <div class="mcard"><div class="ml">WTI 原油（期貨）</div><div class="mv">$90.66</div><div class="mc neg">弱勢</div><div class="mn">伊朗談判緩和 / 需求疑慮</div></div>
+    <div class="mcard"><div class="ml">DX.F（ICE 美元指數）</div><div class="mv">99.14</div><div class="mc neg">-0.4%</div><div class="mn">USD 軟化 / 殖利率回落</div></div>
+    <div class="mcard"><div class="ml">BTC（盤前）</div><div class="mv">$73,403</div><div class="mc neg">-1.3%</div><div class="mn">風險資產同步走弱</div></div>
+    <div class="mcard"><div class="ml">HSI 恆生（亞洲時段）</div><div class="mv">25,006</div><div class="mc neg">-1.3%</div><div class="mn">亞股偏弱</div></div>
   </div>
 
   <div class="subh">利率與通膨（FRED 5/26-27 最新值）</div>
   <div class="mkt">
-    <div class="mcard"><div class="ml">美 10Y 殖利率</div><div class="mv">4.56%</div><div class="mc warn">月線 ＋26bp</div><div class="mn">5/22 數據；高位整理</div></div>
-    <div class="mcard"><div class="ml">美 2Y 殖利率</div><div class="mv">4.13%</div><div class="mc warn">月線 ＋35bp</div><div class="mn">前端跟漲幅度更大</div></div>
-    <div class="mcard"><div class="ml">10Y-2Y 利差</div><div class="mv">＋49bp</div><div class="mc flat">月線 -1bp</div><div class="mn">5/27 由 +43 回到 +49</div></div>
-    <div class="mcard"><div class="ml">30Y 殖利率</div><div class="mv">5.03%</div><div class="mc warn">月線 ＋9bp</div><div class="mn">5/26 數據；維持 5% 以上</div></div>
-    <div class="mcard"><div class="ml">10Y 通膨預期</div><div class="mv">2.39%</div><div class="mc pos">月線 -8bp</div><div class="mn">5/27 數據；溫和回落</div></div>
-    <div class="mcard"><div class="ml">DFF（Fed 有效利率）</div><div class="mv">3.62%</div><div class="mc flat">維持 3.50-3.75</div><div class="mn">市場期 Q3/Q4 各降 25bp</div></div>
-    <div class="mcard"><div class="ml">DXY 廣義美元</div><div class="mv">119.29</div><div class="mc warn">強勢區間</div><div class="mn">5/22 數據</div></div>
-    <div class="mcard"><div class="ml">WTI 原油（FRED）</div><div class="mv">$112.25</div><div class="mc warn">5/18 數據</div><div class="mn">伊朗利空盤前再回落</div></div>
+    <div class="mcard"><div class="ml">美 10Y 殖利率</div><div class="mv">4.50%</div><div class="mc pos">-6bp 回落</div><div class="mn">5/19 高點 4.67 → 4.50</div></div>
+    <div class="mcard"><div class="ml">美 2Y 殖利率</div><div class="mv">4.01%</div><div class="mc pos">-12bp 急降</div><div class="mn">前端降息預期升溫</div></div>
+    <div class="mcard"><div class="ml">10Y－2Y 利差</div><div class="mv">+48bp</div><div class="mc pos">月線轉陡</div><div class="mn">牛式陡峭化</div></div>
+    <div class="mcard"><div class="ml">10Y 通膨預期</div><div class="mv">2.39%</div><div class="mc flat">穩定</div><div class="mn">PCE 前夕無走升</div></div>
+    <div class="mcard"><div class="ml">DFF（Fed 有效利率）</div><div class="mv">3.62%</div><div class="mc flat">不變</div><div class="mn">維持 3.50-3.75</div></div>
+    <div class="mcard"><div class="ml">DTWEXBGS（廣義 USD）</div><div class="mv">119.29</div><div class="mc warn">高檔徘徊</div><div class="mn">FRED 5/22 數據</div></div>
+    <div class="mcard"><div class="ml">WTI（FRED 5/18）</div><div class="mv">$112.25</div><div class="mc neg">月線回落</div><div class="mn">即時期貨已跌至 $90</div></div>
+    <div class="mcard"><div class="ml">核心 PCE（YoY）</div><div class="mv">3.0%</div><div class="mc warn">5/29 公布 4 月</div><div class="mn">市場估 MoM +0.2%</div></div>
   </div>
 
-  <div class="subh">海外股市（5/27 收盤 ETF Proxy）</div>
-  <div class="mkt">
-    <div class="mcard"><div class="ml">EWT 台灣</div><div class="mv">102.97</div><div class="mc pos">＋0.81% · 新高</div><div class="mn">台積電撐盤、突破 100</div></div>
-    <div class="mcard"><div class="ml">EWJ 日本</div><div class="mv">92.90</div><div class="mc flat">－0.05%</div><div class="mn">BOJ 政策觀望</div></div>
-    <div class="mcard"><div class="ml">EWG 德國</div><div class="mv">43.75</div><div class="mc flat">－0.04%</div><div class="mn">歐股波動偏低</div></div>
-    <div class="mcard"><div class="ml">FXI 中國大型股</div><div class="mv">35.75</div><div class="mc flat">－0.05%</div><div class="mn">關稅／刺激消息驅動</div></div>
-  </div>
-
-  <div class="nb" style="margin-top:14px;"><b>解讀：</b>市場進入「PCE 前夕的緊張平衡」。<b>正面：</b>道瓊週三再創新高、伊朗－美國對 Hormuz 通航達成共識使油價回落、10Y 通膨預期 5/27 微降至 2.39%（5/19 高位 2.49% 回落 10bp）暗示通膨壓力可能溫和。<b>警訊：</b>NVDA 連續 4 個交易日下跌（雖然 Q1 財報超預期）、SMH 跌破 600 整數、黃金單日 -1.33%（避險籌碼解倉）、30Y 殖利率 5.03% 顯示長端對通膨黏滯依然敏感。<b>關鍵：</b>今日 08:30 ET 4 月 PCE 公布——市場共識核心 PCE YoY 約 3.0%、MoM 0.2-0.3%；若 ≥ 0.3% MoM 將推升殖利率、壓抑科技股估值。</div>
+  <div class="nb" style="margin-top:14px;"><b>解讀：</b>市場進入「<b>典型 PCE 前夕風險規避日</b>」。<b>正面：</b>2Y 急降 12bp、10Y 回到 4.50%、油價回落顯示通膨壓力減輕、信用利差未擴張（HYG 穩）、防禦型輪動有序。<b>警訊：</b>半導體單日大跌且擴散到整條供應鏈（MRVL／ASML／ARM／MU）、VXX 雖回落但盤中曾衝高、亞股偏弱、黃金與美元同跌反映「全面去槓桿」訊號。市場結構上仍偏多但「<b>賣 AI 硬體 → 買 AI 應用</b>」輪動明確：META／AMZN／AAPL／GOOGL 接住資金、NVDA／AMD／SMH 則承壓。本週成敗在 5/29 PCE 是否 ≤ MoM +0.2%。</div>
 </div>
 
 <!-- US POSITIONING -->
 <div class="sec">
   <h2>美股籌碼與題材動向</h2>
   <div class="shint">寬度、產業輪動與盤前氣氛</div>
-
   <div class="subh">寬度與情緒</div>
-  <div class="nb">週三道瓊獨強（+0.36%）、SPY／QQQ 持平、Russell 微跌——典型的「指數新高 + 領頭股分歧」結構，市場寬度健康但動能往防禦／週期循環。S&amp;P 500 連 8 週收紅紀錄續寫至第 9 週、HYG 信用利差未擴張顯示系統性風險訊號未現。<b>但 NVDA 4 連黑值得關注</b>——財報雖大幅優於預期，股價卻反「賣事實」走勢延續，意味著市場對 25-30x 前向 P/E 仍嫌貴或在 PCE 前主動降低半導體曝險。</div>
+  <div class="nb">S&P 500 連 8 週收紅紀錄面臨考驗——昨日 SPY 僅 -0.06% 但內部分歧明顯。半導體大跌但整體大盤撐住，是因為 META／AMZN／AAPL／GOOGL 等大型科技逆勢上漲。<b>市場寬度開始出現分化警訊：</b>科技股內部「應用 vs 硬體」極端分歧，這在 2024-2025 多頭末段曾出現多次，雖然未必預示頂部但提示「漲跌不再齊步」。HYG 收 80.13、信用利差未擴張，<b>系統性風險訊號仍未出現</b>。VXX 收 25.02（-1.5%），但盤中曾衝到 25.69、波動率上行已啟動。</div>
 
-  <div class="subh">題材輪動（過去 2 個交易日）</div>
-  <div class="nb"><b>AI／半導體：</b>5/26（週二）SMH ＋4.48%、AMD ＋7.78% 噴出後，週三 SMH －1.09%、AMD －1.66%、NVDA －1.05% 全面拉回。<b>MU（美光）週二單日 ＋19%、市值首次破 $1T</b>，HBM 訂單能見度成新熱點。NVDA 連 4 黑顯示「賣事實」壓力延續、焦點轉到 Blackwell Ultra（GB300）出貨節奏。</div>
-  <div class="nb"><b>大型科技：</b>MSFT 收 $412.67、AAPL $310.93、META 收 $635.25 拉到月高、AMZN $271.85 表現強勁；GOOGL 收 $388.83 持平（前 P/E ~21x 仍最便宜）。Magnificent 7 內部分化加大：META／AMZN 強、NVDA 弱、其他持穩。</div>
-  <div class="nb"><b>避險／週期：</b>GLD 單日 －1.33%、TLT ＋0.22%、SLV ＋1.65%（5/26 數據）——黃金回落但白銀續強，PCE 前避險籌碼選擇性解倉。原油 5/18 最新 $112.25，盤前消息伊朗－美國 Hormuz 通航達成共識壓抑油價，<b>對通膨溫和具關鍵幫助</b>。</div>
-  <div class="nb"><b>主題輪動觀察：</b>過去 2 日為「噴出→分歧→拉回」教科書模式，PCE 前所有人都不想抱波動性最大的部位過事件。明日道瓊強、半導體弱、科技分化——典型「rotation 換手」訊號，非系統性風險。</div>
+  <div class="subh">題材輪動（典型 AI 內部風格切換）</div>
+  <div class="nb"><b>AI 硬體 vs 應用切換：</b>META +4.3%（傳市場消化其 Llama 4 進展與廣告 AI 變現）、AMZN +2.1%（AWS Bedrock／Anthropic 合作擴大）、AAPL +0.8%、GOOGL +0.6% 全體大漲；同時半導體 ETF SMH 跌 2.7%、個股 MRVL／ARM／MU／AMD 全數修正。<b>這是「賣 AI 鏟子（硬體）、買 AI 應用（軟體＋雲）」的標準輪動</b>，可能反映：① 半導體估值前期漲多需要消化；② 市場開始對 AI 投資回收期質疑，傾向已能 monetize 的應用層；③ 部分機構在 PCE 前降低 beta（半導體 beta 高）。</div>
+
+  <div class="nb"><b>NVDA：</b>5/27 收 $212.60（-0.71%）相對抗跌，<b>明顯比 AMD、MRVL、ARM 都強韌</b>。財報 Q2 指引 +95% 仍是市場基本面標竿、ATR 也較小。短線觀察 $208 是否守穩（昨日盤中低）。</div>
+
+  <div class="nb"><b>AMD：</b>5/27 收 $495.54（-2.45%），開盤 $508、高點 $510 → 收 $495 為盤中走弱型態。MI400 系列、Helios 機架仍在推進，但相對 NVDA／META 走勢明顯較弱。AMD 自 5 月初 ~$580 修正至 $495，跌幅 ~14.5%，技術面已開始破壞趨勢。</div>
+
+  <div class="nb"><b>避險與商品：</b>黃金跌 1.4%（$4491 → $4428）+ 油價回落至 $90 + USD 走弱，<b>三者同步</b>反映市場對「實質利率回升、流動性緊縮」的反應，這對風險資產短線是逆風但中期是估值利多。TLT 微升、信用利差未擴張，「<b>非系統性風險</b>」訊號仍清楚。</div>
 </div>
 
 <!-- PERSONAL HOLDINGS QUICK VIEW -->
@@ -222,70 +214,74 @@ table.tbl tr:hover td{background:#181f2e;}
       <div><span class="pname">NVDA</span> <span class="ptag">· AI 半導體核心</span></div>
       <div class="ppx">$212.60</div>
     </div>
-    <div class="pview"><b>連 4 黑、注意關鍵支撐。</b>5/22 收 $215.33、5/26 $214.86、5/27 $212.60——財報後股價持續走弱，市場顯然對 25-30x 前向本益比 + 中國能見度低有保留。技術面 210 為短線支撐區、200 為前波下緣，今日 PCE 後可能出現方向確認。基本面：Blackwell「銷售爆滿、雲端 GPU 售罄」未變，Q2 指引 $91B（YoY ＋95%）大幅超預期是長線估值底；短線關鍵在 PCE 後是否止跌反彈。</div>
+    <div class="pview"><b>同類股中最抗跌的 AI 龍頭。</b>昨日半導體共振下殺中 NVDA 僅跌 0.71%（vs AMD -2.45%、MRVL -8.9%、ARM -5.6%、MU -2.9%），顯示資金流出後仍把 NVDA 視為「最後撤退的部位」。Q1 FY27 已過、Q2 指引 +95% 為估值基石；下一個關鍵時間點為 GTC 與 Blackwell Ultra 出貨節奏。短線觀察 $208（昨日低）／$200 心理關卡。<b>反方風險：</b>若市場質疑 AI capex 回收期，整條 AI 鏈共振下殺，NVDA 仍會被打到。</div>
     <div class="pact">
       <span class="ract hold">方向：核心持有</span>
-      <span class="ract" style="background:#3a2a08;color:var(--warn);border:1px solid #5c4a10;">信心：中（短線轉中性）</span>
+      <span class="ract conf-h">信心：中高</span>
+      <span class="ract" style="background:#0e1f3a;color:var(--blue);border:1px solid #1d3a6b;">觸發：跌破 $200 才考慮減碼</span>
     </div>
   </div>
 
   <div class="pcard">
     <div class="ph">
-      <div><span class="pname">AMD</span> <span class="ptag">· AI 半導體</span></div>
+      <div><span class="pname">AMD</span> <span class="ptag">· AI 半導體 · 高 beta</span></div>
       <div class="ppx">$495.54</div>
     </div>
-    <div class="pview">5/26 週二噴出 ＋7.78% 創波段新高 $508 區、週三 －1.66% 拉回——典型噴出後修正。YTD 仍 ＋76%、前 P/E 維持 60x 偏貴。Meta／OpenAI 公開承諾使用 AMD silicon、MI400 系列 Q3 量產的基本面未變，但短線追高風險未消。<b>組合內權重最大（28.7%）、估值評分最低、漲幅最猛——是組合中最該警惕的部位。</b>觸發點：跌破 470 為短線警訊。</div>
+    <div class="pview"><b>技術面開始破壞。</b>5/22 收 $467 → 反彈到 $510 → 昨日急殺收 $495，5 月初高點 ~$580 已修正 14.5%。前 P/E ~58x（vs NVDA ~25x、AVGO ~38x）估值溢價在「AI 硬體輪動」中首當其衝。MI350 量產、MI400 Q3 出貨、Meta／OpenAI 背書仍是中長期支柱，但短線資金面明顯不利。<b>反方風險／反論點：</b>若 $480 守穩可能形成雙重底；多空訊號目前較均衡，靜待 PCE 後再判斷。</div>
     <div class="pact">
-      <span class="ract hold">方向：持有（強勢期可分批換手）</span>
-      <span class="ract" style="background:#3a2a08;color:var(--warn);border:1px solid #5c4a10;">信心：中</span>
+      <span class="ract hold">方向：持有不加碼</span>
+      <span class="ract conf-m">信心：中</span>
+      <span class="ract" style="background:#0e1f3a;color:var(--blue);border:1px solid #1d3a6b;">觸發：跌破 $480 改減碼</span>
     </div>
   </div>
 
   <div class="pcard">
     <div class="ph">
-      <div><span class="pname">GOOGL</span> <span class="ptag">· 大型科技</span></div>
+      <div><span class="pname">GOOGL</span> <span class="ptag">· 大型科技 · 防禦性質</span></div>
       <div class="ppx">$388.83</div>
     </div>
-    <div class="pview">前 P/E ~21x 大型科技中估值最低、本週日線小幅整理、相對抗跌特性顯著。Gemini 3 在企業端滲透率持續提升、AI 搜尋商業化加速、雲端利潤改善是三大支柱。<b>在 NVDA／AMD 拉回背景下續強</b>，組合內最防禦的個股部位。今日 PCE 後若殖利率走低，GOOGL 將相對受益。</div>
+    <div class="pview"><b>本日輪動中的受益者。</b>+0.56% 收 $388.83 在「賣半導體 / 買大型科技」風格切換中受益。前 P/E ~22x 仍是大型科技中最便宜、Gemini 3／AI 搜尋商業化進度持續；本週無公司事件，跟隨大盤波動。雲端業務（GCP）受惠 Anthropic 等 AI 客戶擴張。<b>反方風險：</b>若 AI 風格輪動只是日線錯位、半導體很快反彈，GOOGL 漲幅有限；DOJ 反壟斷案件仍懸而未決。</div>
     <div class="pact">
-      <span class="ract add">方向：緩升加碼</span>
-      <span class="ract" style="background:#0e2d20;color:var(--pos);border:1px solid #1d5c40;">信心：高</span>
+      <span class="ract add">方向：可逢低分批加碼</span>
+      <span class="ract conf-h">信心：高</span>
+      <span class="ract" style="background:#0e1f3a;color:var(--blue);border:1px solid #1d3a6b;">觸發：回測 $380 加碼點</span>
     </div>
   </div>
 
   <div class="pcard">
     <div class="ph">
-      <div><span class="pname">SMH</span> <span class="ptag">· ETF · 半導體</span></div>
-      <div class="ppx">$595.56</div>
+      <div><span class="pname">SMH</span> <span class="ptag">· ETF · 半導體分散</span></div>
+      <div class="ppx">$595.50</div>
     </div>
-    <div class="pview">5/26 SMH ＋4.48% 衝上 602、5/27 －1.09% 跌破 600 整數關。NVDA、TSM（5/27 收 $422.73）、AVGO（$421.86）、AMD 合計約佔 SMH 47%——本週成份股 MU（＋19%）、ASML（－1.5%）、AVGO（－2%）走勢分化。<b>SMH 仍是組合中「AI capex 整條供應鏈」最分散的曝險方式</b>，比單押 NVDA 報酬更穩定。短線 580-590 為關鍵支撐區。</div>
+    <div class="pview"><b>單日 -2.7% 進入修正觀察區。</b>盤中曾觸 $584.93、收 $595.50 顯示有買盤承接。SMH 內含 NVDA／TSM／AVGO／AMD／ASML／MU 等整條 AI 鏈，昨日「整鏈共振下殺」對 SMH 衝擊大過單押 NVDA。<b>技術面：</b>$585 是 5 月以來的明確支撐位；若守穩則為「健康洗盤」、若跌破則進入趨勢轉空。<b>反方風險：</b>SMH 集中度高（前 3 大 NVDA／TSM／AVGO ~40%），個別公司新聞容易連動全 ETF。</div>
     <div class="pact">
-      <span class="ract hold">方向：核心持有</span>
-      <span class="ract" style="background:#0e2d20;color:var(--pos);border:1px solid #1d5c40;">信心：高</span>
+      <span class="ract hold">方向：持有觀察</span>
+      <span class="ract conf-m">信心：中</span>
+      <span class="ract" style="background:#0e1f3a;color:var(--blue);border:1px solid #1d3a6b;">觸發：守 $585 續抱 / 跌破則減碼</span>
     </div>
   </div>
 
   <div class="pcard">
     <div class="ph">
       <div><span class="pname">QQQ</span> <span class="ptag">· ETF · 那斯達克 100</span></div>
-      <div class="ppx">$729.44</div>
+      <div class="ppx">$729.45</div>
     </div>
-    <div class="pview">大型科技高度集中曝險（前 10 大佔約 55%）。5/26 ＋1.78%、5/27 －0.11%——本週呈現「噴出→盤整」。本週主要驅動因子為 PCE 數據與利率走勢；NVDA 拉回但 META／AMZN 撐盤、整體相對抗跌。屬連動高、特殊風險低的核心 ETF。</div>
+    <div class="pview">-0.48% 反映「半導體拖累 / 大型科技撐盤」的內部分歧。前 10 大持股佔約 55%，與個股 NVDA／GOOGL 高度重疊；當前主要驅動為 PCE 預期與利率走勢。10Y 回落到 4.50% 對 QQQ 估值有利、但需大型科技持續接力。<b>反方風險：</b>若大型科技群也跟進半導體下殺（5/29 PCE 不如預期），QQQ 將承壓。</div>
     <div class="pact">
       <span class="ract hold">方向：核心持有</span>
-      <span class="ract" style="background:#0e2d20;color:var(--pos);border:1px solid #1d5c40;">信心：中高</span>
+      <span class="ract conf-m">信心：中</span>
     </div>
   </div>
 
   <div class="pcard">
     <div class="ph">
-      <div><span class="pname">VOO</span> <span class="ptag">· ETF · S&amp;P 500</span></div>
-      <div class="ppx">$689.99</div>
+      <div><span class="pname">VOO</span> <span class="ptag">· ETF · S&P 500 廣度核心</span></div>
+      <div class="ppx">$689.96</div>
     </div>
-    <div class="pview">最廣義的美股核心。5/27 持平 ($689.99)、5/26 ＋0.66% 至 $690.01。當前科技集中度高的組合下，VOO 提供少數的「非科技分散」（金融、能源、健護等約 60%）。連 9 週收紅後估值偏高但寬度健康，屬長線壓艙石部位。</div>
+    <div class="pview">+0.05% 幾乎平盤，反映 S&P 500 廣度仍健康。VOO 涵蓋 11 大類股、500 檔，是組合中科技曝險「降溫劑」。利率回落對指數有正面影響，本週敏感於 PCE。<b>反方風險：</b>S&P 500 前 10 大佔 ~33% 已是歷史高位（含 7 大科技），「分散」程度其實沒有想像中高。</div>
     <div class="pact">
-      <span class="ract add">方向：壓艙石續加</span>
-      <span class="ract" style="background:#0e2d20;color:var(--pos);border:1px solid #1d5c40;">信心：高</span>
+      <span class="ract hold">方向：核心持有</span>
+      <span class="ract conf-h">信心：高</span>
     </div>
   </div>
 
@@ -294,304 +290,273 @@ table.tbl tr:hover td{background:#181f2e;}
       <div><span class="pname">VT</span> <span class="ptag">· ETF · 全球股票</span></div>
       <div class="ppx">$157.16</div>
     </div>
-    <div class="pview">組合中唯一具非美曝險（約佔 VT 38%）——含日股、歐股、新興市場、台股（EWT 5/27 也創高）。DXY 119 強勢期不利非美回報，但 Trump 伊朗緩和、美元若見頂訊號出現，VT 將成為主要受益方。長線必要的地緣分散部位、平衡組合的「亞太題材」缺口。</div>
+    <div class="pview">+0.04% 平盤，全球股票分散組合的核心。涵蓋美國 ~60% ＋ 非美 ~40%（日本／歐洲／新興市場），是組合中最分散的部位、相對抗 AI 主題波動。HSI 亞盤跌 1.3% 提示非美股短期承壓，但 VT 美股部位足以緩衝。<b>反方風險：</b>USD 強勢區間時 VT 報酬率受匯率拖累。</div>
     <div class="pact">
-      <span class="ract add">方向：分散續加</span>
-      <span class="ract" style="background:#0e2d20;color:var(--pos);border:1px solid #1d5c40;">信心：高</span>
+      <span class="ract hold">方向：核心持有</span>
+      <span class="ract conf-h">信心：高</span>
     </div>
   </div>
+
 </div>
 
-<!-- WEIGHTS & EXPOSURE -->
+<!-- PORTFOLIO ALLOCATION & EXPOSURE -->
 <div class="sec">
   <h2>持股比重與曝險分析</h2>
-  <div class="shint">以淨資產 ＝ 100 為基準；ETF 內含個股權重為公開資料估算值，僅供結構參考</div>
+  <div class="shint">隱私規範：以「淨資產＝100」相對基準呈現 ｜ ETF 穿透為估算值</div>
 
-  <div class="subh">直接持股權重（以 5/27 收盤市值估算）</div>
-  <table class="tbl">
-    <thead><tr><th>持股</th><th>類型</th><th class="num">權重 (%)</th><th>視覺化</th></tr></thead>
-    <tbody>
-      <tr><td><b>AMD</b></td><td>個股 · AI 半導體</td><td class="num">28.7%</td><td><span class="bar" style="width:144px;"></span></td></tr>
-      <tr><td><b>NVDA</b></td><td>個股 · AI 半導體</td><td class="num">24.6%</td><td><span class="bar" style="width:123px;"></span></td></tr>
-      <tr><td><b>VT</b></td><td>ETF · 全球</td><td class="num">15.8%</td><td><span class="bar bl" style="width:79px;"></span></td></tr>
-      <tr><td><b>VOO</b></td><td>ETF · S&amp;P 500</td><td class="num">12.0%</td><td><span class="bar bl" style="width:60px;"></span></td></tr>
-      <tr><td><b>SMH</b></td><td>ETF · 半導體</td><td class="num">9.8%</td><td><span class="bar sm" style="width:49px;"></span></td></tr>
-      <tr><td><b>QQQ</b></td><td>ETF · 那斯達克</td><td class="num">5.1%</td><td><span class="bar bl" style="width:26px;"></span></td></tr>
-      <tr><td><b>GOOGL</b></td><td>個股 · 大型科技</td><td class="num">4.1%</td><td><span class="bar" style="width:21px;"></span></td></tr>
-      <tr><td colspan="2" style="color:var(--txt3);font-size:11.5px;">個股小計 / ETF 小計</td><td class="num">57.4% / 42.6%</td><td></td></tr>
-    </tbody>
-  </table>
-
-  <div class="subh">ETF 穿透後「真實單一個股」曝險（直接 + 間接）</div>
+  <div class="subh">帳面權重（以 5/27 收盤估算市值權重，淨資產＝100）</div>
   <div class="expb">
-    <div class="exprow">
-      <div class="expn">AMD</div>
-      <div class="expb2"><div class="expfill" style="width:73%;background:linear-gradient(90deg,#76b900,#9ed320);">~29.3%</div></div>
-      <div class="expnote">直接 28.7% ＋ ETF ~0.6%</div>
-    </div>
-    <div class="exprow">
-      <div class="expn">NVDA</div>
-      <div class="expb2"><div class="expfill" style="width:72%;background:linear-gradient(90deg,#76b900,#9ed320);">~28.8%</div></div>
-      <div class="expnote">直接 24.6% ＋ ETF ~4.2%</div>
-    </div>
-    <div class="exprow">
-      <div class="expn">GOOGL</div>
-      <div class="expb2"><div class="expfill" style="width:13%;background:linear-gradient(90deg,#76b900,#9ed320);">~5.2%</div></div>
-      <div class="expnote">直接 4.1% ＋ ETF ~1.1%</div>
-    </div>
-    <div class="exprow">
-      <div class="expn">TSM（間接）</div>
-      <div class="expb2"><div class="expfill" style="width:3.5%;background:#5c4a10;">~1.4%</div></div>
-      <div class="expnote">透過 SMH／VT</div>
-    </div>
-    <div class="exprow">
-      <div class="expn">AVGO（間接）</div>
-      <div class="expb2"><div class="expfill" style="width:3.8%;background:#5c4a10;">~1.5%</div></div>
-      <div class="expnote">透過 SMH／QQQ／VOO</div>
-    </div>
-    <div class="exprow">
-      <div class="expn">META（間接）</div>
-      <div class="expb2"><div class="expfill" style="width:3.5%;background:#5c4a10;">~1.4%</div></div>
-      <div class="expnote">透過 QQQ／VOO／VT</div>
-    </div>
-    <div class="exprow">
-      <div class="expn">MSFT（間接）</div>
-      <div class="expb2"><div class="expfill" style="width:3.3%;background:#5c4a10;">~1.3%</div></div>
-      <div class="expnote">透過 QQQ／VOO／VT</div>
-    </div>
-    <div class="exprow">
-      <div class="expn">AAPL（間接）</div>
-      <div class="expb2"><div class="expfill" style="width:3.3%;background:#5c4a10;">~1.3%</div></div>
-      <div class="expnote">透過 QQQ／VOO／VT</div>
-    </div>
+    <div class="exprow"><div class="expn">VT</div><div class="expb2"><div class="expfill" style="width:30%;background:var(--green2);">~30%</div></div><div class="expnote">全球股票</div></div>
+    <div class="exprow"><div class="expn">NVDA</div><div class="expb2"><div class="expfill" style="width:21%;background:#76b900;">~21%</div></div><div class="expnote">個股 · AI 龍頭</div></div>
+    <div class="exprow"><div class="expn">AMD</div><div class="expb2"><div class="expfill" style="width:21%;background:#76b900;">~21%</div></div><div class="expnote">個股 · AI</div></div>
+    <div class="exprow"><div class="expn">SMH</div><div class="expb2"><div class="expfill" style="width:14%;background:var(--blue);">~14%</div></div><div class="expnote">半導體 ETF</div></div>
+    <div class="exprow"><div class="expn">VOO</div><div class="expb2"><div class="expfill" style="width:9%;background:var(--blue);">~9%</div></div><div class="expnote">S&P 500</div></div>
+    <div class="exprow"><div class="expn">QQQ</div><div class="expb2"><div class="expfill" style="width:3.8%;background:var(--blue);">~3.8%</div></div><div class="expnote">Nasdaq 100</div></div>
+    <div class="exprow"><div class="expn">GOOGL</div><div class="expb2"><div class="expfill" style="width:1.2%;background:#76b900;">~1.2%</div></div><div class="expnote">個股 · 大型科技</div></div>
   </div>
+  <div class="nb" style="margin-top:10px;"><b>帳面解讀：</b>NVDA ＋ AMD 兩檔合計即佔 ~42% 為絕對核心。VT ~30% 提供分散；SMH ~14% 是半導體分散曝險；VOO ~9%、QQQ ~3.8% 為指數型補充；GOOGL ~1.2% 是相對小的個股部位。<b>權重比例為市值估算，使用者實際成本價未知時不計算損益。</b></div>
 
-  <div class="subh">行業與地區曝險</div>
+  <div class="subh">ETF 穿透曝險（look-through）— 真實 NVDA／AMD／半導體曝險</div>
   <div class="expb">
-    <div class="exprow">
-      <div class="expn">半導體</div>
-      <div class="expb2"><div class="expfill" style="width:67%;background:linear-gradient(90deg,#f87171,#fbbf24);">~67%</div></div>
-      <div class="expnote">高度集中</div>
-    </div>
-    <div class="exprow">
-      <div class="expn">科技（廣義）</div>
-      <div class="expb2"><div class="expfill" style="width:78%;background:linear-gradient(90deg,#f87171,#fbbf24);">~78%</div></div>
-      <div class="expnote">含 AI／網路／軟體</div>
-    </div>
-    <div class="exprow">
-      <div class="expn">美國</div>
-      <div class="expb2"><div class="expfill" style="width:94%;background:linear-gradient(90deg,#f87171,#fbbf24);">~94%</div></div>
-      <div class="expnote">幾乎全美</div>
-    </div>
-    <div class="exprow">
-      <div class="expn">非美（透過 VT）</div>
-      <div class="expb2"><div class="expfill" style="width:6%;background:#1d3a6b;">~6%</div></div>
-      <div class="expnote">日／歐／新興</div>
-    </div>
+    <div class="exprow"><div class="expn">NVDA 真實曝險</div><div class="expb2"><div class="expfill" style="width:27%;background:var(--green);">~27%</div></div><div class="expnote">含 SMH/QQQ/VOO/VT 穿透</div></div>
+    <div class="exprow"><div class="expn">AMD 真實曝險</div><div class="expb2"><div class="expfill" style="width:23%;background:var(--green);">~23%</div></div><div class="expnote">含 SMH 穿透</div></div>
+    <div class="exprow"><div class="expn">半導體類股總曝險</div><div class="expb2"><div class="expfill" style="width:62%;background:var(--warn);">~62%</div></div><div class="expnote">含整條 AI 鏈</div></div>
+    <div class="exprow"><div class="expn">大型科技（七巨頭）</div><div class="expb2"><div class="expfill" style="width:38%;background:var(--purple);">~38%</div></div><div class="expnote">含 QQQ/VOO 穿透</div></div>
+    <div class="exprow"><div class="expn">非美股票</div><div class="expb2"><div class="expfill" style="width:12%;background:var(--blue);">~12%</div></div><div class="expnote">主要透過 VT</div></div>
+    <div class="exprow"><div class="expn">防禦型（醫療／公用）</div><div class="expb2"><div class="expfill" style="width:5%;background:#3a5c10;">~5%</div></div><div class="expnote">VT/VOO 內含</div></div>
+    <div class="exprow"><div class="expn">固定收益</div><div class="expb2"><div class="expfill" style="width:1%;background:var(--txt3);">~1%</div></div><div class="expnote">無顯著配置</div></div>
   </div>
+  <div class="nb" style="margin-top:10px;"><b>穿透解讀（必看）：</b>① <b>NVDA 真實曝險 ~27%</b>（個股 21% ＋ SMH 內 NVDA ~20% × 14% ＋ QQQ 內 NVDA ~10% × 3.8% ＋ VOO 內 NVDA ~7% × 9% ＋ VT 內 NVDA ~3% × 30% ≈ 27%）—— 比帳面 21% 高 6pp，集中度警訊明確。② AMD 穿透 ~23% 同樣偏高。③ <b>半導體類股總曝險 ~62%</b>，遠超市場基準（半導體佔 S&P 500 約 12%）。④ <b>七巨頭曝險 ~38%</b>，重疊度高但帳面分散其實有限。⑤ ETF 之間重疊度大（SMH/QQQ/VOO/VT 都含 NVDA）。<b>結論：</b>組合「<b>帳面分散但實際集中</b>」典型——昨日 SMH 暴跌時，組合理論上會同時被 NVDA 跌、AMD 跌、SMH 跌、QQQ 跌、VOO 跌、VT 跌六重打擊。<i>百分比為估算，實際以使用者持倉與 ETF 月報為準。</i></div>
 
-  <div class="nb" style="margin-top:12px;"><b>結構觀察：</b>表面 7 檔分散（3 個股 ＋ 4 ETF）看似多元，<b>穿透後實質為「半導體 ~67% ＋ 科技 ~78% ＋ 美國 ~94%」高度集中組合</b>。NVDA、AMD 兩檔合計穿透曝險約 58%、加上 SMH 內其他半導體（TSM／AVGO／MU 等），組合對 AI 半導體景氣循環高度敏感。<b>缺乏防禦性資產</b>：無黃金、無公用事業、無 REIT、無債券、無現金部位曝險可考慮；非美曝險僅 ~6%（VT 比例不變但其他美國 ETF 增加使比例稀釋）、地緣分散仍不足。今日 PCE 是組合的「利率敏感度測試」，組合對殖利率上行 1.0σ 的敏感度約 -2.5～-3.5%。</div>
+  <div class="subh">集中度與避震評估</div>
+  <div class="nb"><b>集中風險：</b>半導體 ~62% 與七巨頭 ~38% 的高集中度在 AI 牛市時放大報酬、但在像昨日這種風格切換日會放大波動。<b>分散度評分：</b>4/10（偏集中）。<b>防禦性資產：</b>幾乎為零——無公債（BND／TLT）、無黃金（GLD／IAU）、無大量現金部位。<b>非美曝險：</b>~12%（透過 VT），相對偏低。<b>建議方向：</b>若未來追加資金，優先考慮：① 增配 VT／VOO 降低個股集中；② 適度納入 TLT／IEF 或 GLD 作為避險；③ 暫不繼續加碼任何半導體或 AI 硬體個股。</div>
 </div>
 
-<!-- MULTI-FACTOR SCORE -->
+<!-- MULTI-FACTOR SCORING -->
 <div class="sec">
-  <h2>多因子題材評分</h2>
-  <div class="shint">分數 1（弱）～ 5（強），綜合分依各因子等權平均</div>
+  <h2>多因子題材評分（持股 × 5 因子）</h2>
+  <div class="shint">分數 1-5（5 為最強），是當下訊號相對強弱、非絕對買賣訊號</div>
   <table class="tbl">
-    <thead><tr>
-      <th>標的</th>
-      <th class="num">基本面動能</th>
-      <th class="num">估值位階<br><span style="font-weight:400;font-size:10px;">（低分＝貴）</span></th>
-      <th class="num">技術位階</th>
-      <th class="num">題材熱度</th>
-      <th class="num">宏觀敏感度<br><span style="font-weight:400;font-size:10px;">（高利率不利）</span></th>
-      <th class="num">綜合分</th>
-    </tr></thead>
+    <thead>
+      <tr>
+        <th>標的</th>
+        <th>基本面動能</th>
+        <th>估值位階</th>
+        <th>技術位階</th>
+        <th>題材熱度</th>
+        <th>宏觀敏感度</th>
+        <th>總分</th>
+      </tr>
+    </thead>
     <tbody>
       <tr>
         <td><b>NVDA</b></td>
-        <td class="num">5</td><td class="num">3</td><td class="num">2</td><td class="num">5</td><td class="num">2</td>
-        <td class="num"><b>3.4</b></td>
+        <td><span class="dot pos"></span>5 · Q2 指引 +95%</td>
+        <td><span class="dot warn"></span>3 · 25x 中性</td>
+        <td><span class="dot warn"></span>3 · 短線修正</td>
+        <td><span class="dot pos"></span>5 · AI 龍頭</td>
+        <td><span class="dot warn"></span>3 · 對利率敏感</td>
+        <td><b>19/25</b></td>
       </tr>
       <tr>
         <td><b>AMD</b></td>
-        <td class="num">4</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num">2</td>
-        <td class="num"><b>3.0</b></td>
+        <td><span class="dot pos"></span>4 · MI400 出貨</td>
+        <td><span class="dot neg"></span>2 · 58x 偏貴</td>
+        <td><span class="dot neg"></span>2 · 趨勢破壞</td>
+        <td><span class="dot pos"></span>4 · AI 第二強</td>
+        <td><span class="dot neg"></span>2 · 高 beta</td>
+        <td><b>14/25</b></td>
       </tr>
       <tr>
         <td><b>GOOGL</b></td>
-        <td class="num">4</td><td class="num">4</td><td class="num">4</td><td class="num">4</td><td class="num">3</td>
-        <td class="num"><b>3.8</b></td>
+        <td><span class="dot pos"></span>4 · 雲端＋廣告</td>
+        <td><span class="dot pos"></span>5 · 22x 最便宜</td>
+        <td><span class="dot pos"></span>4 · 緩升中</td>
+        <td><span class="dot warn"></span>3 · AI 二線</td>
+        <td><span class="dot pos"></span>4 · 防禦性</td>
+        <td><b>20/25</b></td>
       </tr>
       <tr>
         <td><b>SMH</b></td>
-        <td class="num">4</td><td class="num">3</td><td class="num">3</td><td class="num">5</td><td class="num">2</td>
-        <td class="num"><b>3.4</b></td>
+        <td><span class="dot pos"></span>4 · 整鏈獲利</td>
+        <td><span class="dot warn"></span>3 · 加權合理</td>
+        <td><span class="dot neg"></span>2 · 跌破均線</td>
+        <td><span class="dot pos"></span>5 · 半導體核心</td>
+        <td><span class="dot warn"></span>3 · 中等 beta</td>
+        <td><b>17/25</b></td>
       </tr>
       <tr>
         <td><b>QQQ</b></td>
-        <td class="num">4</td><td class="num">3</td><td class="num">4</td><td class="num">4</td><td class="num">3</td>
-        <td class="num"><b>3.6</b></td>
+        <td><span class="dot pos"></span>4 · 大科技撐</td>
+        <td><span class="dot warn"></span>3 · 高位震盪</td>
+        <td><span class="dot warn"></span>3 · 區間整理</td>
+        <td><span class="dot pos"></span>4 · 科技指標</td>
+        <td><span class="dot warn"></span>3 · 對利率敏感</td>
+        <td><b>17/25</b></td>
       </tr>
       <tr>
         <td><b>VOO</b></td>
-        <td class="num">3</td><td class="num">3</td><td class="num">4</td><td class="num">3</td><td class="num">3</td>
-        <td class="num"><b>3.2</b></td>
+        <td><span class="dot pos"></span>4 · 廣度健康</td>
+        <td><span class="dot warn"></span>3 · 高位</td>
+        <td><span class="dot pos"></span>4 · 連 8 週紅</td>
+        <td><span class="dot warn"></span>3 · 中性</td>
+        <td><span class="dot pos"></span>4 · 較不敏感</td>
+        <td><b>18/25</b></td>
       </tr>
       <tr>
         <td><b>VT</b></td>
-        <td class="num">3</td><td class="num">4</td><td class="num">3</td><td class="num">3</td><td class="num">3</td>
-        <td class="num"><b>3.2</b></td>
+        <td><span class="dot pos"></span>4 · 全球均衡</td>
+        <td><span class="dot pos"></span>4 · 非美較便宜</td>
+        <td><span class="dot warn"></span>3 · 區間</td>
+        <td><span class="dot warn"></span>3 · 全球分散</td>
+        <td><span class="dot pos"></span>4 · 最分散</td>
+        <td><b>18/25</b></td>
       </tr>
     </tbody>
   </table>
-  <div class="nb" style="margin-top:10px;"><b>解讀（vs. 上週）：</b>NVDA 技術位階因 4 連黑由 3 降至 2、綜合分由 3.6 降至 3.4；AMD 噴出後拉回，技術維持 3 但綜合分 3.0 為組合最低。<b>GOOGL（3.8）續居榜首</b>（估值合理 ＋ 技術健康 ＋ 防禦特性）；QQQ（3.6）次高，靠 META／AMZN 等成份分散 NVDA 弱勢。AMD 評分最低（前 P/E 60x、技術剛拉回）是組合中「漲多需注意」的部位。VOO／VT 屬中性壓艙石型。<b>整體組合「進攻有餘、防禦不足」結構未變、今日 PCE 是關鍵壓力測試。</b></div>
+  <div class="nb" style="margin-top:10px;"><b>解讀：</b>本期評分 <b>GOOGL（20）→ NVDA（19）→ VOO／VT（18）→ SMH／QQQ（17）→ AMD（14）</b>。GOOGL 在估值＋技術＋防禦三面領先；NVDA 即使短線受壓、基本面動能仍最強；<b>AMD 評分明顯落後</b>，主要因估值貴 ＋ 技術破壞 ＋ 高 beta 三重逆風。VOO／VT 為穩定後盾。</div>
 </div>
 
-<!-- ALLOCATION / BUY-SELL -->
+<!-- ACTION & ALLOCATION -->
 <div class="sec">
   <h2>持股配置與買賣分析</h2>
-  <div class="shint">每檔多因子綜合評估與方向性建議（分析觀點、非下單指令）</div>
+  <div class="shint">明確方向 × 信心評等 × 觸發條件 × 多空並陳</div>
 
   <table class="tbl">
-    <thead><tr>
-      <th>標的</th><th>當前傾向</th><th>信心</th><th>偏多訊號</th><th>偏空風險</th><th>觸發條件</th>
-    </tr></thead>
+    <thead>
+      <tr>
+        <th>標的</th>
+        <th>當前方向</th>
+        <th>信心</th>
+        <th>支撐理由</th>
+        <th>反方風險</th>
+        <th>觸發條件</th>
+      </tr>
+    </thead>
     <tbody>
       <tr>
         <td><b>NVDA</b></td>
-        <td><span class="ract hold">核心持有</span></td>
-        <td>中</td>
-        <td>Q2 指引 $91B 大幅超預期；Blackwell 售罄；GB300 出貨啟動</td>
-        <td>連 4 黑、技術短線轉弱；30x 前向 P/E 仍偏貴；中國能見度低</td>
-        <td>守穩 210 → 緩升加碼；跌破 200 重新評估技術破位是否伴隨基本面變差；PCE 後反彈 220 為短線止跌訊號</td>
+        <td><span class="dot warn"></span>核心持有</td>
+        <td>中高</td>
+        <td>同類最抗跌；Q2 指引 +95%；Blackwell 強</td>
+        <td>AI capex 質疑擴大；$200 心理關卡</td>
+        <td>$208 守穩續抱 / 跌破 $200 才減碼</td>
       </tr>
       <tr>
         <td><b>AMD</b></td>
-        <td><span class="ract hold">持有（強勢期可換手）</span></td>
+        <td><span class="dot warn"></span>持有不加碼</td>
         <td>中</td>
-        <td>MI400 量產、Meta／OpenAI 公開背書、企業 GPU 滲透加速</td>
-        <td>前 P/E 60x 顯著貴於 NVDA／AVGO；噴出後修正風險未消；YTD ＋76% 漲多</td>
-        <td>若回測 460 區（－7%）為承接機會；再噴 520 區可分批換 SMH／GOOGL；跌破 470 為短線警訊</td>
+        <td>MI400／Helios Q3 出貨；MSFT/Meta 採用</td>
+        <td>估值 58x 偏貴；技術破壞；高 beta</td>
+        <td>跌破 $480 改減碼 / 站回 $510 再考慮</td>
       </tr>
       <tr>
         <td><b>GOOGL</b></td>
-        <td><span class="ract add">緩升加碼</span></td>
+        <td><span class="dot pos"></span>逢低分批加碼</td>
         <td>高</td>
-        <td>前 P/E ~21x 大型科技中最低；Gemini 3 滲透；雲端利潤改善；相對抗跌</td>
-        <td>司法部反壟斷／廣告監管；AI 搜尋商業化緩</td>
-        <td>回測 370 區可分批加；460 區上方可逐步減量</td>
+        <td>估值最便宜 22x；防禦性；AI 應用受惠</td>
+        <td>DOJ 反壟斷；Gemini 3 商業化進度</td>
+        <td>$385 以下分批 / 突破 $400 等回測再加</td>
       </tr>
       <tr>
         <td><b>SMH</b></td>
-        <td><span class="ract hold">核心持有</span></td>
-        <td>高</td>
-        <td>MU ＋19% 後 HBM／AI 記憶體題材接力；分散曝險更穩定</td>
-        <td>受中美關稅／出口管制波動；費率 0.35% 較貴；高位震盪</td>
-        <td>跌破 580 為短線警訊；620 上方階段性減碼</td>
+        <td><span class="dot warn"></span>持有觀察</td>
+        <td>中</td>
+        <td>整 AI 鏈分散；長期半導體題材完整</td>
+        <td>單日 -2.7% 已破均線；集中度高</td>
+        <td>守 $585 續抱 / 跌破則部分減碼至 VT</td>
       </tr>
       <tr>
         <td><b>QQQ</b></td>
-        <td><span class="ract hold">核心持有</span></td>
-        <td>中高</td>
-        <td>科技 EPS 成長動能；長線結構多頭；META／AMZN 撐盤</td>
-        <td>七巨頭集中度＝隱性個股風險；與個股部位重疊</td>
-        <td>跌破 700 階段性檢視；780 上方分批降低權重</td>
+        <td><span class="dot warn"></span>核心持有</td>
+        <td>中</td>
+        <td>七巨頭撐盤；利率回落估值利多</td>
+        <td>科技集中度極高；PCE 風險</td>
+        <td>PCE 後重新評估</td>
       </tr>
       <tr>
         <td><b>VOO</b></td>
-        <td><span class="ract add">壓艙石續加</span></td>
+        <td><span class="dot pos"></span>核心持有/可增配</td>
         <td>高</td>
-        <td>分散度高、費率 0.03%、連 9 週收紅顯示寬度健康、Dow 創新高</td>
-        <td>S&amp;P 集中度創新高（前 10 大 ~36%）；指數實質科技曝險已高</td>
-        <td>任何修正 5% ＋ 皆為長線加碼點；定期定額較佳</td>
+        <td>廣度健康；多元化；連 8 週紅</td>
+        <td>前 10 大佔 ~33% 集中度也偏高</td>
+        <td>追加資金時優先此項</td>
       </tr>
       <tr>
         <td><b>VT</b></td>
-        <td><span class="ract add">分散續加</span></td>
+        <td><span class="dot pos"></span>核心持有/可增配</td>
         <td>高</td>
-        <td>唯一非美曝險、估值較低（前 P/E ~17x）；EWT 創高顯示亞太強勢</td>
-        <td>美元強勢下非美回報受匯損；對 AI 題材參與度低</td>
-        <td>美元弱化（DXY 跌破 117）時為主要受益方</td>
+        <td>最分散；非美 40% 平衡 USD 強勢風險</td>
+        <td>USD 強勢期報酬被匯率拖累</td>
+        <td>非美股若反彈優先布局</td>
       </tr>
     </tbody>
   </table>
 
-  <div class="subh">組合層級再平衡建議</div>
-  <ol class="rlist" style="padding-left:20px;">
-    <li><b>AMD 已成組合最大單一部位（28.7%）</b>、估值（前 P/E 60x）為組合最貴、技術剛從波段高 $508 拉回——這是組合中最該警惕的結構性問題。建議方式：強勢期（再回 510 +）把超漲部分換成 SMH（更分散）或 GOOGL（更便宜），逐步把單檔曝險壓回 25% 以下，降低單日 ±5-8% 的事件性回撤。</li>
-    <li><b>NVDA 連 4 黑、焦點切換：</b>從「財報事件」轉為「技術止跌訊號 + Blackwell Ultra（GB300）出貨節奏」。短線觀察 210 區是否守穩；若 PCE 後仍續跌破 200，須重新檢視是否技術破位伴隨基本面變差。基本面長線無虞，但連續 4 黑後續加碼宜延後到止跌訊號出現。</li>
-    <li><b>NVDA／AMD 合計穿透曝險 ~58%</b>——是組合單一最大風險源。建議在強勢期分階段壓回 ~50%，把多出來的部分換成 GOOGL／SMH／VOO，而非賣出回現金。</li>
-    <li><b>缺乏避險資產（黃金 -1.33% 為近期罕見賣壓）：</b>當前環境（高利率、強美元、地緣風險溢價）特別適合配置黃金 5-10%（GLD／IAU）與短中期公債（IEI／SHY）作為波動緩衝。GLD 拉回反而提供較好的進場區間。建議在後續資金流入時優先補強，而非賣股配置。</li>
-    <li><b>事件期紀律（今日 PCE 公布）：</b>核心 PCE MoM ≤ 0.2% → 多頭續行、可在 PCE 後尋找加碼點；核心 PCE 0.25% → 中性、繼續觀望；核心 PCE ≥ 0.3% → 殖利率衝高、半導體承壓，組合不主動加碼、可考慮分批降低 AMD。<b>建議今日 PCE 公布前不主動操作</b>，數據出來後根據數據與市場反應再決定下一步。</li>
-  </ol>
+  <div class="subh">組合層級再平衡建議（情境式）</div>
+  <div class="nb"><b>情境 A — 若 5/29 PCE 溫和（MoM ≤ +0.2%）：</b>市場可能出現「<b>利率下降 ＋ 半導體反彈</b>」雙利好，組合無需調整、靜待 SMH／NVDA 修復；若 GOOGL 此時超漲，可考慮獲利了結部分轉至 VT。</div>
+  <div class="nb"><b>情境 B — 若 PCE 偏熱（MoM ≥ +0.3%）：</b>10Y 殖利率將回升、半導體可能再下殺一段；建議減碼順序：<b>AMD（高 beta 估值貴）→ SMH 部分 → QQQ 部分</b>，資金轉至 VT／VOO／GOOGL。</div>
+  <div class="nb"><b>情境 C — 若 PCE 中性、但半導體技術面繼續走弱：</b>SMH 跌破 $585、NVDA 跌破 $200，建議啟動「降科技集中度」程序——將半導體曝險從 ~62% 逐步降至 ~50%，多餘部分轉至 VT 與防禦資產。</div>
+
+  <div class="nb"><b>權重建議區間（淨資產 100 基準）：</b>NVDA 18-22%（目前 ~21% 上緣）、AMD 15-20%（目前 ~21% 偏重，可借弱勢回到 18%）、GOOGL 1-3%（可增至 ~2%）、SMH 12-15%（目前 ~14% 中性）、QQQ 3-5%、VOO 8-12%、VT 28-35%。<b>整體調整方向：</b>逐步將「AMD 偏重 → GOOGL／VT」做小幅再平衡。</div>
+
+  <div class="nb" style="margin-top:8px;color:var(--warn);"><b>紀律提醒：</b>① 以上為分析觀點而非具體下單指令，不指定股數、不催促立即執行；② 多空訊號並陳，需配合使用者風險承受度判斷；③ 若使用者已執行槓桿操作（如槓桿 ETF），需額外考量單日重設與波動耗損效應；④ 加碼／減碼建議皆為情境分批而非一次性行動。</div>
 </div>
 
 <!-- MULTI-ANGLE -->
 <div class="sec">
   <h2>多角度分析</h2>
-  <div class="shint">同一組合在不同身分視角下的看法可能截然不同</div>
+  <div class="shint">同一個組合，三種視角看出不同訊號</div>
+  <div class="subh">① 已持有者視角（不主動操作）</div>
+  <div class="nb">昨日的半導體深度賣壓對組合是「<b>體感劇烈但體質完好</b>」——SMH 雖然單日 -2.7%、組合理論上同步承壓，但 META／AMZN 等大型科技在其他 ETF（VT／VOO）中接住部分跌幅，避免了純半導體配置可能的更大幅修正。<b>建議：</b>不需在盤前急著動作，靜待今日盤中觀察 SMH 是否守 $585、NVDA 是否守 $208；若守穩則「沒事發生」，若跌破則啟動情境 C 再平衡。</div>
 
-  <div class="subh">如果你是現有持有者（最重視「不犯大錯」）</div>
-  <div class="nb">NVDA 連 4 黑是過去一週最重要的訊號——財報明顯超預期但股價仍走弱，意味市場對科技股估值已嚴格化。組合的真實 NVDA 曝險約 29%、AMD 約 29%，若 PCE 數據超預期（核心 ≥ 0.3%）、殖利率衝 4.70%+，組合單日回撤估計可達 2-4%。<b>當前最大威脅變為「PCE 黏滯 → 殖利率突破 → 科技股估值殺一輪」</b>，而非單一個股事件。建議：今日 PCE 公布前不動、不抄底、不殺低。AMD 28.7% 為組合最大單一部位，未來逢強勢分批換手到 SMH／GOOGL 是必要的紀律。</div>
+  <div class="subh">② 買方視角（新資金進場）</div>
+  <div class="nb">若今天有新資金考慮進場，<b>優先順序：</b>① <b>GOOGL</b>（估值最合理 22x、AI 應用受惠、防禦性最高）；② <b>VT</b>（最分散、抗集中風險）；③ <b>VOO</b>（廣度健康）；④ NVDA（短線修正後的核心 AI 部位，等 $208 確認支撐）。<b>暫緩名單：</b>AMD（估值＋技術皆逆風）、SMH（趨勢未確認轉強）、QQQ（集中度過高）。</div>
 
-  <div class="subh">如果你是潛在買方（最重視「進場時機」）</div>
-  <div class="nb">NVDA 拉回到 212 區、AMD 從 508 回到 495——財報後連續 5 個交易日的「賣事實」已大幅消化短線追高籌碼。若今日 PCE 溫和（核心 PCE MoM ≤ 0.2%）、殖利率回落到 4.40%，NVDA 25-28x 前向本益比可能成為理想進場區間。<b>建議：</b>① 等 5/28 PCE 結果出來再決定方向；② 若 PCE 溫和、殖利率回落，可分批建立 SMH／GOOGL 部位；③ GOOGL 在當前估值仍是相對好的進場標的；④ 若 PCE 偏高、殖利率衝 4.70%，反而是「再等一波」的時機。</div>
-
-  <div class="subh">如果你是長期投資人（10 年 +）</div>
-  <div class="nb">VOO ＋ VT 是核心，連 9 週收紅後雖估值偏高，但寬度健康、Dow 持續創新高顯示「市場仍多」結構未變，續加無妨。個股部位是「主動超額報酬」嘗試，需嚴守單一個股不超過 25% 上限（目前 NVDA 24.6%、AMD 28.7% AMD 已超過）。<b>SMH 是個股的良好替代</b>，獲得 AI 曝險而免去單一個股波動。當前 AI 半導體景氣循環仍在投資週期早中期（資料中心 capex 持續高位、MU 破 $1T 顯示 HBM 需求飆升、AVGO／TSM 訂單能見度高），但循環中段必有 30%+ 回撤一次，配置上需預先納入這種波動容忍度。20-30 年資產配置思維下，黃金（GLD/IAU 5-10%）與全球 REIT 是當前缺口。</div>
+  <div class="subh">③ 長期投資人視角（5-10 年）</div>
+  <div class="nb">從 5-10 年週期看，AI capex 進入「<b>巨大資本支出 → 應用層 monetize</b>」第二章——這對 NVDA／AMD／SMH 等硬體層長期仍是利多（capex 持續、產能受限）、對 GOOGL／META／AMZN 等應用層更是「<b>從投入轉收益</b>」階段。<b>關鍵長期風險：</b>① 通用 AI 模型商品化導致毛利下滑；② 中美科技脫鉤升級影響半導體；③ 主權 AI 模型分散 NVDA 訂單。對長期投資人來說，VT＋VOO 為核心 70-80%、AI 鏈個股 20-30% 是更穩健的配置；目前組合 AI 鏈個股佔比偏高 ~42%（穿透 ~62%），未來追加資金應優先補回 VT／VOO 端。</div>
 </div>
 
-<!-- SCENARIOS -->
+<!-- SCENARIO -->
 <div class="sec">
-  <h2>情境劇本（今日 PCE 至下週）</h2>
-  <div class="shint">三種劇本與對組合衝擊評估</div>
+  <h2>情境劇本（今日 5/28 盤中）</h2>
+  <div class="shint">用三幕劇本對應今日可能走勢</div>
   <div class="scgrid">
     <div class="scbox">
-      <div class="scl bull">多頭情境（35%）</div>
-      <div class="scd">核心 PCE MoM ≤ 0.2% ＋ 殖利率回落至 4.40% ＋ 伊朗 Hormuz 通航生效 → SPY 突破 760、SMH 重回 615、NVDA 反彈至 220、AMD 守 490。<b>單週 ＋3-5%</b>。<br><br><b>動作：</b>NVDA 反彈站穩 220 為短線止跌訊號；可考慮在 SMH 重回 615 時把 AMD 漲多部分換到 SMH／GOOGL。</div>
+      <div class="scl bull">BULL · 32%</div>
+      <div class="scd"><b>SPY +0.5～+1.0%；SMH 強反彈 +1.5%+。</b>10Y 續降至 4.45 以下、PCE 預期被市場買單、META／AMZN 動能擴散到 NVDA／AMD；半導體跌深反彈帶動 SMH 回測 $610。組合：NVDA／SMH 同步回升、AMD 補漲、GOOGL 持穩。</div>
     </div>
     <div class="scbox">
-      <div class="scl base">基本情境（45%）</div>
-      <div class="scd">核心 PCE MoM 0.2-0.3% ＋ 殖利率 4.50-4.65% 區震盪 ＋ NVDA 在 205-215 整理 → SPY 在 745-755 區間、SMH 在 590-610 區間。<b>單週 ±1-2%</b>。<br><br><b>動作：</b>維持現狀，逐步檢視 NVDA／AMD 集中度，評估後續分批換手到 GOOGL／VOO 的時點。</div>
+      <div class="scl base">BASE · 50%</div>
+      <div class="scd"><b>SPY 震盪 -0.3%～+0.3%；SMH 區間 590-605。</b>市場進入 PCE 前風險規避模式，量縮整理；NVDA 守 $210、AMD 在 $490-505 區間整理、GOOGL 持平至小漲。組合：理論市值橫盤、無需動作。</div>
     </div>
     <div class="scbox">
-      <div class="scl bear">空頭情境（20%）</div>
-      <div class="scd">核心 PCE MoM ≥ 0.3% ＋ 殖利率突破 4.70% ＋ NVDA 失守 200 → SPY 跌至 720、SMH 跌至 555、NVDA 跌至 195、AMD 跌至 450。<b>單週 －4-6%</b>。<br><br><b>動作：</b>不恐慌賣股；若有閒置資金且 GOOGL 跌至 360、SMH 跌至 555 可分批承接。同時檢視是否補上黃金（GLD ~408 可建立部位）／短債避險。</div>
+      <div class="scl bear">BEAR · 18%</div>
+      <div class="scd"><b>SPY -0.8% 以上；SMH 跌破 $585 二度急殺。</b>初領失業金跳升 ＋ 油價反彈 ＋ Fed 官員鷹派發言，10Y 重回 4.60；半導體 risk-off 擴大、NVDA 跌破 $200。組合：啟動情境 C 減碼程序、AMD 優先降一檔。</div>
     </div>
   </div>
 </div>
 
-<!-- RISK CHECKLIST -->
+<!-- RISKS -->
 <div class="sec">
-  <h2>本週風險清單</h2>
-  <div class="shint">時間軸由近而遠</div>
+  <h2>盤中關鍵風險清單</h2>
   <ul class="rlist">
-    <li><b>2026/05/28（週四，今日）08:30 ET 4 月 PCE 物價</b>——本週最大宏觀事件，Fed 最在乎的通膨指標。核心 PCE 共識約 3.0% YoY、月增 0.2-0.3%。若 ≥ 0.3% 將推升殖利率、壓抑科技股估值；若 ≤ 0.2% 將提供多頭續行動能。Cleveland Fed Nowcast 顯示油價反彈可能帶來上行驚奇。</li>
-    <li><b>2026/05/28（週四）同步公布：4 月個人所得／消費支出、初領失業金</b>——次要事件但若顯示消費力強勁＋通膨黏滯，將強化 Fed 不降息預期。</li>
-    <li><b>2026/05/29（週五）Q1 GDP 第二次修正 ＋ 5 月密大消費者信心終值</b>——次要事件但若顯著低於預期，可能放大「軟著陸 → 滯脹」憂慮。</li>
-    <li><b>NVDA 連 4 黑、210 區能否守穩</b>——失守 210 為短線警訊；失守 200 須重新評估技術破位是否伴隨基本面變差。從 5/22 收 $215.33 → 5/27 收 $212.60，週跌約 -1.3%（道瓊週漲 +0.5%）。</li>
-    <li><b>10Y 殖利率 4.50-4.70% 高位整理 + 30Y 5.03%</b>——是科技股估值的關鍵壓力區；若 PCE 後突破 4.75%，QQQ／SMH 評價乘數可能下調。</li>
-    <li><b>地緣油價波動</b>——伊朗－美國 Hormuz 通航達成共識使油價回落，但若談判破裂或中東衝突升級，油價隨時可回 110+ 重新點燃通膨擔憂。</li>
-    <li><b>AI 資本支出可持續性</b>——超大型雲端業者 2026 全年 capex 指引仍上修，MU 破 $1T 顯示 HBM 需求飆升、HBM4 訂單能見度有助 AI capex 持續性論述。</li>
-    <li><b>美中關稅／晶片出口管制</b>——任何新出口禁令直接影響 NVDA／AMD 中國營收；中國能見度仍是 NVDA 管理層在財報後最保留的部分。</li>
+    <li><b>5/29 4 月 PCE 物價（核心 PCE）</b>—— 本週決勝點，市場估 MoM +0.2%；若 ≥ +0.3% 可能再啟動殖利率反彈、半導體承壓。</li>
+    <li><b>SMH $585 支撐</b>—— 昨日盤中低，是 5 月以來明確支撐；跌破可能進入趨勢轉空。</li>
+    <li><b>NVDA $200 心理關卡</b>—— 跌破將觸發演算法停損與媒體警訊放大。</li>
+    <li><b>AMD $480 技術位</b>—— 5 月修正起點，跌破將確認雙重頂型態。</li>
+    <li><b>10Y 殖利率反彈</b>—— 若回升至 4.60+，估值倍數壓縮，QQQ／SMH 承壓。</li>
+    <li><b>油價意外反彈</b>—— WTI 目前 $90 區，若伊朗或中東局勢惡化反彈至 $100+，通膨預期重新升溫。</li>
+    <li><b>VIX 突破 25</b>—— VXX 昨日盤中曾達 25.69，若突破上行可能引發系統性 de-risking。</li>
+    <li><b>個別公司新聞風險</b>—— Fed 官員講話（5/27-29）、可能的 AI 監管／反壟斷新聞；NVDA 與中國市場政策變化。</li>
   </ul>
 </div>
 
-<!-- TAIWAN CALLOUT -->
-<div class="sec">
-  <h2>台股關聯觀察</h2>
-  <div class="shint">EWT 與本人台股組合的聯動點</div>
-  <div class="nb">EWT 5/27 收 $102.97（＋0.81% 創歷史新高）——台股延續強勢、ETF 突破 100 整數關。台股組合中 2330（台積電）權重最高，與美股 NVDA／AMD 為「同一條 AI 半導體供應鏈」——TSM ADR 5/27 收 $422.73（－1.6%）跟隨 SMH 拉回，但個股累積漲幅仍高於 NVDA。<b>NVDA 連 4 黑對台積電有短線壓抑作用</b>，但 MU ＋19%（HBM 訂單能見度）對 SK 海力士／三星間接利多，台積電作為 HBM 客戶的代工廠亦受惠。台股組合中 2330 與美股 SMH／NVDA 視為「同一筆 AI 半導體曝險」管理，總體曝險需合併計算；若已在台股端持有 2330 5-10% 權重，美股端的 NVDA + SMH + AMD 合計 60%+ 曝險，加總後對 AI 半導體景氣循環反應極為敏感。</div>
-</div>
-
-<!-- FOOTER / DISCLAIMER -->
+<!-- FOOT -->
 <div class="foot">
-  <p><b>免責聲明：</b>本報告由 Cowork 自動排程在美股盤前產生，僅供個人研究與市場資訊參考。</p>
-  <p>本人非財務顧問亦非證券分析師，內容不構成任何投資建議、買賣指令或個人化財務規劃。</p>
-  <p>投資涉及風險，過去績效不代表未來表現。讀者應自行判斷並承擔投資後果。</p>
-  <p style="margin-top:8px;">資料來源：Stooq（個股／ETF／指數）／FRED（美國利率／通膨／DXY／WTI）等官方第一手公開資料 ｜ 新聞與事件日曆：WebSearch 公開資料 ｜ ETF 內含個股權重為公開資料估算值</p>
-  <p>產生時間：2026-05-28 美股盤前 ｜ 排程：us-stock-pre-market-analysis</p>
+  <b>免責聲明：</b>本報告由 AI 自動產製，僅供個人投資研究參考，不構成任何投資建議、招攬或承諾。本人非財務顧問亦非合格證券分析師。所有觀點為當下分析框架下的判斷，市場情況變化迅速，請讀者自行查證並承擔投資風險。<br>
+  資料來源：Stooq（個股／ETF／期貨即時／延遲報價）、FRED（美 10Y／2Y／DFF／T10YIE／DTWEXBGS／DCOILWTICO）—— 官方／第一手資料。ETF 穿透曝險與權重比例為估算值，實際以最新月報為準。<br>
+  製表日期：2026-05-28（週四，台北時間盤前）｜ 美東開盤 9:30 ET（台北 21:30）｜ 隱私規範：個人持股一律以相對基準呈現。
 </div>
 
 </div>
