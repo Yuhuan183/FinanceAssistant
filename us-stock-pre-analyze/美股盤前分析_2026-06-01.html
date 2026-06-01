@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美股盤前分析 · 2026-06-01</title>
+<style>
+:root{
+  --bg:#0b0e14;--panel:#141925;--panel2:#1c2333;--line:#2a3346;
+  --txt:#e8ecf3;--txt2:#9aa6bd;--txt3:#6b7689;
+  --green:#76b900;--green2:#9ed320;--pos:#34d399;--neg:#f87171;--warn:#fbbf24;--blue:#60a5fa;--purple:#a78bfa;
+  --us:#9ed320;--tw:#fbbf24;--radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);color:var(--txt);line-height:1.65;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 18px 60px;}
+
+.hd{background:linear-gradient(135deg,#141925 0%,#1c2333 60%,#10331a 100%);
+  border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:14px;}
+.hd .eyebrow{color:var(--green2);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.hd h1{font-size:24px;font-weight:800;margin:6px 0 4px;}
+.hd .sub{color:var(--txt2);font-size:13px;}
+.hd .clock{display:inline-block;margin-top:9px;background:#1c3a0a;border:1px solid #3a5c10;
+  color:var(--green2);font-size:11.5px;font-weight:700;padding:3px 11px;border-radius:999px;}
+.hd .clock.hol{background:#3a2a08;border-color:#5c4a10;color:var(--warn);margin-left:6px;}
+.hd .clock.bear{background:#3a1414;border-color:#6b2020;color:var(--neg);margin-left:6px;}
+.hd .clock.alt{background:#1d2a55;border-color:#3a4a8c;color:var(--blue);margin-left:6px;}
+
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 20px;margin-bottom:14px;}
+.sec h2{font-size:15.5px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.sec h2::before{content:"";width:4px;height:16px;background:var(--green);border-radius:2px;}
+.sec .shint{font-size:11.5px;color:var(--txt3);margin-bottom:13px;}
+
+.topcall{background:var(--panel2);border:1px solid var(--line);border-left:4px solid var(--warn);
+  border-radius:10px;padding:14px 17px;margin-bottom:13px;}
+.topcall .tag{font-size:10.5px;font-weight:800;letter-spacing:1.5px;color:var(--warn);text-transform:uppercase;}
+.topcall p{font-size:13.3px;color:var(--txt);margin-top:5px;}
+.topcall p b{color:var(--warn);}
+
+.sigrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
+.chip{font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid var(--line);
+  background:var(--panel2);color:var(--txt2);}
+.chip.pos{background:#0e2d20;border-color:#1d5c40;color:var(--pos);}
+.chip.neg{background:#3a1414;border-color:#6b2020;color:var(--neg);}
+.chip.warn{background:#3a2a08;border-color:#5c4a10;color:var(--warn);}
+.chip.blu{background:#0e1f3a;border-color:#1d3a6b;color:var(--blue);}
+
+.mkt{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+.mcard{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:11px 13px;}
+.mcard .ml{font-size:11px;color:var(--txt3);font-weight:700;}
+.mcard .mv{font-size:18px;font-weight:800;margin:3px 0 1px;}
+.mcard .mc{font-size:11.5px;font-weight:700;}
+.mcard .mc.pos{color:var(--pos);}.mcard .mc.neg{color:var(--neg);}.mcard .mc.flat{color:var(--txt2);}
+.mcard .mn{font-size:10.5px;color:var(--txt3);margin-top:3px;line-height:1.45;}
+
+.subh{font-size:12px;font-weight:800;color:var(--green2);margin:15px 0 8px;
+  border-top:1px dashed var(--line);padding-top:11px;}
+.subh:first-of-type{border-top:none;padding-top:0;margin-top:6px;}
+
+.nb{font-size:12.8px;color:var(--txt2);}
+.nb b{color:var(--txt);}
+.nb+.nb{margin-top:7px;}
+
+table.tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px;}
+table.tbl th,table.tbl td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+table.tbl th{font-size:11px;font-weight:700;color:var(--txt3);background:var(--panel2);letter-spacing:.4px;text-transform:uppercase;}
+table.tbl td.num{text-align:right;font-variant-numeric:tabular-nums;}
+table.tbl tr:hover td{background:#181f2e;}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;}
+.dot.pos{background:var(--pos);}.dot.neg{background:var(--neg);}.dot.warn{background:var(--warn);}.dot.flat{background:var(--txt3);}
+
+.pcard{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px;}
+.pcard .ph{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;}
+.pcard .pname{font-size:14px;font-weight:800;}
+.pcard .ptag{font-size:10.5px;font-weight:700;color:var(--txt3);letter-spacing:.5px;}
+.pcard .ppx{font-size:12.5px;font-weight:700;color:var(--txt2);font-variant-numeric:tabular-nums;}
+.pcard .pview{font-size:12.7px;color:var(--txt2);margin-top:4px;}
+.pcard .pview b{color:var(--txt);}
+.pcard .pact{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.pcard .ract{font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:6px;letter-spacing:.5px;}
+.ract.add{background:#0e2d20;color:var(--pos);border:1px solid #1d5c40;}
+.ract.cut{background:#3a1414;color:var(--neg);border:1px solid #6b2020;}
+.ract.hold{background:#1c2333;color:var(--txt2);border:1px solid var(--line);}
+.ract.conf-h{background:#0e2d20;color:var(--pos);border:1px solid #1d5c40;}
+.ract.conf-m{background:#3a2a08;color:var(--warn);border:1px solid #5c4a10;}
+.ract.conf-l{background:#1c2333;color:var(--txt3);border:1px solid var(--line);}
+
+.scgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+.scbox{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:12px 14px;}
+.scbox .scl{font-size:11px;font-weight:800;letter-spacing:1px;}
+.scbox .scl.bull{color:var(--pos);}.scbox .scl.base{color:var(--blue);}.scbox .scl.bear{color:var(--neg);}
+.scbox .scd{font-size:12.5px;color:var(--txt2);margin-top:6px;}
+.scbox .scd b{color:var(--txt);}
+
+.rlist{font-size:12.5px;color:var(--txt2);padding-left:18px;}
+.rlist li{margin-bottom:5px;}
+.rlist li b{color:var(--warn);}
+
+.expb{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:13px 15px;margin-top:6px;}
+.expb .exprow{display:flex;align-items:center;font-size:12.3px;padding:5px 0;}
+.expb .expn{flex:0 0 110px;color:var(--txt2);font-weight:600;}
+.expb .expb2{flex:1;background:#0b0e14;border-radius:4px;height:18px;position:relative;overflow:hidden;}
+.expb .expfill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:11px;font-weight:800;color:#0b0e14;}
+.expb .expnote{font-size:10.5px;color:var(--txt3);margin-left:8px;flex:0 0 100px;text-align:right;}
+
+.foot{font-size:11px;color:var(--txt3);padding:18px 4px 0;text-align:center;line-height:1.65;}
+.foot b{color:var(--warn);}
+
+@media (max-width:760px){
+  .mkt{grid-template-columns:repeat(2,1fr);}
+  .scgrid{grid-template-columns:1fr;}
+  .hd h1{font-size:20px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="hd">
+  <div class="eyebrow">US PRE-MARKET BRIEFING</div>
+  <h1>美股盤前分析 · 2026/06/01（週一）</h1>
+  <div class="sub">資料日：上一交易日 2026/05/29（週五）收盤 ｜ 美東開盤 9:30 ET（台北時間 21:30）｜ 六月首個交易日</div>
+  <span class="clock">交易日</span><span class="clock alt">GOOGL TPU 故事擴散</span><span class="clock bear">6 月季節性偏弱</span>
+</div>
+
+<!-- TOP CALL -->
+<div class="sec">
+  <h2>盤前一句話</h2>
+  <div class="shint">用最短篇幅交代今天最該看的事</div>
+  <div class="topcall">
+    <span class="tag">KEY CALL</span>
+    <p><b>九週連紅 × GOOGL TPU 故事擴散 × 6 月季節性逆風並存。</b>上週五（5/29）三大指數續創新高、Dow +0.72%、SPY/QQQ 各 +0.2%，但<b>盤面內部明顯分歧</b>：NVDA $211.14 收於日低、GOOGL $380.34 收於日低，AMD 卻盤中從 $503.43 反彈至 $516.10（+2.5% 反包）；五月核心 PCE 3.3%（近兩年高）已被市場消化、市場聚焦 6/16-17 FOMC（無升息共識）。週末關鍵新聞：<b>DA Davidson 5/31 報告稱 Alphabet TPU 可望達 20% AI 晶片市佔、$900B 規模</b>，已與 Anthropic／Meta 簽單，這是「賣 NVDA 鏟子、買 GOOGL 雲端」題材切換的最強催化劑。本週財報重點：HPE（6/1）、PANW（6/2）、<b>AVGO（6/3 為半導體續強關鍵）</b>、CRWD（6/3）。原油跌至 $89.95（伊朗 60 天停火延長），DXY 99.01 走弱。<b>組合配置：GOOGL 可能跳空高開、NVDA 盤前承壓，今日不主動加碼 NVDA／AMD，續觀察 SMH $598 支撐與 AVGO 6/3 財報。</b></p>
+  </div>
+  <div class="sigrow">
+    <span class="chip pos">SPY/QQQ 九週連紅</span>
+    <span class="chip pos">AMD 5/29 盤中反彈 +2.5%</span>
+    <span class="chip neg">NVDA 收於日低 $211.14</span>
+    <span class="chip neg">GOOGL 收於日低 $380.34</span>
+    <span class="chip blu">5/31 GOOGL TPU $900B 報告</span>
+    <span class="chip warn">4 月核心 PCE 3.3% 已消化</span>
+    <span class="chip blu">6/3 AVGO 財報</span>
+    <span class="chip warn">6 月季節性偏弱</span>
+  </div>
+</div>
+
+<!-- GLOBAL MARKET -->
+<div class="sec">
+  <h2>全球市場儀表板</h2>
+  <div class="shint">5/29 美股收盤 ｜ 利率／通膨：FRED 5/28-29 最新值 ｜ 期貨：盤前即時（6/1 04:07 ET 抓取）</div>
+  <div class="subh">美國主要指數 ETF（5/29 收盤）</div>
+  <div class="mkt">
+    <div class="mcard"><div class="ml">SPY（S&P 500）</div><div class="mv">756.48</div><div class="mc pos">+0.2%</div><div class="mn">創新高 ｜ 九週連紅</div></div>
+    <div class="mcard"><div class="ml">QQQ（Nasdaq 100）</div><div class="mv">738.31</div><div class="mc pos">+0.2%</div><div class="mn">創新高 ｜ 大型科技領漲</div></div>
+    <div class="mcard"><div class="ml">DIA（道瓊）</div><div class="mv">510.78</div><div class="mc pos">+0.72%</div><div class="mn">傳統景氣循環走強</div></div>
+    <div class="mcard"><div class="ml">SMH（半導體）</div><div class="mv">598.93</div><div class="mc warn">盤中弱、收盤穩</div><div class="mn">日內 597.12-611.79 大區間</div></div>
+    <div class="mcard"><div class="ml">IWM（小型股）</div><div class="mv">290.43</div><div class="mc flat">區間整理</div><div class="mn">288.33-291.41</div></div>
+    <div class="mcard"><div class="ml">XLF（金融）</div><div class="mv">51.58</div><div class="mc pos">+0.31%</div><div class="mn">隨 Dow 走強</div></div>
+    <div class="mcard"><div class="ml">XLV（醫療保健）</div><div class="mv">149.47</div><div class="mc flat">回吐 0.5%</div><div class="mn">資金轉景氣循環</div></div>
+    <div class="mcard"><div class="ml">VOO（S&P 核心）</div><div class="mv">695.49</div><div class="mc pos">+0.2%</div><div class="mn">與 SPY 同步創高</div></div>
+  </div>
+
+  <div class="subh">風險避險商品（5/29 收盤 / 6/1 盤前期貨）</div>
+  <div class="mkt">
+    <div class="mcard"><div class="ml">TLT（20Y+ 公債）</div><div class="mv">85.76</div><div class="mc pos">+0.54%</div><div class="mn">10Y 殖利率回落支撐</div></div>
+    <div class="mcard"><div class="ml">HYG（高收益債）</div><div class="mv">80.31</div><div class="mc pos">+0.22%</div><div class="mn">信用利差續壓縮</div></div>
+    <div class="mcard"><div class="ml">GLD（黃金 ETF）</div><div class="mv">417.12</div><div class="mc pos">+0.4%</div><div class="mn">日內衝高 $421.82</div></div>
+    <div class="mcard"><div class="ml">WTI 原油（盤前 6/1）</div><div class="mv">$89.95</div><div class="mc neg">週線 -10%</div><div class="mn">伊朗 60 天停火 / 需求疲弱</div></div>
+    <div class="mcard"><div class="ml">DX.F（盤前 6/1）</div><div class="mv">99.01</div><div class="mc neg">USD 走弱</div><div class="mn">2Y 急降利率差收斂</div></div>
+    <div class="mcard"><div class="ml">BTC（盤前 6/1）</div><div class="mv">$73,395</div><div class="mc neg">-0.5%</div><div class="mn">7.3-7.4 萬區間整理</div></div>
+    <div class="mcard"><div class="ml">VIX 期貨（盤前估）</div><div class="mv">~14-15</div><div class="mc pos">低波動</div><div class="mn">波動回到舒適區間</div></div>
+    <div class="mcard"><div class="ml">恆生指數（亞洲時段）</div><div class="mv">~25,200</div><div class="mc flat">區間震盪</div><div class="mn">中港股待 6 月人行動向</div></div>
+  </div>
+
+  <div class="subh">利率與通膨（FRED 5/28-29 最新值）</div>
+  <div class="mkt">
+    <div class="mcard"><div class="ml">美 10Y 殖利率</div><div class="mv">4.45%</div><div class="mc pos">-22bp（自 5/19 高 4.67）</div><div class="mn">5/28 最新 ｜ 月內持續下降</div></div>
+    <div class="mcard"><div class="ml">美 2Y 殖利率</div><div class="mv">3.99%</div><div class="mc pos">-14bp（自 5/19 高 4.13）</div><div class="mn">5/28 最新 ｜ 降息預期升溫</div></div>
+    <div class="mcard"><div class="ml">10Y－2Y 利差</div><div class="mv">+47bp</div><div class="mc pos">維持牛式陡峭</div><div class="mn">5/29 最新</div></div>
+    <div class="mcard"><div class="ml">10Y 通膨預期</div><div class="mv">2.38%</div><div class="mc flat">穩定</div><div class="mn">5/29 最新 ｜ PCE 後未走升</div></div>
+    <div class="mcard"><div class="ml">DFF（Fed 有效利率）</div><div class="mv">3.62%</div><div class="mc flat">月內不變</div><div class="mn">5/28 最新</div></div>
+    <div class="mcard"><div class="ml">DTWEXBGS（廣義 USD）</div><div class="mv">119.29</div><div class="mc warn">高檔</div><div class="mn">5/22 最新 ｜ 仍偏強</div></div>
+    <div class="mcard"><div class="ml">WTI（FRED 5/26）</div><div class="mv">$97.63</div><div class="mc neg">較 5/18 $112 急跌 -13%</div><div class="mn">期貨現值已跌至 $89.95</div></div>
+    <div class="mcard"><div class="ml">核心 PCE（4 月已公布）</div><div class="mv">3.3%</div><div class="mc warn">近兩年高</div><div class="mn">市場已消化、指數仍創高</div></div>
+  </div>
+
+  <div class="nb" style="margin-top:14px;"><b>解讀：</b>美股當前處於「<b>熱通膨被消化、利率溫和回落、九週連紅的混合多頭</b>」格局。<b>正面：</b>2Y/10Y 自 5/19 高點同步下行 14-22bp、TLT/HYG 同步走強、信用利差未擴張、油價回落、伊朗 60 天停火延長、Dell 財報 +30% 印證 AI 需求；<b>警訊：</b>3.3% 核心 PCE 是「Fed 不可能降息的數字」（首次升息預期已被推到 2027 Q1）、6 月為中期選舉年最差月份、SPY 連 9 週紅 vs. 歷史長期不超過 10-12 週的紀錄、5/29 NVDA/GOOGL 收於日低顯示<b>大型科技內部已出現分化</b>。本週決勝點：6/3 AVGO 財報（AI ASIC 龍頭，是 Alphabet TPU 故事的最佳實證）、6/4-5 五月就業數據。</div>
+</div>
+
+<!-- US POSITIONING -->
+<div class="sec">
+  <h2>美股籌碼與題材動向</h2>
+  <div class="shint">寬度、產業輪動與盤前氣氛</div>
+  <div class="subh">寬度與情緒</div>
+  <div class="nb">S&P 500 完成<b>九週連紅創歷史新高紀錄</b>——以歷史經驗看，連紅紀錄通常在 8-12 週區間結束，本週開始進入「容易回吐」窗口。然而短期動能仍強：HYG 80.31（+0.22%）、TLT 85.76（+0.54%）、油價回落、利率下行，<b>系統性風險訊號完全沒有出現</b>。值得注意的是：5/29 SPY/QQQ 雖小漲 0.2%、但 NVDA 與 GOOGL 同時收於日低——這是「<b>大盤靠 AMD／中型科技拉抬、龍頭走弱</b>」的內部分歧訊號。VIX 期貨在 14-15 區間，波動率舒適。</div>
+
+  <div class="subh">5/31 週末關鍵新聞：Alphabet TPU 故事爆發</div>
+  <div class="nb"><b>DA Davidson 分析師 Gil Luria 5/31 報告：</b>Alphabet 客製化 TPU 晶片可望取得 <b>20% AI 加速器市佔</b>、市場規模達 <b>$900 億美元</b>。重點：① Alphabet 已與 Anthropic／Meta 簽單，從「自用」轉向「對外銷售」；② Morgan Stanley 估 TPU 銷售可年增 60% 至 2028；③ 雖然 NVDA 仍將維持 70%+ 市佔，但 GOOGL 已從「<b>單純 AI 應用層</b>」升級為「<b>應用＋基礎建設雙位數成長</b>」。<b>對組合的意義：</b>GOOGL 盤前可能跳空（雖然估值已 22x，TAM 擴大可支撐更高估值），NVDA 受競爭擴大壓力（但 70% 市佔仍是絕對龍頭、Blackwell Ultra 出貨基本面未變）。</div>
+
+  <div class="subh">題材輪動（AI 內部結構性切換）</div>
+  <div class="nb"><b>從「AI 鏟子單一龍頭」轉「多元 AI 供應鏈」：</b>過去一年資本支出主要由 NVDA 獨家受益，現在 Alphabet TPU、AMD MI400、Broadcom 客製 ASIC、Marvell 都拿到實質訂單；這對 SMH（一籃子半導體）反而是<b>長期正面</b>（分散依賴 NVDA），但對純押 NVDA 的部位是壓力。5/29 AMD $503→$516 盤中反彈即可能是「<b>multi-vendor AI 受益者</b>」邏輯的早期反映。</div>
+
+  <div class="nb"><b>NVDA：</b>5/29 收 $211.14（日內 211.13-217.86 大區間，最終收於低點）、5/27-29 兩日累積 -0.7%；技術面已跌破 5 月初 $225 趨勢線。基本面 Q2 指引 +95% 仍是基石、Blackwell Ultra 與 Rubin 路線無變，但「Alphabet TPU 取 20% 市佔」題材會是未來幾季的估值壓力。下方關鍵支撐：$208（5/27 低）、$200（心理／百日均線）。</div>
+
+  <div class="nb"><b>AMD：</b>5/29 走勢戲劇性，<b>盤中 $503.43 急殺後拉回收 $516.10（+2.5% 反包）</b>，是組合中最強訊號。MI400 Q3 量產、Helios 機架、Meta／OpenAI 採用都在推進；前 P/E 仍偏貴但「<b>multi-vendor AI 概念股</b>」題材浮現後可重啟估值擴張。短線觀察 $520-525 是否站穩；若 $530 突破則 5/22 以來雙重底成形。</div>
+
+  <div class="nb"><b>GOOGL：</b>5/29 收 $380.34（日低 378.46，弱）<b>但 5/31 TPU $900B 報告週末發布</b>，盤前極可能跳空高開。長線題材新升級：原本只是「便宜的大型科技 22x」，現在加上「<b>AI 基礎建設 multi-vendor 受益者</b>」。短線謹慎「過熱跳空後當日回吐」風險、中線估值上限可向 26-28x 推升。</div>
+
+  <div class="nb"><b>避險與商品：</b>油價跌至 $89.95（週線 -10%）反映伊朗 60 天停火延長、原油供應疑慮消退；GLD $417.12 持平、市場避險需求溫和；DXY 99.01 走弱（vs FRED 5/22 119.29 廣義 USD）反映 USD 雙週走弱 ~0.6%，對非美資產（VT 內含部分）是正面。</div>
+</div>
+
+<!-- PERSONAL HOLDINGS QUICK VIEW -->
+<div class="sec">
+  <h2>個人持股盤前快評</h2>
+  <div class="shint">逐檔 5/29 收盤價與盤前觀點 ｜ 隱私規範：僅列權重與相對基準</div>
+
+  <div class="pcard">
+    <div class="ph">
+      <div><span class="pname">NVDA</span> <span class="ptag">· AI 半導體核心</span></div>
+      <div class="ppx">$211.14</div>
+    </div>
+    <div class="pview"><b>盤前承壓但基本面未動。</b>5/29 收於日內低點（low 211.13、close 211.14），昨日 5/27→5/29 兩日累積 -0.7%；週末 Alphabet TPU $900B 報告會帶來「<b>競爭壓力故事擴散</b>」，盤前可能下探 $208 區。基本面：Q2 指引 +95% 未變、70% AI 加速器市佔仍維持絕對龍頭、Blackwell Ultra 量產順利。<b>反方風險：</b>① $200 心理關卡若失守，演算法停損與媒體放大；② AMD/Alphabet/AVGO multi-vendor 故事擴散，FY27 EPS 估值倍數可能從 25x 壓縮至 22x。</div>
+    <div class="pact">
+      <span class="ract hold">方向：核心持有</span>
+      <span class="ract conf-m">信心：中</span>
+      <span class="ract" style="background:#0e1f3a;color:var(--blue);border:1px solid #1d3a6b;">觸發：$208 守穩續抱 / $200 失守減碼</span>
+    </div>
+  </div>
+
+  <div class="pcard">
+    <div class="ph">
+      <div><span class="pname">AMD</span> <span class="ptag">· AI 半導體 · 強動能反包</span></div>
+      <div class="ppx">$516.10</div>
+    </div>
+    <div class="pview"><b>盤中反包形態+ multi-vendor 故事浮現，最強訊號。</b>5/29 走勢戲劇性：open $520.80 → low $503.43 → close $516.10，<b>從日內 -3.3% 翻身為 -0.9%</b>，反包形態確認 $500-505 短線支撐強。MI400 Q3、Helios 機架、Meta/OpenAI 採用都在持續推進。AVGO 6/3 財報可能進一步催化整個「<b>NVDA 以外 AI</b>」題材。<b>反方風險：</b>① 估值 ~55-60x 仍偏貴、若 PCE/就業數據意外鷹派則高 beta 仍承壓；② 反包形態若無法突破 $525 則為短線假反彈。</div>
+    <div class="pact">
+      <span class="ract hold">方向：持有觀察反包確認</span>
+      <span class="ract conf-m">信心：中</span>
+      <span class="ract" style="background:#0e1f3a;color:var(--blue);border:1px solid #1d3a6b;">觸發：$525 突破改加碼 / $500 失守減碼</span>
+    </div>
+  </div>
+
+  <div class="pcard">
+    <div class="ph">
+      <div><span class="pname">GOOGL</span> <span class="ptag">· 大型科技 · TPU 故事升級</span></div>
+      <div class="ppx">$380.34</div>
+    </div>
+    <div class="pview"><b>5/29 弱、週末 TPU 故事爆發，盤前有跳空潛力。</b>5/29 收於日內低點（low 378.46、close 380.34），但 5/31 DA Davidson 報告「<b>TPU 可達 20% AI 市佔、$900B</b>」是<b>關鍵估值催化劑</b>——故事從「便宜 22x 大型科技」升級為「應用＋AI 基建雙引擎」。已有 Anthropic／Meta 簽單實證，Morgan Stanley 估 TPU 銷售 60% 年增至 2028。<b>反方風險：</b>① 跳空高開後當日可能獲利了結、區間整理；② DOJ 反壟斷案件仍懸而未決；③ 25x 以上估值需要更明確的 TPU 對外銷售營收佐證才能維持。</div>
+    <div class="pact">
+      <span class="ract add">方向：可順勢加碼但避免追高</span>
+      <span class="ract conf-h">信心：高</span>
+      <span class="ract" style="background:#0e1f3a;color:var(--blue);border:1px solid #1d3a6b;">觸發：跳空 +3%+ 不追、回測 $385 分批接</span>
+    </div>
+  </div>
+
+  <div class="pcard">
+    <div class="ph">
+      <div><span class="pname">SMH</span> <span class="ptag">· ETF · 半導體分散</span></div>
+      <div class="ppx">$598.93</div>
+    </div>
+    <div class="pview"><b>$598 支撐確認，盤中反包帶 SMH 收尾。</b>5/29 大區間（597.12-611.79）但收盤穩在 $598.93，與 5/28 的 $585 低點對應，<b>$585-598 區間支撐確認有效</b>。SMH 內含 NVDA／TSM／AVGO／AMD／ASML／MU 全鏈條，當前的「multi-vendor AI」題材對 SMH 反而<b>長期正面</b>（分散依賴單一 NVDA），<b>6/3 AVGO 財報</b>會是直接催化劑。<b>反方風險：</b>① SMH 集中度高（前 3 大 NVDA／TSM／AVGO ~40%），若 NVDA 因 TPU 競爭故事大跌會連動全 ETF；② 失守 $585 為趨勢轉空訊號。</div>
+    <div class="pact">
+      <span class="ract hold">方向：持有觀察 AVGO 財報</span>
+      <span class="ract conf-m">信心：中</span>
+      <span class="ract" style="background:#0e1f3a;color:var(--blue);border:1px solid #1d3a6b;">觸發：守 $598 續抱 / 跌破 $585 減碼至 VT</span>
+    </div>
+  </div>
+
+  <div class="pcard">
+    <div class="ph">
+      <div><span class="pname">QQQ</span> <span class="ptag">· ETF · 那斯達克 100</span></div>
+      <div class="ppx">$738.31</div>
+    </div>
+    <div class="pview"><b>創新高、九週連紅核心受益者。</b>5/29 +0.2% 收 $738.31，創歷史新高。10Y 4.45%（低於上次紀錄日期）對估值有利。前 10 大持股佔約 55%，與個股 NVDA／GOOGL 高度重疊。本週驅動：① GOOGL TPU 題材；② AVGO 6/3 財報；③ 6/4-5 五月就業數據。<b>反方風險：</b>① 連 9 週紅已超越歷史均值上限、易回吐；② 6 月為中期選舉年最差月份；③ 大型科技集中度 ~55% 是高位、若 NVDA 大跌 -5%+ QQQ 也會回吐。</div>
+    <div class="pact">
+      <span class="ract hold">方向：核心持有 / 不追高</span>
+      <span class="ract conf-m">信心：中</span>
+    </div>
+  </div>
+
+  <div class="pcard">
+    <div class="ph">
+      <div><span class="pname">VOO</span> <span class="ptag">· ETF · S&P 500 廣度核心</span></div>
+      <div class="ppx">$695.49</div>
+    </div>
+    <div class="pview">5/29 +0.2% 創新高、與 SPY 同步九週連紅。VOO 涵蓋 500 檔，是組合中科技曝險「降溫劑」。Dow +0.72% 領漲反映景氣循環股動能擴散——對 VOO 內非科技類股（金融、工業、消費）有利。本週連 10 週紅將挑戰歷史紀錄。<b>反方風險：</b>① S&P 500 前 10 大佔 ~33% 已是歷史高位（含 7 大科技），「分散」程度其實沒有想像中高；② 6 月季節性偏弱。</div>
+    <div class="pact">
+      <span class="ract add">方向：核心持有 / 可緩步增配</span>
+      <span class="ract conf-h">信心：高</span>
+    </div>
+  </div>
+
+  <div class="pcard">
+    <div class="ph">
+      <div><span class="pname">VT</span> <span class="ptag">· ETF · 全球股票</span></div>
+      <div class="ppx">~$157（沿用 5/28 估算）</div>
+    </div>
+    <div class="pview">VT Stooq 5/29 抓取失敗，沿用 5/28 估算值。全球股票最分散配置（美國 ~60% ＋ 非美 ~40%）；DXY 99.01 走弱對非美資產有利、是 VT 的潛在順風。亞股本週相對平靜、歐股受惠於 ECB 寬鬆預期。<b>反方風險：</b>① USD 反彈時 VT 報酬率受匯率拖累；② 全球分散在系統性風險時無法避險。</div>
+    <div class="pact">
+      <span class="ract add">方向：核心持有 / 追加資金優先</span>
+      <span class="ract conf-h">信心：高</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- PORTFOLIO ALLOCATION & EXPOSURE -->
+<div class="sec">
+  <h2>持股比重與曝險分析</h2>
+  <div class="shint">隱私規範：以「淨資產＝100」相對基準呈現 ｜ ETF 穿透為估算值</div>
+
+  <div class="subh">帳面權重（以 5/29 收盤估算市值權重，淨資產＝100）</div>
+  <div class="expb">
+    <div class="exprow"><div class="expn">VT</div><div class="expb2"><div class="expfill" style="width:30%;background:var(--green2);">~30%</div></div><div class="expnote">全球股票</div></div>
+    <div class="exprow"><div class="expn">NVDA</div><div class="expb2"><div class="expfill" style="width:21%;background:#76b900;">~21%</div></div><div class="expnote">個股 · AI 龍頭</div></div>
+    <div class="exprow"><div class="expn">AMD</div><div class="expb2"><div class="expfill" style="width:22%;background:#76b900;">~22%</div></div><div class="expnote">個股 · AI（漲）</div></div>
+    <div class="exprow"><div class="expn">SMH</div><div class="expb2"><div class="expfill" style="width:14%;background:var(--blue);">~14%</div></div><div class="expnote">半導體 ETF</div></div>
+    <div class="exprow"><div class="expn">VOO</div><div class="expb2"><div class="expfill" style="width:9%;background:var(--blue);">~9%</div></div><div class="expnote">S&P 500</div></div>
+    <div class="exprow"><div class="expn">QQQ</div><div class="expb2"><div class="expfill" style="width:3.8%;background:var(--blue);">~3.8%</div></div><div class="expnote">Nasdaq 100</div></div>
+    <div class="exprow"><div class="expn">GOOGL</div><div class="expb2"><div class="expfill" style="width:1.2%;background:#76b900;">~1.2%</div></div><div class="expnote">個股 · 大型科技</div></div>
+  </div>
+  <div class="nb" style="margin-top:10px;"><b>帳面解讀：</b>NVDA ＋ AMD 兩檔合計 ~43%（AMD 5/29 漲 4% 後權重略升）為絕對核心。VT ~30% 提供分散；SMH ~14% 是半導體分散曝險；VOO ~9%、QQQ ~3.8% 為指數型補充；GOOGL ~1.2% 是相對小的個股部位。<b>本週特別注意：AMD 反彈讓組合對「multi-vendor AI 故事」的曝險上升、對 NVDA 單一壓力減輕；GOOGL 跳空若實現可能讓 GOOGL 權重略增。權重比例為市值估算，未提供成本價時不計算損益。</b></div>
+
+  <div class="subh">ETF 穿透曝險（look-through）— 真實 NVDA／AMD／半導體曝險</div>
+  <div class="expb">
+    <div class="exprow"><div class="expn">NVDA 真實曝險</div><div class="expb2"><div class="expfill" style="width:27%;background:var(--green);">~27%</div></div><div class="expnote">含 SMH/QQQ/VOO/VT 穿透</div></div>
+    <div class="exprow"><div class="expn">AMD 真實曝險</div><div class="expb2"><div class="expfill" style="width:24%;background:var(--green);">~24%</div></div><div class="expnote">含 SMH 穿透</div></div>
+    <div class="exprow"><div class="expn">半導體類股總曝險</div><div class="expb2"><div class="expfill" style="width:63%;background:var(--warn);">~63%</div></div><div class="expnote">含整條 AI 鏈</div></div>
+    <div class="exprow"><div class="expn">大型科技（七巨頭）</div><div class="expb2"><div class="expfill" style="width:38%;background:var(--purple);">~38%</div></div><div class="expnote">含 QQQ/VOO 穿透</div></div>
+    <div class="exprow"><div class="expn">GOOGL 真實曝險</div><div class="expb2"><div class="expfill" style="width:5%;background:#a78bfa;">~5%</div></div><div class="expnote">個股 +ETF 穿透</div></div>
+    <div class="exprow"><div class="expn">非美股票</div><div class="expb2"><div class="expfill" style="width:12%;background:var(--blue);">~12%</div></div><div class="expnote">主要透過 VT</div></div>
+    <div class="exprow"><div class="expn">防禦型（醫療／公用）</div><div class="expb2"><div class="expfill" style="width:5%;background:#3a5c10;">~5%</div></div><div class="expnote">VT/VOO 內含</div></div>
+    <div class="exprow"><div class="expn">固定收益</div><div class="expb2"><div class="expfill" style="width:1%;background:var(--txt3);">~1%</div></div><div class="expnote">無顯著配置</div></div>
+  </div>
+  <div class="nb" style="margin-top:10px;"><b>穿透解讀（必看）：</b>① <b>NVDA 真實曝險 ~27%</b>（個股 21% ＋ SMH 內 NVDA ~20% × 14% ＋ QQQ 內 NVDA ~10% × 3.8% ＋ VOO 內 NVDA ~7% × 9% ＋ VT 內 NVDA ~3% × 30% ≈ 27%）—— 比帳面 21% 高 6pp。② <b>AMD 穿透 ~24%</b>（含 SMH 內 AMD ~5% × 14% 等），AMD 反彈推升其權重。③ <b>半導體類股總曝險 ~63%</b>，遠超市場基準（半導體佔 S&P 500 約 12%）。④ <b>GOOGL 真實曝險約 5%</b>（個股 1.2% ＋ QQQ 內 ~6% × 3.8% ＋ VOO 內 ~3% × 9% ＋ VT 內 ~2% × 30%），TPU 故事擴散時組合受益有限但<b>方向是對的</b>。⑤ ETF 之間重疊度大。<b>結論：</b>組合仍是「<b>帳面分散但實際集中於 AI 半導體</b>」——目前 multi-vendor AI 題材是「兩面刀」：NVDA 集中度風險上升，但 AMD/SMH 穿透變成順風。<i>百分比為估算，實際以使用者持倉與 ETF 月報為準。</i></div>
+
+  <div class="subh">集中度與避震評估</div>
+  <div class="nb"><b>集中風險：</b>半導體 ~63% 與七巨頭 ~38% 的高集中度在多元 AI 牛市時放大報酬、但在「<b>Alphabet TPU 取代 NVDA 故事</b>」這類結構性新聞時會放大個股事件風險。<b>分散度評分：</b>4/10（偏集中）。<b>防禦性資產：</b>幾乎為零——無公債（BND／TLT）、無黃金（GLD／IAU）、無大量現金部位。<b>非美曝險：</b>~12%（透過 VT），相對偏低；DXY 走弱對 VT 有利。<b>建議方向：</b>① 如果 6 月份新資金進場，優先考慮 VT／VOO／GOOGL；② 等 6/3 AVGO 財報後再評估 SMH 是否加碼；③ 暫不繼續加碼 NVDA 單一個股直到 Alphabet TPU 故事影響清晰。</div>
+</div>
+
+<!-- MULTI-FACTOR SCORING -->
+<div class="sec">
+  <h2>多因子題材評分（持股 × 5 因子）</h2>
+  <div class="shint">分數 1-5（5 為最強），是當下訊號相對強弱、非絕對買賣訊號</div>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>標的</th>
+        <th>基本面動能</th>
+        <th>估值位階</th>
+        <th>技術位階</th>
+        <th>題材熱度</th>
+        <th>宏觀敏感度</th>
+        <th>總分</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>NVDA</b></td>
+        <td><span class="dot pos"></span>5 · Q2 指引 +95%</td>
+        <td><span class="dot warn"></span>3 · 25x 中性</td>
+        <td><span class="dot neg"></span>2 · 收於日低</td>
+        <td><span class="dot warn"></span>3 · TPU 競爭升溫</td>
+        <td><span class="dot warn"></span>3 · 對利率敏感</td>
+        <td><b>16/25</b><br><span style="font-size:10px;color:var(--neg);">↓3</span></td>
+      </tr>
+      <tr>
+        <td><b>AMD</b></td>
+        <td><span class="dot pos"></span>4 · MI400 加 multi-vendor</td>
+        <td><span class="dot neg"></span>2 · 58x 偏貴</td>
+        <td><span class="dot pos"></span>4 · 盤中反包 +2.5%</td>
+        <td><span class="dot pos"></span>5 · AI multi-vendor 受益</td>
+        <td><span class="dot neg"></span>2 · 高 beta</td>
+        <td><b>17/25</b><br><span style="font-size:10px;color:var(--pos);">↑3</span></td>
+      </tr>
+      <tr>
+        <td><b>GOOGL</b></td>
+        <td><span class="dot pos"></span>5 · TPU $900B</td>
+        <td><span class="dot pos"></span>5 · 22x 最便宜</td>
+        <td><span class="dot warn"></span>3 · 5/29 弱、6/1 跳空待確認</td>
+        <td><span class="dot pos"></span>5 · 雙引擎升級</td>
+        <td><span class="dot pos"></span>4 · 防禦性</td>
+        <td><b>22/25</b><br><span style="font-size:10px;color:var(--pos);">↑2</span></td>
+      </tr>
+      <tr>
+        <td><b>SMH</b></td>
+        <td><span class="dot pos"></span>4 · multi-vendor 受益</td>
+        <td><span class="dot warn"></span>3 · 加權合理</td>
+        <td><span class="dot warn"></span>3 · 區間整理</td>
+        <td><span class="dot pos"></span>5 · 6/3 AVGO 催化</td>
+        <td><span class="dot warn"></span>3 · 中等 beta</td>
+        <td><b>18/25</b><br><span style="font-size:10px;color:var(--pos);">↑1</span></td>
+      </tr>
+      <tr>
+        <td><b>QQQ</b></td>
+        <td><span class="dot pos"></span>4 · 九週連紅</td>
+        <td><span class="dot warn"></span>3 · 高位震盪</td>
+        <td><span class="dot pos"></span>4 · 創新高</td>
+        <td><span class="dot pos"></span>4 · 科技指標</td>
+        <td><span class="dot warn"></span>3 · 對利率敏感</td>
+        <td><b>18/25</b><br><span style="font-size:10px;color:var(--pos);">↑1</span></td>
+      </tr>
+      <tr>
+        <td><b>VOO</b></td>
+        <td><span class="dot pos"></span>4 · 廣度健康</td>
+        <td><span class="dot warn"></span>3 · 高位</td>
+        <td><span class="dot pos"></span>4 · 連 9 週紅</td>
+        <td><span class="dot warn"></span>3 · 中性</td>
+        <td><span class="dot pos"></span>4 · 較不敏感</td>
+        <td><b>18/25</b></td>
+      </tr>
+      <tr>
+        <td><b>VT</b></td>
+        <td><span class="dot pos"></span>4 · 全球均衡</td>
+        <td><span class="dot pos"></span>4 · 非美較便宜</td>
+        <td><span class="dot warn"></span>3 · 區間</td>
+        <td><span class="dot warn"></span>3 · 全球分散</td>
+        <td><span class="dot pos"></span>5 · 最分散+ USD 走弱受益</td>
+        <td><b>19/25</b><br><span style="font-size:10px;color:var(--pos);">↑1</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="nb" style="margin-top:10px;"><b>解讀（vs 5/28）：</b>本期排序 <b>GOOGL（22）→ VT（19）→ SMH／QQQ／VOO（18）→ AMD（17）→ NVDA（16）</b>。<b>GOOGL（↑2）</b>因 TPU $900B 題材在題材熱度＋基本面動能雙重升等成為當前最強標的。<b>AMD（↑3）</b>因盤中反包＋multi-vendor 題材浮現大幅升等、與 NVDA 評分對調。<b>NVDA（↓3）</b>因技術破壞＋競爭壓力故事下調至 16，但仍持有級別。<b>VT（↑1）</b>受惠 USD 走弱。整體訊號：<b>「賣龍頭、買多元」</b>的內部輪動明確、但組合整體仍受惠 AI 主題。</div>
+</div>
+
+<!-- ACTION & ALLOCATION -->
+<div class="sec">
+  <h2>持股配置與買賣分析</h2>
+  <div class="shint">明確方向 × 信心評等 × 觸發條件 × 多空並陳</div>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>標的</th>
+        <th>當前方向</th>
+        <th>信心</th>
+        <th>支撐理由</th>
+        <th>反方風險</th>
+        <th>觸發條件</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>NVDA</b></td>
+        <td><span class="dot warn"></span>核心持有</td>
+        <td>中</td>
+        <td>70% 市佔仍絕對龍頭；Q2 +95% 指引；Blackwell Ultra</td>
+        <td>Alphabet TPU 取代故事；$200 心理關卡</td>
+        <td>$208 守穩續抱 / 失守 $200 改減碼</td>
+      </tr>
+      <tr>
+        <td><b>AMD</b></td>
+        <td><span class="dot pos"></span>持有觀察反包確認</td>
+        <td>中</td>
+        <td>盤中反包 +2.5%；MI400 Q3；multi-vendor 受益</td>
+        <td>估值 ~58x 偏貴；反包未確認可能假反彈</td>
+        <td>$525 突破改加碼 / 失守 $500 減碼</td>
+      </tr>
+      <tr>
+        <td><b>GOOGL</b></td>
+        <td><span class="dot pos"></span>順勢加碼但避免追高</td>
+        <td>高</td>
+        <td>TPU $900B 題材；估值 22x；Anthropic/Meta 簽單實證</td>
+        <td>跳空高開後當日回吐；DOJ 反壟斷</td>
+        <td>跳空 +3%+ 不追、回測 $385 分批接</td>
+      </tr>
+      <tr>
+        <td><b>SMH</b></td>
+        <td><span class="dot warn"></span>持有觀察 AVGO 財報</td>
+        <td>中</td>
+        <td>整 AI 鏈分散；6/3 AVGO 為直接催化</td>
+        <td>NVDA 大跌會連動全 ETF；集中度高</td>
+        <td>守 $598 續抱 / 跌破 $585 改減碼</td>
+      </tr>
+      <tr>
+        <td><b>QQQ</b></td>
+        <td><span class="dot warn"></span>核心持有 / 不追高</td>
+        <td>中</td>
+        <td>九週連紅核心；GOOGL TPU 題材順風</td>
+        <td>連 9 週紅易回吐；6 月季節性弱</td>
+        <td>6/3 AVGO 與 6/4-5 就業數據後再評估</td>
+      </tr>
+      <tr>
+        <td><b>VOO</b></td>
+        <td><span class="dot pos"></span>核心持有 / 緩步增配</td>
+        <td>高</td>
+        <td>廣度健康；多元化；連 9 週紅</td>
+        <td>前 10 大佔 ~33%；6 月季節性弱</td>
+        <td>追加資金時優先此項</td>
+      </tr>
+      <tr>
+        <td><b>VT</b></td>
+        <td><span class="dot pos"></span>核心持有 / 追加優先</td>
+        <td>高</td>
+        <td>最分散；USD 走弱受益；非美 ~40% 平衡</td>
+        <td>USD 反彈時匯率拖累</td>
+        <td>追加資金時優先 VT > VOO > GOOGL</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="subh">組合層級再平衡建議（情境式）</div>
+  <div class="nb"><b>情境 A — 若今日（6/1）GOOGL 跳空高開 +3%-5%、NVDA 盤前 -2%：</b>典型「<b>賣 NVDA 鏟子、買 GOOGL 雲端</b>」題材切換劇本。建議：① 不追 GOOGL 開盤跳空（等回測 $385-388 區再分批）；② NVDA 若守 $208 不動作；③ AMD 若同步走強 +2%+ 不加碼但觀察 $525 突破。</div>
+  <div class="nb"><b>情境 B — 若 6/3 AVGO 財報優於預期：</b>「<b>multi-vendor AI 印證</b>」帶動 SMH 突破 $610，整個半導體共振反彈；建議：① SMH 續抱不加碼（已偏重）；② AMD 站 $525 可考慮以 GOOGL 跳空獲利轉入；③ NVDA 也將同步反彈、不需做動作。</div>
+  <div class="nb"><b>情境 C — 若 6/3 AVGO 不如預期或 6/4-5 就業意外鷹派：</b>10Y 殖利率重回 4.55+、半導體面臨再次壓力測試；建議：① SMH 跌破 $585 啟動「降科技集中度」程序；② 優先減碼 AMD（高 beta 反包未守住）和 NVDA 各 1-2pp；③ 轉至 VT／VOO。</div>
+
+  <div class="nb"><b>權重建議區間（淨資產 100 基準）：</b>NVDA 18-22%（目前 ~21% 中位）、AMD 18-22%（目前 ~22% 上緣可借 GOOGL 跳空時微減 1-2pp）、GOOGL 1-4%（可增至 ~3% 但避免跳空當日追入）、SMH 12-15%（目前 ~14%）、QQQ 3-5%、VOO 8-12%、VT 28-35%。<b>整體調整方向：</b>「<b>AMD 偏高 + NVDA 中性 → GOOGL／VT</b>」做小幅再平衡，預計 6 月在 6/3 與 6/4-5 兩個事件後執行。</div>
+
+  <div class="nb" style="margin-top:8px;color:var(--warn);"><b>紀律提醒：</b>① 以上為分析觀點而非具體下單指令，不指定股數、不催促立即執行；② 多空訊號並陳，需配合使用者風險承受度判斷；③ 若有槓桿型 ETF 部位，須額外考量單日重設與波動耗損；④ 加碼／減碼建議皆為情境分批而非一次性行動；⑤ 6 月為中期選舉年最差月份，部位調整宜保守。</div>
+</div>
+
+<!-- MULTI-ANGLE -->
+<div class="sec">
+  <h2>多角度分析</h2>
+  <div class="shint">同一個組合，三種視角看出不同訊號</div>
+  <div class="subh">① 已持有者視角（不主動操作）</div>
+  <div class="nb">六月首日的訊號是「<b>內部分歧 + 題材切換</b>」——5/29 NVDA／GOOGL 同收日低、AMD 盤中反包、九週連紅與 GOOGL TPU 故事並存。<b>建議：</b>不需在盤前急著動作，靜待今日盤中觀察：① GOOGL 跳空多少（若 +3%+ 不追）；② NVDA 是否守 $208；③ SMH 是否守 $598。若三者都守穩則為「<b>內部結構性切換但組合穩定</b>」，無需動作；若 NVDA 失守 $200 同時 GOOGL 拉回，啟動情境 C。<b>本週兩大時間點：6/3 AVGO 財報 + 6/4-5 就業數據。</b></div>
+
+  <div class="subh">② 買方視角（新資金進場）</div>
+  <div class="nb">若今天有新資金考慮進場，<b>優先順序更新：</b>① <b>VT</b>（USD 走弱受益，最分散）；② <b>VOO</b>（廣度健康、連 9 週紅）；③ <b>GOOGL</b>（TPU 題材升級但避免跳空當日追入，等 $385-388 回測再分批）；④ AMD（若 $525 突破再加）；⑤ NVDA（等 $208 確認支撐後）。<b>暫緩名單：</b>QQQ（集中度過高）、SMH（待 6/3 AVGO 後決定）。<b>避免追高</b>是六月的紀律——九週連紅 + 6 月季節性弱 + AI 內部分歧三重訊號要求買方比五月更謹慎。</div>
+
+  <div class="subh">③ 長期投資人視角（5-10 年）</div>
+  <div class="nb">5/31 的 Alphabet TPU $900B 報告為長期 AI 投資者帶來新訊息：<b>AI 基礎建設市場將「multi-vendor 化」</b>——NVDA 不再是唯一受益者，Alphabet TPU、AMD MI400、Broadcom ASIC、Marvell 自研晶片都會分一杯羹。對長期投資人，這意味著：① <b>SMH 比單押 NVDA 更安全</b>（一籃子半導體分散依賴）；② <b>GOOGL 從「便宜的大型科技」升級為「AI 基建 + 應用層雙引擎」</b>；③ AI 硬體層估值倍數可能整體下調 2-3 個 multiple（從獨佔到分散競爭），但長期 AI 需求仍是核心邏輯。<b>關鍵長期風險：</b>① 通用 AI 模型商品化導致毛利下滑；② 中美科技脫鉤再升級；③ 主權 AI 模型分散 NVDA 訂單。建議配置：VT＋VOO 為核心 70-80%、AI 鏈個股 20-30%；目前組合 AI 鏈個股佔比偏高 ~43%（穿透 ~63%），未來追加資金應優先補回 VT／VOO／GOOGL 端。</div>
+</div>
+
+<!-- SCENARIO -->
+<div class="sec">
+  <h2>情境劇本（今日 6/1 盤中）</h2>
+  <div class="shint">用三幕劇本對應今日可能走勢</div>
+  <div class="scgrid">
+    <div class="scbox">
+      <div class="scl bull">BULL · 35%</div>
+      <div class="scd"><b>SPY +0.5～+1.0%；GOOGL 跳空 +4%+；AMD 站穩 $525。</b>TPU 題材帶動 multi-vendor AI 全面受惠、AVGO 盤前期待度同步升溫；NVDA 守 $208 與題材分散；SMH 衝 $610。組合：GOOGL／AMD 雙漲帶動、NVDA 持平。</div>
+    </div>
+    <div class="scbox">
+      <div class="scl base">BASE · 48%</div>
+      <div class="scd"><b>SPY 震盪 -0.3%～+0.3%；GOOGL 跳空後回吐；AMD 區間。</b>市場 6 月首日「<b>觀望模式</b>」——GOOGL 跳空 +2-3% 但盤中回吐至 +0.5%、NVDA 守 $208、AMD 在 $510-518 整理；SMH $598-605。組合：理論市值橫盤、無需動作，等 6/3 AVGO。</div>
+    </div>
+    <div class="scbox">
+      <div class="scl bear">BEAR · 17%</div>
+      <div class="scd"><b>SPY -0.8% 以上；NVDA 跌破 $200；GOOGL 跳空後雙殺。</b>市場詮釋 TPU 為「<b>全 AI 鏈估值壓縮</b>」訊號、6 月季節性發威；SMH 跌破 $585。組合：啟動情境 C 減碼、AMD/NVDA 各降一檔、資金轉至 VT。</div>
+    </div>
+  </div>
+</div>
+
+<!-- RISKS -->
+<div class="sec">
+  <h2>盤中關鍵風險清單</h2>
+  <ul class="rlist">
+    <li><b>GOOGL TPU 題材後續發酵</b>—— Anthropic／Meta TPU 訂單細節、是否有新公告；Morgan Stanley 60% 年增能否持續驗證。</li>
+    <li><b>NVDA $200 心理關卡</b>—— 跌破將觸發演算法停損與 Alphabet TPU 競爭故事媒體放大。</li>
+    <li><b>AMD $500/$525 兩個關卡</b>—— $525 突破確認反包、$500 失守則否定 5/29 反彈。</li>
+    <li><b>SMH $585-598 支撐</b>—— 5 月 28-29 確認的雙底支撐，跌破將進入趨勢轉空。</li>
+    <li><b>6/3 AVGO 財報</b>—— 半導體續強關鍵；AI ASIC 業務指引最關鍵、是 multi-vendor AI 題材的最佳實證。</li>
+    <li><b>6/4-5 五月就業數據</b>—— ADP（6/4）、Nonfarm（6/5）；強於預期會推 10Y 重回 4.55+、半導體再次壓力。</li>
+    <li><b>9 週連紅紀錄</b>—— SPY 已連 9 週紅，歷史顯示 8-12 週為極限；本週進入「<b>容易回吐</b>」窗口。</li>
+    <li><b>6 月中期選舉年季節性</b>—— 6 月為中期選舉年最差月份，整理風險明顯。</li>
+    <li><b>地緣風險</b>—— 伊朗 60 天停火若意外破裂，油價反彈將擾動通膨預期、推升殖利率。</li>
+    <li><b>Fed 官員講話</b>—— 6 月中前無 FOMC（6/16-17），但任何鷹派發言都可能擾動市場。</li>
+  </ul>
+</div>
+
+<!-- FOOT -->
+<div class="foot">
+  <b>免責聲明：</b>本報告由 AI 自動產製，僅供個人投資研究參考，不構成任何投資建議、招攬或承諾。本人非財務顧問亦非合格證券分析師。所有觀點為當下分析框架下的判斷，市場情況變化迅速，請讀者自行查證並承擔投資風險。<br>
+  資料來源：<b>Stooq</b>（個股／ETF 5/29 收盤、期貨 6/1 盤前即時）、<b>FRED</b>（美 10Y／2Y／DFF／T10YIE／DTWEXBGS／DCOILWTICO 至 5/26-29）—— 官方／第一手資料；WebSearch 補充新聞背景（DA Davidson 5/31 Alphabet TPU 報告、5/29 收盤新聞、6 月展望）。ETF 穿透曝險與權重比例為估算值，實際以最新月報為準。<br>
+  製表日期：2026-06-01（週一，台北時間盤前）｜ 美東開盤 9:30 ET（台北 21:30）｜ 隱私規範：個人持股一律以相對基準呈現。
+</div>
+
+</div>
+</body>
+</html>
