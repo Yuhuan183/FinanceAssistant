@@ -1,13 +1,13 @@
 ---
 taskId: us-stock-pre-market-analysis
-description: 在美國股市開盤前, 依據美國與全球市場資訊籌碼動向與用戶個人持股, 給出完整資訊解讀、個人化分析與持股配置買賣分析.
-cronExpression: "30 20 * * *"
+description: 平日晚上 8 點, 美股盤前 + 台股盤後收盤回顧 + 全球股市走向解讀, 依市場籌碼動向與個人持股給出完整資訊解讀、個人化分析與持股配置買賣分析.
+cronExpression: "0 20 * * 1-5"
 enabled: true
 ---
 
-在美國股市開盤前, 依據目前美國與全球市場資訊籌碼動向與用戶個人持股, 給出完整資訊解讀、個人化分析與持股配置／買賣分析。
+平日（週一至週五）台灣時間晚上 8 點執行：美股即將開盤，台股當日已收盤。請以「美股盤前 + 台股盤後（收盤回顧）+ 全球股市走向解讀」三大主軸，依據目前美國、台灣與全球市場資訊、籌碼動向與用戶個人持股，給出完整資訊解讀、個人化分析與持股配置／買賣分析。
 
-產出為自帶樣式、可離線開啟的互動式 HTML 儀表板（繁體中文），涵蓋：全球市場、美股籌碼、個人持股盤前快評、**持股比重與曝險分析**、**多因子題材評分**、**持股配置與買賣分析**、多角度分析（持有者／買方／長期投資人）、情境劇本與風險清單。務必含免責聲明，並聲明本人非財務顧問或證券分析師。歸檔至 `/Users/zack/Documents/Claude/Projects/FinanceAssistant/us-stock-pre-analyze/美股盤前分析_YYYY-MM-DD.html`。
+產出為自帶樣式、可離線開啟的互動式 HTML 儀表板（繁體中文），涵蓋：**全球股市走向解讀**（亞歐股市當日收盤、美股期指、匯率與商品、宏觀事件）、**台股盤後重點**（加權當日收盤、三大法人籌碼、持股相關個股表現）、**美股盤前**（持股相關個股盤前報價與夜間消息、當日財報/經濟數據行程）、個人持股盤前快評、**持股比重與曝險分析**、**多因子題材評分**、**持股配置與買賣分析**、多角度分析（持有者／買方／長期投資人）、情境劇本與風險清單。務必含免責聲明，並聲明本人非財務顧問或證券分析師。歸檔至 `/Users/siegfried/WorkSpace/FinanceAssistant/us-stock-pre-analyze/美股盤前分析_YYYY-MM-DD.html`。
 
 ## 資料來源優先順序（必守）
 
@@ -17,9 +17,9 @@ enabled: true
 - 全球指數（S&P／Dow／Nasdaq／SOX）→ `stooq_quote` 或 `stooq_preset us-indices`（S&P 走 SPY 等 ETF proxy）
 - 美國利率、油價、DXY、通膨 → `fred_series` 或 `fred_macro_dashboard`
 - US ETF 穿透成分 → `yf_holdings`（受 Yahoo 429 影響時 fallback）
-- 加權指數（背景觀察）→ `twse_taiex`
+- 台股當日收盤（盤後回顧）→ `twse_taiex`、三大法人 → `twse_three_institutional`、個股 → `twse_stock`
 
-工具不可用時（使用者 Mac 離線、ToolSearch 找不到 `mcp__finance-local__*`）才退回 **WebSearch**，並於報告中註明「資料來源：WebSearch 公開資料近似值」。**資料來源在報告免責聲明中應明確標出**：使用 MCP 時標「Stooq / FRED 等官方／第一手」，使用 WebSearch 時標「公開資料近似值」。
+工具不可用時（使用者 Mac 離線、ToolSearch 找不到 `mcp__finance-local__*`）才退回 **WebSearch**，並於報告中註明「資料來源：WebSearch 公開資料近似值」。**資料來源在報告免責聲明中應明確標出**：使用 MCP 時標「Stooq / FRED / TWSE 等官方／第一手」，使用 WebSearch 時標「公開資料近似值」。
 
 ## 個人持股
 
@@ -62,4 +62,4 @@ FinanceAssistant 專案是 git repo，以 GitHub Pages 發布；repo 根目錄 `
    commit 訊息：`feat: 美股盤前分析 YYYY-MM-DD`。push 後依該 skill 的「回寫本機 repo」步驟同步本機 refs。切勿在輸出或任何檔案中顯示或記錄 remote URL 內嵌的 token。
 4. 將線上網址 `https://yuhuan183.github.io/FinanceAssistant/` 回報，告知日曆已可點進今日盤前分析。
 
-若 session 未連接專案資料夾，先用 request_cowork_directory 連接 `/Users/zack/Documents/Claude/Projects/FinanceAssistant`。此為自動排程、使用者不在場：實作細節自行合理判斷並在輸出註明；若 git push 失敗，於輸出說明原因，但不影響報告本身的交付。
+若 session 未連接專案資料夾，先用 request_cowork_directory 連接 `/Users/siegfried/WorkSpace/FinanceAssistant`。此為自動排程、使用者不在場：實作細節自行合理判斷並在輸出註明；若 git push 失敗，於輸出說明原因，但不影響報告本身的交付。

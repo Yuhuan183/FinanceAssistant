@@ -16,8 +16,8 @@
 
 | 目錄 | 說明 | 排程時間 | cron |
 | --- | --- | --- | --- |
-| `tw-stock-pre-market-analysis/` | 台股盤前分析 | 每日 08:30 | `30 8 * * *` |
-| `us-stock-pre-market-analysis/` | 美股盤前分析 | 每日 20:30 | `30 20 * * *` |
+| `tw-stock-pre-market-analysis/` | 台股盤前 + 美股盤後 + 全球走向 | 平日 08:00 | `0 8 * * 1-5` |
+| `us-stock-pre-market-analysis/` | 美股盤前 + 台股盤後 + 全球走向 | 平日 20:00 | `0 20 * * 1-5` |
 
 ## 同步（repo → live 排程）— 手動
 
@@ -31,7 +31,7 @@
    - `description` ← frontmatter 的 `description`
 3. 用 `list_scheduled_tasks` 確認 live 排程已更新。
 
-live 排程的實體儲存在 `/Users/zack/Documents/Claude/Scheduled/<id>/SKILL.md`（由排程系統
+live 排程的實體儲存在 `/Users/siegfried/Claude/Scheduled/<id>/SKILL.md`（由排程系統
 管理，cron 另外保存）。**請勿直接編輯該處** —— 一律改本目錄的 `task.md` 再同步，
 否則 repo 與 live 會不一致。
 

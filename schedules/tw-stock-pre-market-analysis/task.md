@@ -1,13 +1,13 @@
 ---
 taskId: tw-stock-pre-market-analysis
-description: 在台灣股市開盤前, 依據台灣與全球市場資訊籌碼動向與用戶個人持股, 給出完整資訊解讀、個人化分析與持股配置買賣分析.
-cronExpression: "30 8 * * *"
+description: 平日早上 8 點, 台股盤前 + 美股盤後收盤回顧 + 全球股市走向解讀, 依市場籌碼動向與個人持股給出完整資訊解讀、個人化分析與持股配置買賣分析.
+cronExpression: "0 8 * * 1-5"
 enabled: true
 ---
 
-在台灣股市開盤前, 依據目前台灣與全球市場資訊籌碼動向與用戶個人持股, 給出完整資訊解讀、個人化分析與持股配置／買賣分析。
+平日（週一至週五）台灣時間早上 8 點執行：台股即將開盤，美股前一夜已收盤。請以「台股盤前 + 美股盤後（收盤回顧）+ 全球股市走向解讀」三大主軸，依據目前台灣、美國與全球市場資訊、籌碼動向與用戶個人持股，給出完整資訊解讀、個人化分析與持股配置／買賣分析。
 
-產出為自帶樣式、可離線開啟的互動式 HTML 儀表板（繁體中文），涵蓋：全球市場、台股籌碼、個人持股盤前快評、**持股比重與曝險分析**、**多因子題材評分**、**持股配置與買賣分析**、多角度分析（持有者／買方／長期投資人）、情境劇本與風險清單。務必含免責聲明，並聲明本人非財務顧問或證券分析師。歸檔至 `/Users/zack/Documents/Claude/Projects/FinanceAssistant/tw-stock-pre-analyze/台股盤前分析_YYYY-MM-DD.html`。
+產出為自帶樣式、可離線開啟的互動式 HTML 儀表板（繁體中文），涵蓋：**全球股市走向解讀**（前一夜美股四大指數/SOX 收盤回顧、亞股與主要市場連動、匯率與商品）、**美股盤後重點**（持股相關個股收盤表現與盤後消息）、**台股盤前**（加權前一日收盤、三大法人籌碼、夜盤/ADR 連動的開盤預期）、個人持股盤前快評、**持股比重與曝險分析**、**多因子題材評分**、**持股配置與買賣分析**、多角度分析（持有者／買方／長期投資人）、情境劇本與風險清單。務必含免責聲明，並聲明本人非財務顧問或證券分析師。歸檔至 `/Users/siegfried/WorkSpace/FinanceAssistant/tw-stock-pre-analyze/台股盤前分析_YYYY-MM-DD.html`。
 
 ## 資料來源優先順序（必守）
 
@@ -16,6 +16,7 @@ enabled: true
 - 加權指數收盤 → `twse_taiex`
 - 三大法人 → `twse_three_institutional`
 - 個股／ETF 收盤 → `twse_stock`（TW）／`stooq_quote`（美股、全球指數透過 SPY 等 ETF proxy）
+- 美股前夜收盤（NVDA／AMD／GOOGL／QQQ／SMH／VOO／VT、S&P／Dow／Nasdaq／SOX proxy）→ `stooq_quote`
 - 美國利率、油價、DXY、通膨 → `fred_series` 或 `fred_macro_dashboard`
 - 組合穿透 TSMC 曝險與槓桿率 → `etf_lookthrough_tsmc`（傳入記憶中的權重）
 - 台積電與 AI 供應鏈月營收 → `mops_monthly_revenue` 或 `mops_ai_supply_chain`
@@ -63,4 +64,4 @@ FinanceAssistant 專案是 git repo，以 GitHub Pages 發布；repo 根目錄 `
    commit 訊息：`feat: 台股盤前分析 YYYY-MM-DD`。push 後依該 skill 的「回寫本機 repo」步驟同步本機 refs。切勿在輸出或任何檔案中顯示或記錄 remote URL 內嵌的 token。
 4. 將線上網址 `https://yuhuan183.github.io/FinanceAssistant/` 回報，告知日曆已可點進今日盤前分析。
 
-若 session 未連接專案資料夾，先用 request_cowork_directory 連接 `/Users/zack/Documents/Claude/Projects/FinanceAssistant`。此為自動排程、使用者不在場：實作細節自行合理判斷並在輸出註明；若 git push 失敗，於輸出說明原因，但不影響報告本身的交付。
+若 session 未連接專案資料夾，先用 request_cowork_directory 連接 `/Users/siegfried/WorkSpace/FinanceAssistant`。此為自動排程、使用者不在場：實作細節自行合理判斷並在輸出註明；若 git push 失敗，於輸出說明原因，但不影響報告本身的交付。
