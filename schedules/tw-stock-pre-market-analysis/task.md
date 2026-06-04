@@ -16,7 +16,7 @@ enabled: true
 - 加權指數收盤 → `twse_taiex`
 - 三大法人 → `twse_three_institutional`
 - 個股／ETF 收盤 → `twse_stock`（TW）／`stooq_quote`（美股、全球指數透過 SPY 等 ETF proxy）
-- 美股前夜收盤（NVDA／AMD／GOOGL／QQQ／SMH／VOO／VT、S&P／Dow／Nasdaq／SOX proxy）→ `stooq_quote`
+- 美股前夜收盤（NVDA／AMD／GOOGL／QQQ／SOXX／SOXQ／VOO／VT、S&P／Dow／Nasdaq／SOX proxy）→ `stooq_quote`
 - 美國利率、油價、DXY、通膨 → `fred_series` 或 `fred_macro_dashboard`
 - 組合穿透 TSMC 曝險與槓桿率 → `etf_lookthrough_tsmc`（傳入記憶中的權重）
 - 台積電與 AI 供應鏈月營收 → `mops_monthly_revenue` 或 `mops_ai_supply_chain`

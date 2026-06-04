@@ -13,7 +13,7 @@ enabled: true
 
 **優先呼叫本機 MCP 工具 `mcp__finance-local__*`（finance-mcp-bridge）**，比 WebSearch 抓的「公開資料近似值」更權威可審計：
 
-- 個股／ETF 報價 → `stooq_quote`（NVDA／AMD／GOOGL／QQQ／SMH／VOO／VT 等）
+- 個股／ETF 報價 → `stooq_quote`（NVDA／AMD／GOOGL／QQQ／SOXX／SOXQ／VOO／VT 等）
 - 全球指數（S&P／Dow／Nasdaq／SOX）→ `stooq_quote` 或 `stooq_preset us-indices`（S&P 走 SPY 等 ETF proxy）
 - 美國利率、油價、DXY、通膨 → `fred_series` 或 `fred_macro_dashboard`
 - US ETF 穿透成分 → `yf_holdings`（受 Yahoo 429 影響時 fallback）
@@ -23,14 +23,14 @@ enabled: true
 
 ## 個人持股
 
-以 auto-memory 中最新同步的實際美股持股清單為準（持股已於 2026-05-25 同步，記憶檔 `us-stock-holdings`：個股 NVDA／AMD／GOOGL ＋ ETF QQQ／SMH／VOO／VT；ARM 已出清、未持有 TSMC）。**請勿再以財報歸檔推定持股。** 若記憶與使用者最新提供者不一致，以使用者最新提供者為準，並更新記憶。如使用者尚未提供成本價，損益／報酬類分析從略並註明，改以「市值權重」為基礎。
+以 auto-memory 中最新同步的實際美股持股清單為準（持股已於 2026-06-04 同步，記憶檔 `us-stock-holdings`：個股 NVDA／AMD／GOOGL ＋ ETF QQQ／SOXX／SOXQ／VOO／VT；ARM 已出清、未持有 TSMC；SMH 已於 2026-06-04 全數換成 SOXX＋SOXQ）。**請勿再以財報歸檔推定持股。** 若記憶與使用者最新提供者不一致，以使用者最新提供者為準，並更新記憶。如使用者尚未提供成本價，損益／報酬類分析從略並註明，改以「市值權重」為基礎。
 
 **隱私規範（必守）：本報告發布於公開的 GitHub Pages，個人持股一律以「權重百分比、倍數、或淨資產＝100 的相對基準」呈現，整份報告不得出現絕對持股金額、股數、單一部位市值或投資組合總額。收盤價、ETF 規模等公開市場資料不在此限。**
 
 ## 持股比重與曝險分析（必做）
 
 1. **權重比重**：計算各部位佔組合的權重百分比，彙整成總覽表——僅列權重百分比，不列股數與絕對金額。
-2. **ETF 穿透曝險（look-through）**：估算 QQQ／SMH／VOO／VT 等 ETF 內含的個股與產業權重，加總出組合對單一個股（特別是 NVDA／AMD／GOOGL）與單一產業（半導體、AI、科技）的「真實」曝險，以百分比或「淨資產＝100」的相對基準呈現，點出帳面分散與實際集中度的落差、ETF 之間的重疊度。ETF 成分權重為估算值，須於報告中註明。
+2. **ETF 穿透曝險（look-through）**：估算 QQQ／SOXX／SOXQ／VOO／VT 等 ETF 內含的個股與產業權重，加總出組合對單一個股（特別是 NVDA／AMD／GOOGL）與單一產業（半導體、AI、科技）的「真實」曝險，以百分比或「淨資產＝100」的相對基準呈現，點出帳面分散與實際集中度的落差、ETF 之間的重疊度。**注意 SOXX 與 SOXQ 同追蹤費城半導體指數、成分高度重疊（彼此近乎等價），穿透時須視為高度相關、避免重複計入而低估半導體集中度。** ETF 成分權重為估算值，須於報告中註明。
 3. **集中度與避震評估**：說明組合的集中風險、是否缺乏防禦性／非美／非科技資產。
 
 ## 多因子題材評分（必做）
