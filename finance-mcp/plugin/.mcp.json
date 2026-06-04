@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "finance-local": {
+      "command": "node",
+      "args": [
+        "/Users/siegfried/WorkSpace/finance-mcp/src/server.mjs"
+      ],
+      "env": {}
+    }
+  }
+}

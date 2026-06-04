@@ -1,0 +1,9 @@
+{
+  "name": "finance-local",
+  "version": "0.2.0",
+  "description": "Bridges Claude to free financial data sources via a local Node MCP server: TWSE (台灣加權指數／三大法人／個股), FRED (美國利率／油價／DXY), Stooq (US/global indices proxies + equities), MOPS OpenAPI (台股月營收), and a local ETF look-through calculator for TSMC exposure & leverage ratio. Bypasses sandbox network restrictions by running on the user's Mac.",
+  "author": {
+    "name": "Yuhuan"
+  },
+  "keywords": ["finance", "twse", "fred", "stooq", "mops", "etf", "taiwan", "us-equities", "mcp", "bridge"]
+}

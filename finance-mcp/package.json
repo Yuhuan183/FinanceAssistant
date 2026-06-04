@@ -1,0 +1,17 @@
+{
+  "name": "finance-mcp-bridge",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "本機 MCP server,透過 Yahoo Finance / TWSE / TAIFEX / FRED / 投信官網 / MOPS,把即時市場資料接進 Claude（Cowork、Desktop、排程任務皆可用）",
+  "scripts": {
+    "start": "node src/server.mjs",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.18.0",
+    "cheerio": "^1.0.0",
+    "yahoo-finance2": "^2.13.3",
+    "zod": "^3.23.8"
+  }
+}
