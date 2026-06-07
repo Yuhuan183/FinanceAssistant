@@ -11,12 +11,14 @@
  * Transport: stdio. Designed to be launched by Claude Desktop / Cowork via
  * the plugin/.mcp.json config.
  */
+import './env.mjs'; // 必須最先載入,把 .env 的 key 讀進 process.env
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
 
 import * as yfin from './yfin.mjs';
 import * as stooq from './stooq.mjs';
+import * as td from './twelvedata.mjs';
 import * as twse from './twse.mjs';
 import * as fred from './fred.mjs';
 import * as etf from './etf_holdings.mjs';
@@ -38,13 +40,18 @@ server.registerTool(
     inputSchema: {},
   },
   async () => {
+    // 重要:驗 payload 而非只看「有沒有丟錯」。Stooq 被反爬時會回 HTML、
+    // 解析後 close 為 null 卻不報錯——舊版會誤報 ok。這裡一律檢查實際資料欄位。
     const tests = [
-      ['yfin', () => yfin.quote('AAPL').then(r => r ? 'ok' : 'fail')],
-      ['stooq', () => stooq.quote('NVDA').then(r => r?.error ? 'degraded' : 'ok')],
-      ['twse_taiex', () => twse.taiex('2026-05-22').then(r => r?.error ? 'degraded' : 'ok')],
+      ['yfin', () => yfin.quote('AAPL').then(r => (r && r.error) ? 'degraded' : (r ? 'ok' : 'fail'))],
+      ['stooq', () => stooq.quote('NVDA').then(r => (r && !r.error && r.close != null) ? 'ok' : 'degraded')],
+      ['twelvedata', () => td.available()
+        ? td.quote('AAPL').then(r => (r && !r.error && r.close != null) ? 'ok' : 'degraded')
+        : Promise.resolve('not-configured')],
+      ['twse_taiex', () => twse.taiex('2026-05-22').then(r => (r?.error || r?.close == null) ? 'degraded' : 'ok')],
       ['twse_three_institutional', () => twse.threeInstitutional('2026-05-22').then(r => r?.error ? 'degraded' : 'ok')],
-      ['twse_stock', () => twse.stock('2330', '2026-05-22').then(r => r?.error ? 'degraded' : 'ok')],
-      ['fred', () => fred.series('DGS10', 5).then(r => r?.error ? 'degraded' : 'ok')],
+      ['twse_stock', () => twse.stock('2330', '2026-05-22').then(r => (r?.error || r?.close == null) ? 'degraded' : 'ok')],
+      ['fred', () => fred.series('DGS10', 5).then(r => (r?.error || !r?.latest) ? 'degraded' : 'ok')],
       ['etf_holdings_cache', () => etf.holdings('0050').then(r => r?.error ? 'fail' : (r?.is_live ? 'ok-live' : 'ok-cached'))],
       ['mops', () => mops.monthlyRevenue('2330', 2026, 4).then(r => r?.error ? 'degraded' : 'ok')],
     ];
@@ -240,6 +247,48 @@ server.registerTool(
   async ({ ticker, days }) => {
     try { return ok(await stooq.stats(ticker, days)); }
     catch (e) { return err(e.message, { ticker, days }); }
+  },
+);
+
+/* ============================================================
+   Twelve Data — 免費版美股/全球行情(Stooq 反爬、yfin 429 時的穩定來源)
+   需設定環境變數 TWELVEDATA_API_KEY(免費申請:twelvedata.com)。
+   ============================================================ */
+
+server.registerTool(
+  'td_quote',
+  {
+    description:
+      'Twelve Data: latest quote for a single ticker (免費 key,穩定)。支援 US 個股(NVDA)、ETF(QQQ/SOXX/SOXQ/VOO/VT)、指數(^GSPC/^DJI/^IXIC/^SOX/^VIX→自動轉 SPX/DJI/IXIC/SOX/VIX)、FX(USDTWD)。需設 TWELVEDATA_API_KEY。',
+    inputSchema: { ticker: z.string() },
+  },
+  async ({ ticker }) => {
+    try { return ok(await td.quote(ticker)); }
+    catch (e) { return err(e.message, { ticker }); }
+  },
+);
+
+server.registerTool(
+  'td_quotes',
+  {
+    description: 'Twelve Data: batch quotes for multiple tickers（免費版有每分鐘上限,呼叫端自行節制）。',
+    inputSchema: { tickers: z.array(z.string()).min(1) },
+  },
+  async ({ tickers }) => {
+    try { return ok(await td.quotes(tickers)); }
+    catch (e) { return err(e.message, { tickers }); }
+  },
+);
+
+server.registerTool(
+  'td_preset',
+  {
+    description: 'Twelve Data: batch quote a named preset. Presets: us-indices, us-portfolio, macro.',
+    inputSchema: { name: z.enum(['us-indices', 'us-portfolio', 'macro']) },
+  },
+  async ({ name }) => {
+    try { return ok(await td.preset(name)); }
+    catch (e) { return err(e.message, { name }); }
   },
 );
 

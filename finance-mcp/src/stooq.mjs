@@ -17,9 +17,44 @@
  *   歷史:  https://stooq.com/q/d/l/?s=<sym>&d1=YYYYMMDD&d2=YYYYMMDD&i=d
  */
 import { getText, parseCsv, num, round, ymd, isoDate } from './_util.mjs';
+import * as td from './twelvedata.mjs';
 
 const BASE_QUOTE = 'https://stooq.com/q/l/?f=sd2t2ohlcv&h&e=csv&s=';
 const BASE_HIST = 'https://stooq.com/q/d/l/?i=d&s=';
+
+// 讓請求更像瀏覽器,best-effort 繞過 Stooq 的反爬攔截頁(noscript interstitial)。
+// 注意:若 Stooq 是 IP 級封鎖,header 調整無效,此時 quote() 會自動退回 Twelve Data。
+const STOOQ_HEADERS = {
+  Accept: 'text/csv,text/plain,*/*',
+  'Accept-Language': 'en-US,en;q=0.9',
+  Referer: 'https://stooq.com/',
+};
+
+/** 偵測回傳是否為反爬攔截頁(HTML/noscript)而非 CSV. */
+function looksBlocked(text) {
+  if (!text) return true;
+  const head = text.slice(0, 200).toLowerCase();
+  return head.includes('<html') || head.includes('noscript') || head.includes('<!doctype');
+}
+
+/** Stooq 失效時退回 Twelve Data(若已設 key);否則回原始錯誤. */
+async function fallbackTd(ticker, stooqSym, reason) {
+  if (td.available()) {
+    try {
+      const t = await td.quote(ticker);
+      if (!t.error && t.close !== null) {
+        return { ...t, source: `${t.source} (Stooq fallback;${reason})` };
+      }
+    } catch (e) {
+      return { ticker, stooq_symbol: stooqSym, error: `${reason};Twelve Data 退路亦失敗:${e.message}` };
+    }
+  }
+  return {
+    ticker,
+    stooq_symbol: stooqSym,
+    error: `${reason}${td.available() ? '' : '(未設 TWELVEDATA_API_KEY,無退路)'}`,
+  };
+}
 
 /**
  * Normalize ticker → Stooq symbol.
@@ -65,19 +100,20 @@ export async function quote(symbol) {
       error: 'TW symbol — Stooq coverage is unreliable for Taiwan; use twse_taiex / twse_stock instead',
     };
   }
-  const csv = await getText(BASE_QUOTE + encodeURIComponent(sym));
-  const rows = parseCsv(csv);
-  if (!rows.length) return { ticker: symbol, error: 'no data' };
-  const r = rows[0];
-  // Stooq 把無資料用 "N/D" 表示
-  if (r.Date === 'N/D' || r.Close === 'N/D') {
-    return {
-      ticker: symbol,
-      stooq_symbol: sym,
-      error: `Stooq returned N/D for ${sym} (symbol unsupported or temporarily unavailable)`,
-    };
+  let csv = '';
+  try {
+    csv = await getText(BASE_QUOTE + encodeURIComponent(sym), { headers: STOOQ_HEADERS });
+  } catch (e) {
+    return fallbackTd(symbol, sym, `Stooq fetch failed: ${e.message}`);
   }
-  const close = num(r.Close);
+  const rows = looksBlocked(csv) ? [] : parseCsv(csv);
+  const r = rows[0] || {};
+  const close0 = num(r.Close);
+  // Stooq 無資料用 "N/D";被反爬時回 HTML(close0 會是 null)
+  if (!rows.length || r.Date === 'N/D' || r.Close === 'N/D' || close0 === null) {
+    return fallbackTd(symbol, sym, `Stooq 無有效資料(N/D 或反爬攔截);sym=${sym}`);
+  }
+  const close = close0;
   const open = num(r.Open);
   const high = num(r.High);
   const low = num(r.Low);
@@ -132,13 +168,13 @@ export async function history(symbol, days = 30) {
   for (const url of candidates) {
     let csv;
     try {
-      csv = await getText(url);
+      csv = await getText(url, { headers: STOOQ_HEADERS });
     } catch (e) {
       attempts.push({ url, error: e.message });
       continue;
     }
     const preview = (csv || '').slice(0, 120).replace(/\n/g, '|');
-    const rows = parseCsv(csv || '').filter((r) => r.Date && r.Date !== 'N/D');
+    const rows = looksBlocked(csv) ? [] : parseCsv(csv || '').filter((r) => r.Date && r.Date !== 'N/D');
     attempts.push({ url, length: csv?.length || 0, preview, rows: rows.length });
     if (rows.length >= 2) {
       const recent = rows.slice(-days).map((r) => ({
