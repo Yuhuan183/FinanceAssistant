@@ -21,6 +21,7 @@ import * as twse from './twse.mjs';
 import * as fred from './fred.mjs';
 import * as etf from './etf_holdings.mjs';
 import * as mops from './mops.mjs';
+import * as gitops from './git.mjs';
 import { ok, err } from './_util.mjs';
 
 const server = new McpServer({ name: 'finance-local', version: '0.2.0' });
@@ -410,6 +411,112 @@ server.registerTool(
   async ({ year, month }) => {
     try { return ok(await mops.aiSupplyChainRevenue(year, month)); }
     catch (e) { return err(e.message, { year, month }); }
+  },
+);
+
+/* ============================================================
+   Git — 本機 git 操作（跑在 Mac，可直連 GitHub）
+   ============================================================ */
+
+server.registerTool(
+  'git_status',
+  {
+    description:
+      '本機 git 狀態：目前分支、與上游的 ahead/behind、工作區是否乾淨與變更清單。用來在 commit/push 前確認狀態。',
+    inputSchema: {
+      repo: z.string().describe('git repo 的絕對路徑，例如 "/Users/siegfried/WorkSpace/FinanceAssistant"。'),
+    },
+  },
+  async ({ repo }) => {
+    try { return ok(await gitops.status(repo)); }
+    catch (e) { return err(e.message, { repo }); }
+  },
+);
+
+server.registerTool(
+  'git_commit',
+  {
+    description:
+      '在本機 repo 暫存並 commit。files 省略＝git add -A（全部）；給陣列則只加指定路徑。無變更時回 nothing:true。不會 push。',
+    inputSchema: {
+      repo: z.string().describe('git repo 絕對路徑。'),
+      message: z.string().describe('commit 訊息，建議格式「<類型>: <說明>」。'),
+      files: z.array(z.string()).optional().describe('要納入的相對路徑陣列；省略＝加入全部變更。'),
+    },
+  },
+  async ({ repo, message, files }) => {
+    try { return ok(await gitops.commit(repo, { message, files })); }
+    catch (e) { return err(e.message, { repo }); }
+  },
+);
+
+server.registerTool(
+  'git_push',
+  {
+    description:
+      '把本機 commit push 到遠端（預設 origin + 目前分支）。使用本機 SSH 金鑰直連 GitHub。絕不 force push。',
+    inputSchema: {
+      repo: z.string().describe('git repo 絕對路徑。'),
+      remote: z.string().default('origin').describe('遠端名稱，預設 origin。'),
+      branch: z.string().optional().describe('目標分支；省略＝目前分支。'),
+    },
+  },
+  async ({ repo, remote, branch }) => {
+    try { return ok(await gitops.push(repo, { remote, branch })); }
+    catch (e) { return err(e.message, { repo }); }
+  },
+);
+
+server.registerTool(
+  'git_fetch',
+  {
+    description: '從遠端 fetch（預設 origin，--prune）。只更新遠端追蹤分支，不改工作區。',
+    inputSchema: {
+      repo: z.string().describe('git repo 絕對路徑。'),
+      remote: z.string().default('origin').describe('遠端名稱，預設 origin。'),
+      prune: z.boolean().default(true).describe('是否 --prune 清掉已刪除的遠端分支。'),
+    },
+  },
+  async ({ repo, remote, prune }) => {
+    try { return ok(await gitops.fetch(repo, { remote, prune })); }
+    catch (e) { return err(e.message, { repo }); }
+  },
+);
+
+server.registerTool(
+  'git_pull',
+  {
+    description:
+      '從遠端 pull（預設 origin + 目前分支 + --rebase）。遇衝突會回報，需手動解決。',
+    inputSchema: {
+      repo: z.string().describe('git repo 絕對路徑。'),
+      remote: z.string().default('origin').describe('遠端名稱，預設 origin。'),
+      branch: z.string().optional().describe('來源分支；省略＝目前分支。'),
+      rebase: z.boolean().default(true).describe('是否用 --rebase（預設 true）。'),
+    },
+  },
+  async ({ repo, remote, branch, rebase }) => {
+    try { return ok(await gitops.pull(repo, { remote, branch, rebase })); }
+    catch (e) { return err(e.message, { repo }); }
+  },
+);
+
+server.registerTool(
+  'git_publish',
+  {
+    description:
+      '便利組合：add + commit + push 一次完成。給 repo 與 message 即可發布；files 省略＝全部變更。發布報告到 GitHub Pages 時用這個最省事。',
+    inputSchema: {
+      repo: z.string().describe('git repo 絕對路徑。'),
+      message: z.string().describe('commit 訊息。'),
+      files: z.array(z.string()).optional().describe('要納入的相對路徑；省略＝全部變更。'),
+      remote: z.string().default('origin').describe('遠端名稱，預設 origin。'),
+      branch: z.string().optional().describe('目標分支；省略＝目前分支。'),
+    },
+  },
+  async ({ repo, message, files, remote, branch }) => {
+    try { return ok(await gitops.publish(repo, { message, files, remote, branch })); }
+    catch (e) { return err(e.message, { repo }); }
   },
 );
 

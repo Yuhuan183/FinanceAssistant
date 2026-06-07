@@ -3,7 +3,7 @@
     "finance-local": {
       "command": "node",
       "args": [
-        "/Users/siegfried/WorkSpace/finance-mcp/src/server.mjs"
+        "/Users/siegfried/WorkSpace/FinanceAssistant/finance-mcp/src/server.mjs"
       ],
       "env": {}
     }
