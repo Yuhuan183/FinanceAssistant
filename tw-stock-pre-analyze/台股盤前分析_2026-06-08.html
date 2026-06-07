@@ -404,9 +404,66 @@ ul.bul li::before{content:"\25B8";position:absolute;left:1px;color:var(--green);
     </ul>
   </div>
 
+  <!-- 7B. 價位支撐／壓力與目標價 -->
+  <div class="sec">
+    <h2>八、價位支撐／壓力與目標價分析</h2>
+    <div class="lead">給出具體價位數值與其依據（官方收盤、台指期夜盤隱含開盤、ADR 連動、整數關、均線估算、分析師目標價、本益比評價）。跳空情境下價位會劇烈變動，下列為盤前參考座標、非預測。</div>
+
+    <h3>8-1　加權指數（TAIEX）</h3>
+    <table>
+      <thead><tr><th>性質</th><th class="num">價位</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr><td>現價基準（6/5 官方收盤）</td><td class="num">45,070.94</td><td>TWSE 官方,僅反映部分美股弱勢。</td></tr>
+        <tr><td>夜盤隱含開盤</td><td class="num dn">~42,065</td><td>台指期夜盤 −3,006 點推算現貨開盤(約 −6.7%)。</td></tr>
+        <tr><td><b>支撐 1</b></td><td class="num">42,000</td><td>夜盤/期貨隱含價＋整數關,開盤首道防線。</td></tr>
+        <tr><td><b>支撐 2（強）</b></td><td class="num warn">40,000</td><td>法人下檔目標＋年線/前波平台估算＋整數大關,失守代表轉空。</td></tr>
+        <tr><td>季線估算（60MA）</td><td class="num">~43,000–44,000</td><td>由近月區間估算,反彈第一壓力參考。</td></tr>
+        <tr><td><b>壓力 1</b></td><td class="num">45,000–45,677</td><td>6/5 收盤區與 6/4 收盤(45,677),跳空缺口下緣。</td></tr>
+        <tr><td><b>壓力 2（缺口回補）</b></td><td class="num">46,000–46,459</td><td>近期平台與紀錄高點,完整補缺口需站回此區。</td></tr>
+      </tbody>
+    </table>
+
+    <h3>8-2　台積電 2330（組合穿透核心,佔曝險 52.7%）</h3>
+    <table>
+      <thead><tr><th>性質</th><th class="num">價位（元）</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr><td>現價基準（6/5 官方收盤）</td><td class="num">2,365</td><td>TWSE 官方;6/5 區間 2,350–2,405。</td></tr>
+        <tr><td>ADR 隱含開盤</td><td class="num dn">~2,200</td><td>ADR 6/5 −6.69% 收 415.17 美元推算現股開盤。</td></tr>
+        <tr><td><b>支撐 1</b></td><td class="num">2,200</td><td>ADR 隱含開盤價＋整數關。</td></tr>
+        <tr><td><b>支撐 2（強）</b></td><td class="num warn">2,000</td><td>前波平台＋整數大關,長線買盤關注區。</td></tr>
+        <tr><td>深度價值參考</td><td class="num">~1,585</td><td>近 5 年平均本益比約 20.5x 推算之合理價(僅估值錨點,非預期跌幅)。</td></tr>
+        <tr><td><b>壓力 / 缺口</b></td><td class="num">2,365–2,425</td><td>6/5 收盤與近期高,跳空缺口回補區。</td></tr>
+        <tr><td>分析師目標（保守）</td><td class="num up">2,330 / 2,400</td><td>高盛 2,330、Aletheia 2,400。</td></tr>
+        <tr><td>分析師目標（共識上緣）</td><td class="num up">2,800–3,030</td><td>花旗 2,875、野村 2,800、匯豐 2,820、里昂 3,030(市場最高)。</td></tr>
+        <tr><td>估值偏貴/獲利了結參考</td><td class="num warn">~2,500</td><td>近 5 年最高本益比約 29x 對應之高估值區。</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px;color:var(--txt3);margin-top:8px;">說明：分析師目標價為各券商於台積電 Q1 法說(4/16)後上修之區間,反映 2nm／CoWoS 產能與獲利展望;本次殺盤屬價格端修正,目標價多未同步下修,故現價與目標價落差擴大、長線風險報酬轉佳——但目標價非保證,且本次 AI 需求疑慮若延續,目標價有被下修風險。</p>
+
+    <h3>8-3　ETF 持股(支撐以跳空估算＋整數關推算)</h3>
+    <table>
+      <thead><tr><th>持股</th><th class="num">6/5 收盤</th><th class="num">跳空估開盤</th><th class="num">支撐 1 / 2</th><th>備註</th></tr></thead>
+      <tbody>
+        <tr><td><b>0050</b></td><td class="num">104.15</td><td class="num dn">~98</td><td class="num">100 / 95</td><td>原型,回檔承接首選;100 為整數心理關。</td></tr>
+        <tr><td><b>0052</b></td><td class="num">61.00</td><td class="num dn">~57</td><td class="num">57 / 55</td><td>科技純度高、彈性大但最承壓。</td></tr>
+        <tr><td><b>00631L</b>(2x)</td><td class="num">36.67</td><td class="num dn">~33*</td><td class="num">33 / 30</td><td>*恐觸跌停 −10%,實際開盤受跌停限制。</td></tr>
+        <tr><td><b>00663L</b>(2x)</td><td class="num">106.65</td><td class="num dn">~96*</td><td class="num">95 / 90</td><td>*同恐觸跌停;組合最大權重。</td></tr>
+        <tr><td><b>00981A</b></td><td class="num">30.81</td><td class="num dn">~29</td><td class="num">29 / 27</td><td>穿透分散度較高、相對抗跌。</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px;color:var(--txt3);margin-top:8px;">ETF 跳空估開盤＝6/5 收盤 ×(大盤估開盤 −6% 至 −7%);槓桿型以 2x 估算但受單日 ±10% 跌停限制,實際開盤價以盤面為準。</p>
+
+    <h3>8-4　操作建議(分析觀點,非下單指令、不指定張數)</h3>
+    <div class="callout warn"><b>建議 1 · 開盤不接刀,等訊號再動。</b>依據:跳空跌停時段流動性差、情緒極端,易做在最差價位。具體——等開盤後 30–60 分鐘,若 2330 站回 2,200、TAIEX 站回 42,000 且量縮見買盤,再考慮分批。<u>反方風險</u>:若等訊號,可能錯過最低點的最佳成本。</div>
+    <div class="callout info"><b>建議 2 · 承接用原型 0050、分批進場。</b>依據:0050 無單日重設與 decay、又能參與反彈,成分含約 6 成台積電可間接布局 AI 而不加深單一集中。具體——以 TAIEX 42,000→40,000 區間分 2–3 批承接。<u>反方風險</u>:0050 仍約 6 成台積電,非真防禦,系統性續跌仍會套。</div>
+    <div class="callout info"><b>建議 3 · 2330 中長線分批,設估值錨。</b>依據:基本面未壞(4 月營收 YoY +17.5%、YTD +29.9%),分析師共識目標仍 2,800+,現價跌向 2,200/2,000 後下檔風險報酬轉佳。具體——2,200 試單、2,000 加碼,因組合穿透已 82%,加碼幅度須節制。<u>反方風險</u>:會進一步提高單一集中度;若 AI 需求疑慮成真,目標價恐下修。</div>
+    <div class="callout warn"><b>建議 4 · 槓桿不砍在跌停板、降槓桿用反彈。</b>依據:跌停砍倉是最差時點且可能掛不到單;但雙 2x 合計 55% 集中度過高。具體——若 00631L/00663L 觸跌停,待有效反彈、流動性恢復時分批把合計權重朝 35–45% 收斂(轉原型或降曝險)。<u>反方風險</u>:若行情續崩,延後降槓桿會擴大損失——須與下方防線並用。</div>
+    <div class="callout bad"><b>建議 5 · 設防線:跌破 40,000 ＋ 5 月營收轉弱 → 降總曝險而非加碼。</b>依據:此組合(年線/法人下檔)若失守、且 6/10 前公布的 5 月營收同步轉弱,代表「恐慌殺盤」已升級為「基本面跟進惡化」,屬趨勢轉折非短線恐慌。具體——此情境下優先降低槓桿與總曝險、保留現金,不逢低加碼。<u>反方風險</u>:若為假跌破(隔日 V 轉),降曝險會賣在低點;故須以「收盤確認＋營收數據」雙重條件,而非盤中一根破線就動作。</div>
+  </div>
+
   <!-- 8. 多角度分析 -->
   <div class="sec">
-    <h2>八、多角度分析（持有者 / 買方 / 長期投資人）</h2>
+    <h2>九、多角度分析（持有者 / 買方 / 長期投資人）</h2>
     <div class="grid3">
       <div class="card"><div class="lbl" style="color:var(--green2);font-weight:700;">以「持有者」視角</div>
         <p>跳空大跌＋雙槓桿，今日帳面壓力極大。但基本面（AI 供應鏈營收）未轉壞，恐慌殺低不宜在最差時點砍槓桿。重點是<strong>守住預設的減槓桿條件、不情緒操作</strong>，把承接留給原型、把降槓桿留給反彈。</p></div>
@@ -419,7 +476,7 @@ ul.bul li::before{content:"\25B8";position:absolute;left:1px;color:var(--green);
 
   <!-- 9. 情境劇本 -->
   <div class="sec">
-    <h2>九、今日情境劇本</h2>
+    <h2>十、今日情境劇本</h2>
     <div class="scen">
       <div class="card bull"><h4>恐慌見底 / 反彈</h4><div class="prob">觸發：開低後量縮、買盤承接、ADR 隔夜止穩、外資賣壓收斂</div>
         <p>「非理性殺盤」獲修正，台股低開高走或隔日 V 轉。此情境下槓桿放大反彈，對現有配置最有利——但須是「確認」而非「猜底」。</p></div>
@@ -432,7 +489,7 @@ ul.bul li::before{content:"\25B8";position:absolute;left:1px;color:var(--green);
 
   <!-- 10. 風險清單 -->
   <div class="sec">
-    <h2>十、風險清單</h2>
+    <h2>十一、風險清單</h2>
     <ul class="bul">
       <li><b>跳空缺口風險：</b>台指期夜盤 −3,006 點（史上最大），現貨週一恐大幅開低 6%＋，槓桿 ETF 恐觸跌停、流動性驟降。</li>
       <li><b>AI 資本支出循環疑慮：</b>博通客製 AI 晶片展望不如預期，市場質疑「AI 無敵論」，直接衝擊半導體權值（組合核心）。</li>
