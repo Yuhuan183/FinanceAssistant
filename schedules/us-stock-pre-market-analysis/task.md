@@ -55,11 +55,12 @@ FinanceAssistant 專案是 git repo，以 GitHub Pages 發布；repo 根目錄 `
    - 將 `TODAY` 常數更新為報告日期；若報告月份不在 `MONTHS` 陣列中則新增一筆（first＝該月 1 號為星期幾 0–6，days＝當月天數）。
    - 更新標頭副標與頁尾的「更新日」日期。
 2. **驗證 index.html**：確認 `<div>`／`</div>` 數量平衡、以 `node --check` 檢查 `<script>` JS 語法、確認新增的 file 相對路徑指向的檔案確實存在。
-3. **發布到 GitHub**：依照 repo 內 `skills/git-publish/SKILL.md` 的「標準發布流程（push）」操作。沙箱環境務必走該 skill 的 `/tmp` clone 流程，**切勿**使用 `rm -f .git/index.lock`（沙箱必失敗）。本次要納入版本控制的檔案：
-   - `us-stock-pre-analyze/美股盤前分析_YYYY-MM-DD.html`（今日新報告）
-   - `index.html`（已更新）
+3. **發布到 GitHub（優先用本機 git 工具）**：呼叫 finance-local MCP 工具 `git_publish`（在 Mac 本機 add+commit+push，用本機 SSH 金鑰、無需 token）：
+   - `repo`：`/Users/siegfried/WorkSpace/FinanceAssistant`
+   - `files`：`["us-stock-pre-analyze/美股盤前分析_YYYY-MM-DD.html", "index.html"]`
+   - `message`：`feat: 美股盤前分析 YYYY-MM-DD`
 
-   commit 訊息：`feat: 美股盤前分析 YYYY-MM-DD`。push 後依該 skill 的「回寫本機 repo」步驟同步本機 refs。切勿在輸出或任何檔案中顯示或記錄 remote URL 內嵌的 token。
+   若 `git_publish` 回 non-fast-forward（遠端有新 commit），先呼叫 `git_pull`（`repo` 同上、`rebase:true`）再 `git_push`。**退路**：若 finance-local git 工具不可用（Mac 離線／未連 MCP），改走 `skills/git-publish/SKILL.md` 的沙箱 `/tmp` clone 流程；該情境 push 可能失敗，於輸出註明「需使用者本機 push」即可，不影響報告交付。
 4. 將線上網址 `https://yuhuan183.github.io/FinanceAssistant/` 回報，告知日曆已可點進今日盤前分析。
 
 若 session 未連接專案資料夾，先用 request_cowork_directory 連接 `/Users/siegfried/WorkSpace/FinanceAssistant`。此為自動排程、使用者不在場：實作細節自行合理判斷並在輸出註明；若 git push 失敗，於輸出說明原因，但不影響報告本身的交付。
