@@ -11,15 +11,25 @@ enabled: true
 
 ## 資料來源優先順序（必守）
 
-**優先呼叫本機 MCP 工具 `mcp__finance-local__*`（finance-mcp-bridge）**，比 WebSearch 抓的「公開資料近似值」更權威可審計：
+**一律優先呼叫本機 MCP `mcp__finance-local__*`（官方／可審計），WebSearch 僅為最後退路。** 各類資料的精準優先序：
 
-- 個股／ETF 報價 → `stooq_quote`（NVDA／AMD／GOOGL／QQQ／SOXX／SOXQ／VOO／VT 等）
-- 全球指數（S&P／Dow／Nasdaq／SOX）→ `stooq_quote` 或 `stooq_preset us-indices`（S&P 走 SPY 等 ETF proxy）
-- 美國利率、油價、DXY、通膨 → `fred_series` 或 `fred_macro_dashboard`
-- US ETF 穿透成分 → `yf_holdings`（受 Yahoo 429 影響時 fallback）
-- 台股當日收盤（盤後回顧）→ `twse_taiex`、三大法人 → `twse_three_institutional`、個股 → `twse_stock`
+**美股（盤前報價／前收，已改用 Twelve Data 官方 key，最高優先）**
+- 個股與 ETF（NVDA／AMD／GOOGL／QQQ／SOXX／SOXQ／VOO／VT、台積電 ADR 用 `TSM`）→ **`td_quotes`（一次批次抓完，勿逐檔 `td_quote`）**
+- 四大指數與費半／VIX（S&P／Dow／Nasdaq／SOX／VIX）→ **`td_preset us-indices`**（回 ETF proxy：SPY／DIA／QQQ／SOXX／VIXY，**% 漲跌貼近指數、點位非指數本身，報告須標示 proxy**）
+- ⚠️ **免費版 8 次/分上限**：務必用批次工具（`td_quotes`／`td_preset`），整份報告控制在少數幾次批次內、必要時間隔呼叫，避免 429。
+- 備援：`stooq_quote`（反爬時自動退回 Twelve Data）；`yf_*` 因 Yahoo 429 已不可靠，不要依賴。
+- US ETF 穿透成分（QQQ／SOXX／SOXQ／VOO／VT）→ `yf_holdings`；受 Yahoo 429 影響時改用記憶中已知權重或 WebSearch，並註明為估算。
 
-工具不可用時（使用者 Mac 離線、ToolSearch 找不到 `mcp__finance-local__*`）才退回 **WebSearch**，並於報告中註明「資料來源：WebSearch 公開資料近似值」。**資料來源在報告免責聲明中應明確標出**：使用 MCP 時標「Stooq / FRED / TWSE 等官方／第一手」，使用 WebSearch 時標「公開資料近似值」。
+**宏觀（FRED 官方 API）**
+- 美國利率／油價／DXY／通膨 → `fred_series`／`fred_multi`／`fred_macro_dashboard`
+- ⚠️ **FRED 日資料延遲約 1 個交易日**：當日最新值若 FRED 尚無，改用 Twelve Data（油價 `td_quote WTI/USD`）或 WebSearch 並標明近似。
+
+**台股盤後（第一手官方）**
+- 當日收盤 → `twse_taiex`；三大法人 → `twse_three_institutional`；個股 → `twse_stock`
+
+**退路與標註**
+- 僅當上述 MCP 全數失效才退回 **WebSearch**，並於報告標「資料來源：WebSearch 公開資料近似值」。
+- **免責聲明須逐類標來源**：Twelve Data（指數為 ETF proxy）／FRED 官方 API／TWSE 官方／WebSearch 近似值，分別標清楚。
 
 ## 個人持股
 
