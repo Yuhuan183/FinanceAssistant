@@ -24,7 +24,7 @@ import * as mops from './mops.mjs';
 import * as gitops from './git.mjs';
 import { ok, err } from './_util.mjs';
 
-const server = new McpServer({ name: 'finance-local', version: '0.2.0' });
+const server = new McpServer({ name: 'finance-local', version: '0.3.0' });
 
 /* ============================================================
    Bridge Health — 一發狀態檢查
@@ -64,7 +64,7 @@ server.registerTool(
       fail: results.filter(r => r.status === 'fail').length,
     };
     return ok({
-      bridge_version: '0.2.0',
+      bridge_version: '0.3.0',
       checked_at: new Date().toISOString(),
       summary,
       results,

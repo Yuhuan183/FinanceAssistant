@@ -14,6 +14,7 @@
 - **`us-stock-pre-analyze/`** — 美股每日盤前分析
 - **`skills/`** — 自製 skill:`earnings-analysis-dashboard`(財報分析儀表板產生器)、`git-publish`(git 發布規範,所有自動排程共用)
 - **`schedules/`** — 自動排程任務的正式定義(真實來源),詳見該目錄 `README.md`
+- **`finance-mcp/`** — 本機 MCP bridge(`finance-local` 外掛):跑在 Mac 本機,把 TWSE／FRED／Stooq／yfinance／MOPS 等免費資料源與本機 git 工具(commit/push/fetch/pull/publish)接進 Claude,供排程抓一手資料並自動發布到 GitHub。安裝與工具清單見 `finance-mcp/plugin/README.md`。(`node_modules` 不納入版控)
 
 ## 線上瀏覽
 
