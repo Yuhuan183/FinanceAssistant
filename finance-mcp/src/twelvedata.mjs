@@ -19,17 +19,25 @@ export function available() {
 
 /**
  * 把我們慣用的 Yahoo 風格 / preset 符號 → Twelve Data 符號。
- *   ^GSPC/^SPX → SPX, ^DJI → DJI, ^IXIC → IXIC, ^NDX → NDX,
- *   ^SOX → SOX, ^VIX → VIX, ^TNX → TNX, ^TWII → TAIEX
+ * 重點:Twelve Data 免費版「不支援」原始指數(SPX/DJI/IXIC/SOX/VIX 會回 404),
+ * 故主要指數一律改用 ETF proxy(與 Stooq 同策略)——% 漲跌與指數幾乎一致,
+ * 僅絕對點位不同(回傳 is_proxy=true 供報告標註)。
+ *   ^GSPC/^SPX → SPY, ^DJI → DIA, ^IXIC/^NDX → QQQ, ^SOX → SOXX, ^VIX → VIXY
+ *   ^TWII → TAIEX(指數,部分方案可用)
  *   USDTWD → USD/TWD, CL.F/CL=F → WTI/USD, GC.F/GC=F → XAU/USD
  *   nvda.us → NVDA, 0050.tw → 0050(交易所 TWSE)
  */
 function tdSymbol(sym) {
   const s = String(sym || '').trim();
   const u = s.toUpperCase();
+  // 指數 → ETF proxy(免費版可取)
+  const proxy = {
+    '^GSPC': 'SPY', '^SPX': 'SPY', '^DJI': 'DIA', '^IXIC': 'QQQ', '^NDX': 'QQQ',
+    '^SOX': 'SOXX', '^VIX': 'VIXY',
+  };
+  if (proxy[u]) return { symbol: proxy[u], proxy_for: u };
   const map = {
-    '^GSPC': 'SPX', '^SPX': 'SPX', '^DJI': 'DJI', '^IXIC': 'IXIC', '^NDX': 'NDX',
-    '^SOX': 'SOX', '^VIX': 'VIX', '^TNX': 'TNX', '^TWII': 'TAIEX',
+    '^TNX': 'TNX', '^TWII': 'TAIEX',
     'USDTWD': 'USD/TWD', 'TWD=X': 'USD/TWD',
     'CL.F': 'WTI/USD', 'CL=F': 'WTI/USD', 'GC.F': 'XAU/USD', 'GC=F': 'XAU/USD',
   };
@@ -43,7 +51,7 @@ function tdSymbol(sym) {
 export async function quote(symbol) {
   const key = apiKey();
   if (!key) return { ticker: symbol, error: 'TWELVEDATA_API_KEY 未設定' };
-  const { symbol: td, exchange } = tdSymbol(symbol);
+  const { symbol: td, exchange, proxy_for } = tdSymbol(symbol);
   let url = `${BASE}/quote?symbol=${encodeURIComponent(td)}&apikey=${key}`;
   if (exchange) url += `&exchange=${encodeURIComponent(exchange)}`;
   const j = await getJson(url);
@@ -55,6 +63,8 @@ export async function quote(symbol) {
   return {
     ticker: symbol,
     td_symbol: td,
+    is_proxy: proxy_for ? true : undefined,
+    proxy_note: proxy_for ? `${proxy_for} 以 ETF proxy ${td} 代表;% 漲跌近似指數,點位非指數本身` : undefined,
     name: j.name || null,
     date: j.datetime || null,
     open: round(num(j.open), 4),
