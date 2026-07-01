@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美股盤前分析 · 2026-07-01</title>
+<style>
+:root{
+  --bg:#0b0e14;--panel:#141925;--panel2:#1c2333;--line:#2a3346;
+  --txt:#e8ecf3;--txt2:#9aa6bd;--txt3:#6b7689;
+  --green:#76b900;--green2:#9ed320;--pos:#34d399;--neg:#f87171;--warn:#fbbf24;--blue:#60a5fa;--purple:#a78bfa;
+  --radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei",BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);color:var(--txt);line-height:1.65;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 18px 70px;}
+a{color:var(--blue);}
+.hd{background:linear-gradient(135deg,#141925 0%,#1c2333 55%,#10331a 100%);
+  border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:14px;}
+.hd .eyebrow{color:var(--green2);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.hd h1{font-size:23px;font-weight:800;margin:6px 0 6px;}
+.hd .sub{color:var(--txt2);font-size:13px;}
+.back{display:inline-block;margin-top:12px;font-size:12px;color:var(--green2);text-decoration:none;
+  background:var(--panel2);border:1px solid var(--line);padding:6px 13px;border-radius:8px;}
+.back:hover{background:var(--green);color:#0b0e14;}
+
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 20px;margin-bottom:14px;}
+.sec h2{font-size:16px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.sec h2::before{content:"";width:4px;height:16px;background:var(--green);border-radius:2px;}
+.sec h3{font-size:13.5px;color:var(--green2);margin:14px 0 7px;}
+.sec p{font-size:13px;color:var(--txt2);margin-bottom:8px;}
+.lead{font-size:13.5px;color:var(--txt);background:var(--panel2);border-left:3px solid var(--green);
+  border-radius:8px;padding:11px 15px;margin-bottom:12px;}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:6px 0 4px;}
+th,td{padding:7px 9px;text-align:right;border-bottom:1px solid var(--line);}
+th{color:var(--txt3);font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;}
+th:first-child,td:first-child{text-align:left;}
+tbody tr:hover{background:var(--panel2);}
+.pos{color:var(--pos);font-weight:700;}
+.neg{color:var(--neg);font-weight:700;}
+.tk{font-weight:800;color:var(--txt);}
+.muted{color:var(--txt3);font-size:11.5px;}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.card{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:13px 15px;}
+.card h4{font-size:12.5px;color:var(--green2);margin-bottom:6px;}
+.card p{font-size:12px;color:var(--txt2);margin:0;}
+.kpi{display:flex;flex-direction:column;gap:2px;}
+.kpi .v{font-size:19px;font-weight:800;color:var(--txt);}
+.kpi .l{font-size:11px;color:var(--txt3);}
+
+/* weight bar */
+.bar{height:18px;background:var(--panel);border-radius:5px;overflow:hidden;position:relative;border:1px solid var(--line);}
+.bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--green2));}
+.barwrap{display:grid;grid-template-columns:88px 1fr 54px;gap:10px;align-items:center;margin:5px 0;font-size:12px;}
+.barwrap .nm{color:var(--txt2);font-weight:700;}
+.barwrap .pc{text-align:right;color:var(--txt);font-weight:700;}
+
+.pill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:999px;margin-left:4px;}
+.pill.buy{background:#10331a;color:var(--green2);border:1px solid #2a5c10;}
+.pill.red{background:#2a0f0f;color:var(--neg);border:1px solid #5c1a1a;}
+.pill.neu{background:var(--panel);color:var(--txt2);border:1px solid var(--line);}
+.pill.hi{background:#10243a;color:var(--blue);border:1px solid #24456b;}
+.pill.warn{background:#2a2408;color:var(--warn);border:1px solid #5c4a10;}
+
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.tab{background:var(--panel2);border:1px solid var(--line);color:var(--txt2);font-family:inherit;
+  font-size:12.5px;font-weight:700;padding:7px 14px;border-radius:8px;cursor:pointer;transition:.12s;}
+.tab:hover{filter:brightness(1.25);}
+.tab.on{background:var(--green);color:#0b0e14;border-color:var(--green);}
+.pane{display:none;}
+.pane.on{display:block;}
+
+.scoretag{display:inline-block;width:22px;text-align:center;font-weight:800;border-radius:5px;font-size:12px;padding:2px 0;}
+.s5{background:#0f3d1a;color:#9ed320;}.s4{background:#123016;color:#7bbf4a;}
+.s3{background:#2a2408;color:#fbbf24;}.s2{background:#301a10;color:#f0a35e;}.s1{background:#2a0f0f;color:#f87171;}
+
+.rec{border-left:3px solid var(--line);padding:10px 14px;margin:9px 0;background:var(--panel2);border-radius:0 8px 8px 0;}
+.rec.add{border-left-color:var(--green);}
+.rec.trim{border-left-color:var(--neg);}
+.rec.hold{border-left-color:var(--warn);}
+.rec .rt{font-size:13px;font-weight:800;color:var(--txt);margin-bottom:3px;}
+.rec .pro{font-size:12px;color:var(--pos);margin:3px 0;}
+.rec .con{font-size:12px;color:var(--neg);margin:3px 0;}
+.rec .lv{font-size:11.5px;color:var(--txt3);margin-top:4px;}
+
+ul.clean{list-style:none;margin:4px 0;}
+ul.clean li{font-size:12.5px;color:var(--txt2);padding:4px 0 4px 16px;position:relative;}
+ul.clean li::before{content:"\25B8";position:absolute;left:1px;color:var(--green);font-size:10px;top:7px;}
+
+.scen{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.scen .card.bull{border-top:3px solid var(--pos);}
+.scen .card.base{border-top:3px solid var(--warn);}
+.scen .card.bear{border-top:3px solid var(--neg);}
+
+.disc{background:var(--panel);border:1px solid #5c4a10;border-radius:9px;padding:13px 16px;
+  font-size:11.6px;color:var(--txt2);margin-top:14px;}
+.disc b{color:var(--warn);}
+.src{font-size:11px;color:var(--txt3);margin-top:6px;line-height:1.7;}
+.foot{color:var(--txt3);font-size:11.5px;text-align:center;margin-top:10px;line-height:1.8;}
+@media(max-width:680px){
+  .grid2,.grid3,.scen{grid-template-columns:1fr;}
+  .wrap{padding:16px 11px 50px;}
+  table{font-size:11.5px;}th,td{padding:6px 5px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <div class="eyebrow">US Pre-Market Briefing</div>
+    <h1>美股盤前分析 · 2026 年 7 月 1 日（週三）</h1>
+    <div class="sub">美股盤前 ＋ 台股盤後回顧 ＋ 全球股市走向解讀｜AI／半導體焦點｜個人化持股配置與價位分析</div>
+    <div class="sub" style="margin-top:6px;color:var(--txt3)">產出時間：台灣時間 2026-07-01 20:00｜美股 7/1 盤前（以 6/30 收盤為盤前參考座標）｜台股 7/1 已收盤</div>
+    <a class="back" href="../index.html">← 返回財報觀察日曆</a>
+  </div>
+
+  <div class="lead">
+    <b>一句話總結：</b>半導體強勢反彈續航——SOX 續漲逾 4%、AMD 單日 +7.7% 改寫氣勢、NVDA +2.6%、費半自 6/5 暴跌（單日 -10%、蒸發約 1.3 兆美元）以來持續修復；那斯達克 +1.52%、S&P 500 +0.79%、道瓊創收盤新高（52,319）。台股 7/1 收 47,019、三大法人合計買超約 NT$539 億（外資估約 +322 億）氣盛。油價自 5 月高點 $106 崩至約 $79、10Y 殖利率回落至 4.38%、殖利率曲線轉正陡化，宏觀對成長股偏順風。<b>組合高度集中於 AI／半導體（穿透後半導體曝險估達約 68%），AMD 已成最大單一部位（權重約 31%）且股價已高過分析師平均目標價——這是本份報告最需要正視的集中度與估值風險。</b>
+  </div>
+
+  <!-- ===================== 全球股市走向 ===================== -->
+  <div class="sec">
+    <h2>一、全球股市走向解讀（6/30 收盤）</h2>
+    <div class="grid3" style="margin-bottom:12px">
+      <div class="card kpi"><span class="v pos">+1.52%</span><span class="l">Nasdaq 綜合 26,213.72</span></div>
+      <div class="card kpi"><span class="v pos">+0.79%</span><span class="l">S&P 500　7,449.36</span></div>
+      <div class="card kpi"><span class="v pos">+0.26%</span><span class="l">道瓊 52,319.20（收盤新高）</span></div>
+    </div>
+
+    <h3>美股四大指數與費半（6/30 收盤）</h3>
+    <table>
+      <thead><tr><th>指數</th><th>參考點位</th><th>漲跌%</th><th>來源／備註</th></tr></thead>
+      <tbody>
+        <tr><td class="tk">S&P 500</td><td>7,449.36</td><td class="pos">+0.79%</td><td class="muted">指數值＝WebSearch；proxy SPY +0.78%（TD）</td></tr>
+        <tr><td class="tk">Nasdaq 綜合</td><td>26,213.72</td><td class="pos">+1.52%</td><td class="muted">指數值＝WebSearch；proxy QQQ +1.70%（TD）</td></tr>
+        <tr><td class="tk">道瓊工業</td><td>52,319.20</td><td class="pos">+0.26%</td><td class="muted">指數值＝WebSearch；proxy DIA +0.14%（TD）</td></tr>
+        <tr><td class="tk">費半 SOX</td><td class="muted">SOXX $640.76</td><td class="pos">+4.30%</td><td class="muted">以 ETF proxy SOXX 代表（TD）；點位非指數本身</td></tr>
+        <tr><td class="tk">VIX 波動率</td><td class="muted">方向：走低</td><td class="pos">−1.9%</td><td class="muted">proxy VIXY（TD），僅示方向、非 VIX 點位</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">⚠️ 指數點位為 WebSearch 公開資料近似值；ETF proxy 之漲跌貼近指數、點位非指數本身。</p>
+
+    <h3>亞歐股市收盤（6/30）</h3>
+    <table>
+      <thead><tr><th>市場</th><th>漲跌%</th><th>市場</th><th>漲跌%</th></tr></thead>
+      <tbody>
+        <tr><td class="tk">日經 225</td><td class="pos">+0.9%</td><td class="tk">STOXX 歐洲 600</td><td class="pos">+0.9%</td></tr>
+        <tr><td class="tk">韓國 KOSPI</td><td class="pos">+1.0%</td><td class="tk">德國 DAX</td><td class="pos">+0.7%</td></tr>
+        <tr><td class="tk">台股 TAIEX（6/30）</td><td class="pos">+2.5%</td><td class="tk">英國 FTSE 100</td><td class="pos">+0.6%</td></tr>
+        <tr><td class="tk">上證綜合</td><td class="pos">+0.5%</td><td class="tk">印度 Nifty 50</td><td class="neg">−0.3%</td></tr>
+        <tr><td class="tk">香港恆生</td><td class="neg">−0.6%</td><td class="tk">澳洲 ASX 200</td><td class="neg">−0.5%</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">來源：WebSearch 公開資料近似值。全球普遍偏多，僅港股、印度、澳洲小跌；資金明顯回流科技與半導體。</p>
+
+    <h3>匯率、商品與宏觀（FRED 官方 API）</h3>
+    <table>
+      <thead><tr><th>項目</th><th>最新值</th><th>近月變化</th><th>解讀</th></tr></thead>
+      <tbody>
+        <tr><td class="tk">美 10Y 公債殖利率</td><td>4.38%</td><td class="pos">−0.29</td><td class="muted">回落，對成長股估值偏順風</td></tr>
+        <tr><td class="tk">美 2Y 公債殖利率</td><td>4.10%</td><td class="pos">−0.03</td><td class="muted">短端相對持穩</td></tr>
+        <tr><td class="tk">10Y–2Y 利差</td><td>+0.30</td><td class="neg">−0.23</td><td class="muted">維持正斜率、但趨平</td></tr>
+        <tr><td class="tk">聯邦基金利率 DFF</td><td>3.63%</td><td class="muted">持平</td><td class="muted">政策利率區間穩定</td></tr>
+        <tr><td class="tk">WTI 原油</td><td>約 $78.9</td><td class="pos">−26.8</td><td class="muted">自 5 月 $106 崩跌，通膨壓力大減</td></tr>
+        <tr><td class="tk">美元指數 DTWEXBGS</td><td>120.89</td><td class="neg">+1.83</td><td class="muted">走強，對非美資產小逆風</td></tr>
+        <tr><td class="tk">10Y 通膨預期</td><td>2.24%</td><td class="pos">−0.20</td><td class="muted">通膨預期降溫，利率下行空間增</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">⚠️ FRED 日資料延遲約 1 交易日（WTI 最新為 6/22、其餘至 6/29–6/30）。油價 −25%＋殖利率回落＋通膨預期降溫，是本波成長股/半導體反彈的宏觀底氣。</p>
+  </div>
+
+  <!-- ===================== 台股盤後 ===================== -->
+  <div class="sec">
+    <h2>二、台股盤後重點（7/1 收盤）</h2>
+    <div class="grid3" style="margin-bottom:12px">
+      <div class="card kpi"><span class="v">47,018.99</span><span class="l">加權指數 TWII 收盤</span></div>
+      <div class="card kpi"><span class="v pos">+1.7%</span><span class="l">當日自開盤（46,234.7）漲幅估算</span></div>
+      <div class="card kpi"><span class="v pos">+539 億</span><span class="l">三大法人合計買超（NT$）</span></div>
+    </div>
+    <p>加權指數 7/1 開高走高，最高 47,293、收 47,019，續強於 6/30（+2.5%）的氣勢，量能與法人動向同步偏多。<span class="muted">（TWSE 未提供本日 prev_close，日漲跌%以開盤價估算、僅供參考。）</span></p>
+
+    <h3>三大法人買賣超（TWSE 官方 BFI82U，單位：NT$）</h3>
+    <table>
+      <thead><tr><th>類別</th><th>買進</th><th>賣出</th><th>買賣超淨額</th></tr></thead>
+      <tbody>
+        <tr><td class="tk">投信</td><td>754.9 億</td><td>598.8 億</td><td class="pos">+156.0 億</td></tr>
+        <tr><td class="tk">自營商（避險）</td><td>425.6 億</td><td>364.5 億</td><td class="pos">+61.1 億</td></tr>
+        <tr><td class="tk">外資（推估*）</td><td class="muted">—</td><td class="muted">—</td><td class="pos">+322.0 億</td></tr>
+        <tr><td class="tk">三大法人合計</td><td>6,180 億</td><td>5,641 億</td><td class="pos">+539.2 億</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">*外資淨額＝合計淨額 − 投信 − 自營避險 之推估（TWSE 回傳未單列外資自營）。整體法人強力買超逾 500 億，內外資同步做多、AI 供應鏈為主要標的。</p>
+
+    <h3>與持股相關的台股／ADR 連動</h3>
+    <ul class="clean">
+      <li>台積電 ADR（TSM）6/30 收 $477.57、<span class="pos">+4.94%</span>，UBS 於財報前上調目標價，帶動費半與 AI 供應鏈；使用者未直接持有台積電，但透過 VT／VOO／SOXX 間接曝險。</li>
+      <li>台股 AI 供應鏈（鴻海、廣達、緯穎等）與費半連動高，法人買超延續 → 對半導體題材形成正向氛圍。</li>
+    </ul>
+  </div>
+
+  <!-- ===================== 美股盤前 ===================== -->
+  <div class="sec">
+    <h2>三、美股盤前：持股個股與 ETF（以 6/30 收盤為參考座標）</h2>
+    <table>
+      <thead><tr><th>標的</th><th>參考價</th><th>前收</th><th>漲跌%</th><th>當日高／低</th><th>類別</th></tr></thead>
+      <tbody>
+        <tr><td class="tk">NVDA 輝達</td><td>200.09</td><td>194.97</td><td class="pos">+2.63%</td><td class="muted">200.63 / 195.11</td><td>個股</td></tr>
+        <tr><td class="tk">AMD 超微</td><td>580.91</td><td>539.49</td><td class="pos">+7.68%</td><td class="muted">584.73 / 546.00</td><td>個股</td></tr>
+        <tr><td class="tk">GOOGL Alphabet</td><td>357.37</td><td>353.65</td><td class="pos">+1.05%</td><td class="muted">358.62 / 350.40</td><td>個股</td></tr>
+        <tr><td class="tk">QQQ 那斯達克100</td><td>736.40</td><td>724.08</td><td class="pos">+1.70%</td><td class="muted">737.62 / 723.92</td><td>ETF</td></tr>
+        <tr><td class="tk">SOXX 費半</td><td>640.76</td><td>614.35</td><td class="pos">+4.30%</td><td class="muted">644.92 / 616.61</td><td>ETF（純半導體）</td></tr>
+        <tr><td class="tk">SOXQ 費半</td><td>111.87</td><td>107.82</td><td class="pos">+3.76%</td><td class="muted">111.97 / 108.48</td><td>ETF（純半導體）</td></tr>
+        <tr><td class="tk">VOO S&P500</td><td>686.81</td><td>681.01</td><td class="pos">+0.85%</td><td class="muted">687.52 / 680.99</td><td>ETF（大盤）</td></tr>
+        <tr><td class="tk">VT 全球股</td><td>156.95</td><td>155.83</td><td class="pos">+0.72%</td><td class="muted">157.20 / 155.88</td><td>ETF（全球）</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">資料來源：Twelve Data 官方 /quote（NVDA/AMD/GOOGL 及各 ETF 為 6/30 收盤，盤中 is_market_open=false）。⚠️ 這些是 6/30 收盤價、作為 7/1 盤前參考座標，非即時盤前報價。</p>
+
+    <h3>夜間消息與當日行程</h3>
+    <ul class="clean">
+      <li><b>半導體反彈續航：</b>投資人淡化 AI 估值過高疑慮，晶片股延續回補；AMD <span class="pos">+7.7%</span>、NVDA +2.6%、Intel +6%。此波修復自 6/5 費半單日 -10%（Broadcom Q3 AI 指引 $160 億低於預期 ~$172 億、蒸發約 1.3 兆美元）以來持續進行。</li>
+      <li><b>AMD 目標價大幅上修：</b>Cantor Fitzgerald 6/29 將 AMD 目標價由 $500 上調至 <b>$700</b>，為市場最高。</li>
+      <li><b>TSMC：</b>UBS 於 Q2 財報前上調台積電目標價，理由為 AI 需求強勁。</li>
+      <li><b>行程：</b>7/1 起為美股縮短交易週（獨立日假期在即），本週經濟數據密集——ISM 製造業 PMI、JOLTS 職缺等勞動與製造指標為焦點（具體時點以官方行事曆為準）。</li>
+    </ul>
+  </div>
+
+  <!-- ===================== 個人持股盤前快評 ===================== -->
+  <div class="sec">
+    <h2>四、個人持股盤前快評</h2>
+    <div class="grid2">
+      <div class="card"><h4>NVDA 輝達 <span class="pill pos" style="background:#10331a;color:#9ed320;border:1px solid #2a5c10">+2.6%</span></h4><p>費半領頭羊回補，站回 $200 整數關；現價 $200 相對分析師均標（約 $300+）仍有明顯折價，市場焦點暫時由 NVDA 轉向 AMD 等其他晶片股，但基本面動能未變。</p></div>
+      <div class="card"><h4>AMD 超微 <span class="pill red" style="background:#10331a;color:#9ed320;border:1px solid #2a5c10">+7.7%</span></h4><p>單日暴漲、氣勢最強，Cantor 上調至 $700。但現價 $581 已<b>高於多數分析師平均目標（$430–506）</b>，僅最高標之上——短線動能強、估值透支，波動風險升高。</p></div>
+      <div class="card"><h4>GOOGL Alphabet <span class="pill pos" style="background:#10331a;color:#9ed320;border:1px solid #2a5c10">+1.1%</span></h4><p>穩健跟漲，現價 $357 對均標（$424–434）仍約 +20% 空間；相對半導體是組合中較具防禦性、估值合理的科技核心。</p></div>
+      <div class="card"><h4>ETF（QQQ／SOXX／SOXQ／VOO／VT）</h4><p>半導體 ETF（SOXX +4.3%／SOXQ +3.8%）隨費半強彈；大盤型 VOO +0.9%、全球 VT +0.7% 溫和。SOXX 與 SOXQ 同追費半、高度重疊，等同加倍下注半導體。</p></div>
+    </div>
+  </div>
+
+  <!-- ===================== 持股比重與曝險 ===================== -->
+  <div class="sec">
+    <h2>五、持股比重與曝險分析</h2>
+    <p class="muted">以 6/30 收盤市值計算之權重（未提供成本價，改採市值權重基準；依隱私規範僅呈現百分比、不列股數與金額）。</p>
+
+    <h3>① 帳面權重（市值基準）</h3>
+    <div style="margin:8px 0 4px">
+      <div class="barwrap"><span class="nm">AMD</span><div class="bar"><span style="width:100%"></span></div><span class="pc">31.0%</span></div>
+      <div class="barwrap"><span class="nm">NVDA</span><div class="bar"><span style="width:68%"></span></div><span class="pc">21.2%</span></div>
+      <div class="barwrap"><span class="nm">VT</span><div class="bar"><span style="width:46%"></span></div><span class="pc">14.3%</span></div>
+      <div class="barwrap"><span class="nm">VOO</span><div class="bar"><span style="width:35%"></span></div><span class="pc">10.8%</span></div>
+      <div class="barwrap"><span class="nm">SOXX</span><div class="bar"><span style="width:24%"></span></div><span class="pc">7.5%</span></div>
+      <div class="barwrap"><span class="nm">GOOGL</span><div class="bar"><span style="width:19%"></span></div><span class="pc">5.9%</span></div>
+      <div class="barwrap"><span class="nm">QQQ</span><div class="bar"><span style="width:15%"></span></div><span class="pc">4.7%</span></div>
+      <div class="barwrap"><span class="nm">SOXQ</span><div class="bar"><span style="width:15%"></span></div><span class="pc">4.7%</span></div>
+    </div>
+    <p class="muted">三檔個股（AMD＋NVDA＋GOOGL）合計約 <b>58%</b>；純半導體 ETF（SOXX＋SOXQ）約 12%；大盤／全球型（VOO＋QQQ＋VT）約 30%。<b>AMD 因 +7.7% 續漲已成最大單一部位（約 31%），集中度風險上升。</b></p>
+
+    <h3>② ETF 穿透曝險（look-through，估算）</h3>
+    <table>
+      <thead><tr><th>真實曝險</th><th>帳面（直接）</th><th>＋ETF 穿透</th><th>真實合計（估）</th></tr></thead>
+      <tbody>
+        <tr><td class="tk">AMD</td><td>31.0%</td><td>~1.1%</td><td class="pos">~32%</td></tr>
+        <tr><td class="tk">NVDA</td><td>21.2%</td><td>~2.9%</td><td class="pos">~24%</td></tr>
+        <tr><td class="tk">GOOGL</td><td>5.9%</td><td>~1.0%</td><td class="pos">~7%</td></tr>
+        <tr><td class="tk">半導體產業（合計）</td><td class="muted">52%（AMD+NVDA）</td><td class="muted">＋SOXX/SOXQ/大盤內含</td><td class="neg">~68%</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">⚠️ ETF 成分權重為估算值（Yahoo holdings 受 429 限制，採已知權重近似）。SOXX 與 SOXQ 同追費城半導體指數、成分近乎等價，穿透時視為高度相關、避免低估半導體集中度。帳面看似有 8 檔標的分散，實際「真實」單一產業（半導體）曝險估達約 <b>68%</b>，對 NVDA＋AMD 兩檔的合併曝險估約 <b>56%</b>。</p>
+
+    <h3>③ 集中度與避震評估</h3>
+    <ul class="clean">
+      <li><b>高度集中：</b>半導體約 68%、AI／美股科技為主軸，單一產業與單一因子（AI 資本支出循環）曝險極高。</li>
+      <li><b>缺乏避震：</b>幾乎無防禦性資產（公用/必需消費/醫療/黃金）、無債券、非美曝險僅透過 VT 的少數比重，回檔時分散效果有限。</li>
+      <li><b>ETF 重疊：</b>SOXX≈SOXQ、且 QQQ/VOO/VT 內含大量 NVDA/AMD/GOOGL，「分散」多為表面。與使用者積極型屬性一致，但需自覺這是「集中押注 AI」而非「分散投資」。</li>
+    </ul>
+  </div>
+
+  <!-- ===================== 多因子評分 ===================== -->
+  <div class="sec">
+    <h2>六、多因子題材評分</h2>
+    <p class="muted">評分 1–5（5 最強）。基於盤前資訊之相對強弱分級，非精確量化模型，僅供快速對照。</p>
+    <table>
+      <thead><tr><th>標的</th><th>基本面動能</th><th>估值位階</th><th>技術位階</th><th>題材熱度</th><th>宏觀敏感度*</th></tr></thead>
+      <tbody>
+        <tr><td class="tk">NVDA</td><td><span class="scoretag s5">5</span></td><td><span class="scoretag s4">4</span></td><td><span class="scoretag s4">4</span></td><td><span class="scoretag s5">5</span></td><td><span class="scoretag s2">2</span></td></tr>
+        <tr><td class="tk">AMD</td><td><span class="scoretag s5">5</span></td><td><span class="scoretag s1">1</span></td><td><span class="scoretag s5">5</span></td><td><span class="scoretag s5">5</span></td><td><span class="scoretag s2">2</span></td></tr>
+        <tr><td class="tk">GOOGL</td><td><span class="scoretag s4">4</span></td><td><span class="scoretag s4">4</span></td><td><span class="scoretag s4">4</span></td><td><span class="scoretag s3">3</span></td><td><span class="scoretag s3">3</span></td></tr>
+        <tr><td class="tk">SOXX/SOXQ</td><td><span class="scoretag s4">4</span></td><td><span class="scoretag s2">2</span></td><td><span class="scoretag s5">5</span></td><td><span class="scoretag s5">5</span></td><td><span class="scoretag s2">2</span></td></tr>
+        <tr><td class="tk">QQQ</td><td><span class="scoretag s4">4</span></td><td><span class="scoretag s3">3</span></td><td><span class="scoretag s4">4</span></td><td><span class="scoretag s4">4</span></td><td><span class="scoretag s3">3</span></td></tr>
+        <tr><td class="tk">VOO</td><td><span class="scoretag s4">4</span></td><td><span class="scoretag s3">3</span></td><td><span class="scoretag s4">4</span></td><td><span class="scoretag s3">3</span></td><td><span class="scoretag s3">3</span></td></tr>
+        <tr><td class="tk">VT</td><td><span class="scoretag s3">3</span></td><td><span class="scoretag s4">4</span></td><td><span class="scoretag s3">3</span></td><td><span class="scoretag s3">3</span></td><td><span class="scoretag s4">4</span></td></tr>
+      </tbody>
+    </table>
+    <p class="muted">*宏觀敏感度分數低＝對利率/景氣更敏感（風險較高）。重點：AMD 基本面與題材/技術皆滿分，唯<b>估值位階僅 1</b>（現價已高過均標）——高動能、高風險並存。</p>
+  </div>
+
+  <!-- ===================== 持股配置與買賣分析 ===================== -->
+  <div class="sec">
+    <h2>七、持股配置與買賣分析</h2>
+    <div class="tabs">
+      <button class="tab on" data-t="p1">個股</button>
+      <button class="tab" data-t="p2">ETF</button>
+      <button class="tab" data-t="p3">組合再平衡</button>
+    </div>
+
+    <div class="pane on" id="p1">
+      <div class="rec hold">
+        <div class="rt">NVDA 輝達 — <span class="pill neu">中性偏加碼</span> <span class="pill hi">信心：中</span></div>
+        <div class="pro">＋ 支撐：資料中心動能最強、現價 $200 對均標 $300+ 折價明顯、技術站回整數關。</div>
+        <div class="con">− 風險：市場焦點暫轉向 AMD/其他晶片；組合已高度依賴半導體，加碼將進一步升高集中度。</div>
+        <div class="lv">觸發：若回測 $190–195 且基本面無變化可分批承接；跌破 $185 或 AI capex 轉弱訊號出現則轉保守。</div>
+      </div>
+      <div class="rec trim">
+        <div class="rt">AMD 超微 — <span class="pill red">中性偏減碼（獲利控管）</span> <span class="pill hi">信心：中</span></div>
+        <div class="pro">＋ 支撐：基本面/題材/技術三強、Cantor 上調至 $700、資料中心加速。</div>
+        <div class="con">− 風險：現價 $581 已<b>高過分析師平均目標（$430–506）</b>、估值透支、單一權重已達 31%（組合最大部位）、單日 +7.7% 追高風險高。</div>
+        <div class="lv">觸發：可考慮於強勢中分批調節、將權重帶回 20–25% 區間以控管集中度；若放量突破 $600 且守穩則保留核心、僅減超額部位。這是分析觀點、非下單指令。</div>
+      </div>
+      <div class="rec add">
+        <div class="rt">GOOGL Alphabet — <span class="pill buy">偏加碼</span> <span class="pill hi">信心：中高</span></div>
+        <div class="pro">＋ 支撐：估值合理（現價 $357 對均標 $424–434 約 +20%）、獲利穩、相對半導體具防禦性，可平衡組合過度偏晶片。</div>
+        <div class="con">− 風險：AI 搜尋競爭與反壟斷變數；權重僅 5.9%，對整體貢獻有限。</div>
+        <div class="lv">觸發：$350 整數關附近可分批，作為降低半導體集中度的再平衡工具。</div>
+      </div>
+    </div>
+
+    <div class="pane" id="p2">
+      <div class="rec trim">
+        <div class="rt">SOXX ＋ SOXQ 費半 ETF — <span class="pill red">合計偏減碼／勿再加</span> <span class="pill hi">信心：中</span></div>
+        <div class="pro">＋ 支撐：純半導體、技術與題材強，隨費半彈升。</div>
+        <div class="con">− 風險：兩檔近乎等價、重複下注；與直接持有的 NVDA/AMD 高度重疊，實質是「用 ETF 再加碼同一批晶片股」，放大集中度。</div>
+        <div class="lv">觸發：建議二擇一保留、避免同時持有；整體半導體曝險已約 68%，不宜再加。</div>
+      </div>
+      <div class="rec hold">
+        <div class="rt">QQQ 那斯達克100 — <span class="pill neu">中性持有</span> <span class="pill hi">信心：中</span></div>
+        <div class="pro">＋ 支撐：科技大盤核心、成分優質。</div>
+        <div class="con">− 風險：與個股/半導體曝險重疊，分散效果有限。</div>
+        <div class="lv">觸發：維持即可，作為科技核心配置。</div>
+      </div>
+      <div class="rec add">
+        <div class="rt">VOO ＋ VT 大盤／全球 — <span class="pill buy">偏加碼（分散用）</span> <span class="pill hi">信心：中高</span></div>
+        <div class="pro">＋ 支撐：VOO 大盤分散、VT 提供非美與全產業曝險，是組合中最有效的避震來源。</div>
+        <div class="con">− 風險：報酬相對溫和，與積極型偏好略有取捨。</div>
+        <div class="lv">觸發：若要降低半導體集中度，優先把新增資金導向 VT/VOO 而非再買晶片。</div>
+      </div>
+    </div>
+
+    <div class="pane" id="p3">
+      <h3>組合層級再平衡方向</h3>
+      <ul class="clean">
+        <li><b>核心問題：</b>半導體真實曝險約 68%、AMD 單一權重約 31%，集中度為當前最大風險。</li>
+        <li><b>方向一（控 AMD）：</b>於強勢中分批將 AMD 帶回 20–25% 區間，降低單一部位風險。</li>
+        <li><b>方向二（去重疊）：</b>SOXX／SOXQ 二擇一，釋出的資金避免再投入半導體。</li>
+        <li><b>方向三（補避震）：</b>新增資金優先導向 VT／VOO／GOOGL，逐步把半導體曝險從 ~68% 帶向較能承受回檔的水位。</li>
+        <li><b>情境式：</b>若費半回測（如 SOXX 跌回 $614 前收附近）而基本面未變，可分批承接優質個股；若追高失控（AMD 破 $600 追買）則須自覺集中度已偏高。</li>
+      </ul>
+      <p class="muted">以上為組合層級分析觀點，非具體下單指令、不指定股數、不催促立即執行。槓桿型 ETF 不在本組合，惟提醒：若未來納入槓桿型半導體 ETF，須注意單日重設與波動耗損特性。</p>
+    </div>
+  </div>
+
+  <!-- ===================== 價位支撐/壓力/目標價 ===================== -->
+  <div class="sec">
+    <h2>八、價位支撐／壓力與目標價分析</h2>
+    <p class="muted">所有價位為 6/30 收盤衍生之盤前參考座標、非預測；均線與 ETF 成分為估算。指數以 ETF proxy 推算。</p>
+
+    <h3>主要指數（proxy 推算）</h3>
+    <table>
+      <thead><tr><th>指數</th><th>參考</th><th>支撐</th><th>壓力</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr><td class="tk">S&P 500</td><td>7,449</td><td>7,400 / 7,350</td><td>7,500 / 前高</td><td class="muted">整數關＋近期新高區</td></tr>
+        <tr><td class="tk">Nasdaq</td><td>26,214</td><td>26,000 / 25,700</td><td>26,500 / 前高</td><td class="muted">整數關＋波段高</td></tr>
+        <tr><td class="tk">費半（SOXX）</td><td>$640.76</td><td>$630 / $614（前收）</td><td>$645（當日高）/ $660</td><td class="muted">前收＋當日高＋整數關</td></tr>
+      </tbody>
+    </table>
+
+    <h3>個股（含分析師目標價）</h3>
+    <table>
+      <thead><tr><th>個股</th><th>參考</th><th>支撐</th><th>壓力</th><th>分析師目標（區間）</th></tr></thead>
+      <tbody>
+        <tr><td class="tk">NVDA</td><td>200.09</td><td>$195 / $190</td><td>$201（當日高）/ $210</td><td class="muted">均標約 $300–310；區間 $210–500（來源：MarketBeat/TipRanks/Public）</td></tr>
+        <tr><td class="tk">AMD</td><td>580.91</td><td>$546（當日低）/ $540</td><td>$585（當日高）/ $600</td><td class="neg">均標約 $430–506；區間 $248–700，現價已高於均標（Cantor $700 為最高）</td></tr>
+        <tr><td class="tk">GOOGL</td><td>357.37</td><td>$353（前收）/ $350</td><td>$360 / $370</td><td class="muted">均標約 $424–434；區間 $340–515（來源：TipRanks/MarketScreener）</td></tr>
+      </tbody>
+    </table>
+
+    <h3>ETF（近期區間＋整數關推算）</h3>
+    <table>
+      <thead><tr><th>ETF</th><th>參考</th><th>支撐</th><th>壓力</th></tr></thead>
+      <tbody>
+        <tr><td class="tk">QQQ</td><td>736.40</td><td>$724（前收）/ $715</td><td>$738（當日高）/ $750</td></tr>
+        <tr><td class="tk">SOXX</td><td>640.76</td><td>$614（前收）/ $600</td><td>$645（當日高）/ $660</td></tr>
+        <tr><td class="tk">SOXQ</td><td>111.87</td><td>$108 / $105</td><td>$112（當日高）/ $115</td></tr>
+        <tr><td class="tk">VOO</td><td>686.81</td><td>$681（前收）/ $675</td><td>$688（當日高）/ $700</td></tr>
+        <tr><td class="tk">VT</td><td>156.95</td><td>$155 / $153</td><td>$157（當日高）/ $160</td></tr>
+      </tbody>
+    </table>
+
+    <h3>操作建議（分析觀點、非下單指令）</h3>
+    <ol style="margin:6px 0 0 18px;font-size:12.5px;color:var(--txt2);line-height:1.9">
+      <li><b>AMD：</b>動作—於 $580–600 強勢區分批調節、控權重回 20–25%。理由—現價高過均標、單一權重過大。反方風險—若 AI ASIC 訂單持續超預期，減碼可能錯失延伸行情。</li>
+      <li><b>NVDA：</b>動作—$190–195 回測分批承接。理由—對均標折價、資料中心基本面最穩。反方風險—焦點暫離、加碼升高集中度。</li>
+      <li><b>GOOGL：</b>動作—$350–353 附近分批加碼。理由—估值合理、具相對防禦性、平衡組合。反方風險—反壟斷與 AI 搜尋競爭變數。</li>
+      <li><b>SOXX/SOXQ：</b>動作—二擇一、勿同時加碼。理由—兩檔等價、重複下注放大半導體曝險。反方風險—若費半續強，減持純半導體 ETF 會降低 beta。</li>
+      <li><b>VT/VOO：</b>動作—新增資金優先導入作分散。理由—組合缺避震、非美與全產業曝險不足。反方風險—報酬較溫和，與積極偏好取捨。</li>
+    </ol>
+  </div>
+
+  <!-- ===================== 多角度 + 情境 ===================== -->
+  <div class="sec">
+    <h2>九、多角度分析與情境劇本</h2>
+    <div class="grid3" style="margin-bottom:14px">
+      <div class="card"><h4>持有者視角</h4><p>組合正處費半反彈甜蜜點、帳面氣盛。但最大部位 AMD 已估值透支、半導體曝險約 68%，此刻的「爽感」正是集中度風險最高之時，宜居高思危、分批控權重。</p></div>
+      <div class="card"><h4>買方視角</h4><p>若此刻建倉，NVDA（對均標折價）與 GOOGL（估值合理）相對安全；AMD 追高風險高、宜等回檔。純半導體 ETF 不宜與個股重複建倉。</p></div>
+      <div class="card"><h4>長期投資人視角</h4><p>AI 資本支出循環中期趨勢未破，長線半導體仍具成長性；但單一產業 68% 曝險不符分散原則，長期應逐步補入非美/全產業/防禦性資產以平滑波動。</p></div>
+    </div>
+
+    <h3>情境劇本</h3>
+    <div class="scen">
+      <div class="card bull"><h4 style="color:var(--pos)">樂觀（延續反彈）</h4><p>油價低檔＋殖利率回落＋AI capex 續強，費半再創高、AMD 攻 $600+、NVDA 回補至 $210+。組合大幅受惠，但集中度風險同步放大。</p></div>
+      <div class="card base"><h4 style="color:var(--warn)">基準（高檔震盪）</h4><p>指數新高後高檔整理，半導體輪動、資金於 NVDA/AMD/GOOGL 間切換。組合隨大盤區間波動，宜藉機再平衡。</p></div>
+      <div class="card bear"><h4 style="color:var(--neg)">保守（估值修正）</h4><p>若出現 AI 估值疑慮再起（如另一次類似 6/5 的指引不如預期）、或殖利率反彈，高 beta 半導體首當其衝，組合回檔幅度將大於大盤。</p></div>
+    </div>
+
+    <h3>風險清單</h3>
+    <ul class="clean">
+      <li>單一產業（半導體 ~68%）與單一因子（AI capex）過度集中，缺乏避震資產。</li>
+      <li>AMD 估值透支（現價高於分析師均標）＋單一權重 31%，為組合最大脆弱點。</li>
+      <li>SOXX／SOXQ 重疊、與個股高度相關，帳面分散為假象。</li>
+      <li>美元走強對非美資產小逆風；美股假期週流動性偏低、波動易放大。</li>
+      <li>盤前報價以 6/30 收盤替代（無即時盤前源），實際開盤可能跳動。</li>
+    </ul>
+  </div>
+
+  <div class="disc">
+    <b>免責聲明：</b>本報告由自動化排程產生，內容根據公開市場資料與個人持股權重彙整，僅供個人研究參考，<b>不構成投資建議、要約或下單指令，不保證準確性與即時性</b>。<b>本人非財務顧問，亦非證券分析師。</b>所有價位為盤前參考座標、非預測；均線、ETF 成分權重、盤前報價、外資推估等為估算值。所有投資決策應自行評估風險並諮詢合格專業人士。槓桿型／高波動標的具單日重設與波動耗損等特性，風險較高。
+    <div class="src">
+      <b>資料來源（逐類標示）：</b>
+      美股個股與 ETF 報價＝Twelve Data 官方 /quote（6/30 收盤）；
+      美股指數點位＝WebSearch 公開資料近似值（ETF proxy SPY/DIA/QQQ/SOXX/VIXY 之漲跌貼近指數、點位非指數本身）；
+      宏觀（殖利率/油價/美元/通膨預期）＝FRED 官方 API（日資料延遲約 1 交易日）；
+      台股加權與三大法人＝TWSE 官方（MI_5MINS_HIST／BFI82U，外資淨額為推估）；
+      亞歐股市、夜間消息、分析師目標價＝WebSearch 公開資料近似值。
+    </div>
+  </div>
+
+  <div class="foot">
+    美股盤前分析 · 2026-07-01｜FinanceAssistant 自動排程<br>
+    ETF 穿透與均線為估算 · 個人持股僅以權重百分比呈現（符合公開發布隱私規範）
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.pane').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    document.getElementById(t.dataset.t).classList.add('on');
+  });
+});
+</script>
+</body>
+</html>
