@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>美股盤前分析 2026-07-21｜全球股市走向 × 台股盤後 × 持股配置</title>
+<style>
+:root{
+  --bg:#0d1117; --bg2:#161b22; --bg3:#1c2430; --line:#2a3441;
+  --fg:#e6edf3; --fg2:#9aa7b4; --fg3:#6e7d8c;
+  --up:#ff5c5c; --down:#3fd68a; --warn:#ffb648; --info:#58a6ff; --accent:#a371f7;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  line-height:1.75;font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 18px 80px}
+header{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:8px}
+h1{font-size:25px;margin:0 0 6px;letter-spacing:.5px}
+.sub{color:var(--fg2);font-size:13.5px}
+.badge{display:inline-block;background:var(--bg3);border:1px solid var(--line);border-radius:20px;
+  padding:2px 11px;font-size:12px;color:var(--fg2);margin:3px 5px 3px 0}
+h2{font-size:19px;margin:38px 0 12px;padding-left:11px;border-left:4px solid var(--accent)}
+h3{font-size:15.5px;margin:22px 0 8px;color:var(--info)}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:15px 17px;margin:12px 0}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px}
+th,td{padding:8px 9px;text-align:right;border-bottom:1px solid var(--line)}
+th{background:var(--bg3);color:var(--fg2);font-weight:600;font-size:12.5px;white-space:nowrap}
+td:first-child,th:first-child{text-align:left}
+tbody tr:hover{background:#1a2130}
+.up{color:var(--up);font-weight:600}
+.down{color:var(--down);font-weight:600}
+.flat{color:var(--fg2)}
+.kpi{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:13px}
+.kpi .lbl{font-size:12px;color:var(--fg3)}
+.kpi .val{font-size:21px;font-weight:700;margin:3px 0}
+.kpi .chg{font-size:13px}
+.bar{height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:5px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--info))}
+.tag{display:inline-block;padding:1px 8px;border-radius:5px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.t-add{background:#7f1d1d;color:#fecaca}
+.t-hold{background:#3f3f46;color:#e4e4e7}
+.t-cut{background:#064e3b;color:#a7f3d0}
+.t-hi{background:#1e3a5f;color:#93c5fd}
+.t-mid{background:#3f3a1e;color:#fde68a}
+.t-lo{background:#3f2a2a;color:#fca5a5}
+ul,ol{margin:7px 0;padding-left:20px}
+li{margin:5px 0}
+.pro{border-left:3px solid var(--up);padding-left:11px;margin:8px 0}
+.con{border-left:3px solid var(--down);padding-left:11px;margin:8px 0}
+.note{color:var(--fg3);font-size:12.5px;font-style:italic}
+.warnbox{background:#2a1f10;border:1px solid #5a4420;border-radius:9px;padding:13px 16px;margin:14px 0}
+.discl{background:#1a1416;border:1px solid #4a2a30;border-radius:9px;padding:15px 17px;margin:30px 0 0;font-size:12.5px;color:var(--fg2)}
+.scroll{overflow-x:auto}
+details{background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:11px 15px;margin:9px 0}
+summary{cursor:pointer;font-weight:600;color:var(--info)}
+.src{font-size:11.5px;color:var(--fg3);margin-top:6px}
+.hl{background:#2d2416;padding:1px 5px;border-radius:3px;color:#fde68a}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--fg3);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>美股盤前分析儀表板</h1>
+  <div class="sub">2026 年 7 月 21 日（週二）· 台北時間 20:00 產出 · 美股即將開盤、台股已收盤</div>
+  <div style="margin-top:9px">
+    <span class="badge">全球股市走向</span>
+    <span class="badge">台股盤後</span>
+    <span class="badge">美股盤前</span>
+    <span class="badge">持股穿透曝險</span>
+    <span class="badge">價位與目標價</span>
+    <span class="badge">非投資建議</span>
+  </div>
+</header>
+
+<div class="warnbox">
+<strong>今日一句話：</strong>上週四（7/17）台股史上最大單日跌點 <span class="hl">−2,953 點</span> 的 AI 估值殺盤，今日以史上最大單日漲點 <span class="hl">+1,783 點（+4.20%）</span> 完成暴力反彈，亞股（日 +3.3%、韓 +3.4%）同步回補。美股盤前四大期指走高、Nasdaq-100 期貨 +1.3%，晶片股續彈。
+但這波是<strong>籌碼修復而非基本面翻多</strong>——外資在台股連 13 日賣超、成交量萎縮至 8,356 億，且本週三 <strong>GOOGL 財報（7/22 盤後）</strong>是 AI 資本支出敘事的關鍵驗證點。
+你的組合對半導體的穿透曝險約 <span class="hl">66%</span>，屬於這場行情裡波動放大係數最高的那一類。
+</div>
+
+<!-- ══════════════ 1. 全球股市走向 ══════════════ -->
+<h2>一、全球股市走向解讀</h2>
+
+<h3>美股前一交易日收盤（2026-07-20）</h3>
+<div class="scroll">
+<table>
+<thead><tr><th>指數</th><th>ETF Proxy</th><th>Proxy 收盤</th><th>Proxy 漲跌%</th><th>指數點位（近似）</th></tr></thead>
+<tbody>
+<tr><td>S&amp;P 500</td><td>SPY</td><td>742.09</td><td class="down">−0.16%</td><td>約 7,488</td></tr>
+<tr><td>Dow Jones</td><td>DIA</td><td>517.94</td><td class="down">−0.55%</td><td>約 52,051</td></tr>
+<tr><td>Nasdaq</td><td>QQQ</td><td>696.06</td><td class="up">+0.11%</td><td>約 25,729</td></tr>
+<tr><td>費城半導體 SOX</td><td>SOXX</td><td>524.14</td><td class="up">+0.45%</td><td>—（指數點位無官方源）</td></tr>
+<tr><td>VIX（波動率）</td><td>VIXY</td><td>21.23</td><td class="down">−1.94%</td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">⚠ 資料標註：漲跌 % 來自 Twelve Data 官方 API 的 <strong>ETF proxy</strong>，點位為 ETF 價格、非指數本身。右欄「指數點位」為 WebSearch 公開資料近似值。兩者 % 存在落差（如 Nasdaq 指數 +0.82% vs QQQ +0.11%），可能源自成分差異與計算時點，<strong>請以 proxy % 作為可審計基準、指數點位僅供座標參考</strong>。</p>
+
+<h3>亞股今日收盤（7/21）：晶片股領軍反彈</h3>
+<div class="grid g4">
+  <div class="kpi"><div class="lbl">台股 加權指數</div><div class="val up">44,232.87</div><div class="chg up">+1,783.17（+4.20%）</div><div class="note">史上最大單日漲點</div></div>
+  <div class="kpi"><div class="lbl">日經 225</div><div class="val up">66,232.19</div><div class="chg up">約 +3.3%</div><div class="note">週一休市後補漲</div></div>
+  <div class="kpi"><div class="lbl">韓國 KOSPI</div><div class="val up">—</div><div class="chg up">約 +3.4%</div><div class="note">月內仍 −20%</div></div>
+  <div class="kpi"><div class="lbl">香港 恆生</div><div class="val flat">25,132.29</div><div class="chg flat">−0.1% 以內</div><div class="note">未跟漲</div></div>
+</div>
+<div class="card">
+<strong>解讀：</strong>這是一次<strong>亞洲科技股同步的技術性回補</strong>，不是新一輪多頭啟動。三個訊號值得注意：
+<ul>
+<li><strong>反彈由記憶體與設備股領軍</strong>：Kioxia +17.2%、Advantest +7.7%，屬於跌深高 beta 股的空頭回補特徵，而非資金新增配置。</li>
+<li><strong>KOSPI 今年仍 +50%、近一個月 −20%</strong>：漲多回吐與 AI 泡沫疑慮並存，代表這輪修正的性質是「獲利了結 × 估值重定價」。</li>
+<li><strong>恆生沒跟</strong>：中港資金流與 AI 半導體敘事脫鉤，說明本波是<em>單一題材</em>的資金回補，不是全球風險偏好全面回升。</li>
+</ul>
+另外，日本內閣通過「骨太」財政框架、中國政策面對股市的支持動作，提供了亞股額外的情緒支撐。
+</div>
+
+<h3>宏觀座標（FRED 官方 API）</h3>
+<div class="scroll">
+<table>
+<thead><tr><th>指標</th><th>最新值</th><th>日期</th><th>近一個月變化</th><th>對持股的意義</th></tr></thead>
+<tbody>
+<tr><td>美 10 年債殖利率 DGS10</td><td>4.55%</td><td>07-17</td><td class="flat">−0.01</td><td>高檔盤整，成長股估值折現壓力未解</td></tr>
+<tr><td>美 2 年債殖利率 DGS2</td><td>4.18%</td><td>07-17</td><td class="up">+0.03</td><td>短端偏硬，反映降息預期降溫</td></tr>
+<tr><td>10Y−2Y 利差</td><td>+0.39</td><td>07-20</td><td class="flat">−0.01</td><td>正斜率但平坦，非衰退訊號</td></tr>
+<tr><td>聯邦資金利率 DFF</td><td>3.63%</td><td>07-17</td><td class="flat">0.00</td><td>按兵不動；市場已聽到部分官員談「有必要升息」</td></tr>
+<tr><td>WTI 原油</td><td>$79.20</td><td>07-13</td><td class="down">−18.27（自 6/2）</td><td>大幅回落但近日反彈，中東變數是尾部風險</td></tr>
+<tr><td>美元指數 DTWEXBGS</td><td>120.53</td><td>07-17</td><td class="up">+0.50</td><td>美元偏強，壓抑非美資產（影響你的 VT）</td></tr>
+<tr><td>10 年通膨預期 T10YIE</td><td>2.25%</td><td>07-20</td><td class="down">−0.08</td><td>通膨預期溫和，是唯一明確偏多的宏觀因子</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">FRED 日資料延遲約 1 個交易日，油價最新值停在 07-13。近期油價因中東局勢有反彈，實際值可能高於表列。</p>
+
+<div class="card">
+<strong>宏觀綜合判讀：</strong>當前是「<strong>利率高原 × 通膨預期回落 × 美元偏強</strong>」的組合。
+對高估值成長股而言，這不是舒適環境：10Y 停在 4.55% 意味著折現率沒有下降空間，估值的擴張必須完全靠獲利成長來支撐。
+這正是 7/16–7/17 這波殺盤的根本邏輯——市場不是不信 AI 需求，而是不願意在 4.55% 的折現率下，繼續為「資本支出領先獲利 2–3 年」的敘事付溢價。
+<br><br>
+<strong>值得警惕的新變數：</strong>已有聯準會官員表態認為<strong>有必要升息</strong>。若此觀點擴散，將直接衝擊你組合中權重最高的高 beta 半導體部位。
+</div>
+
+<h3>宏觀與事件行事曆（本週）</h3>
+<div class="scroll">
+<table>
+<thead><tr><th>日期</th><th>事件</th><th>對你的影響</th><th>重要性</th></tr></thead>
+<tbody>
+<tr><td>7/21（今日）</td><td>財報季密集日（73 家）</td><td>零星，觀察科技供應鏈語氣</td><td><span class="tag t-mid">中</span></td></tr>
+<tr><td><strong>7/22（週三）盤後</strong></td><td><strong>Alphabet GOOGL Q2 財報</strong><br>市場預估 EPS 約 $2.87–2.90、營收約 $1,169 億（YoY +21%）</td><td><strong>直接影響 GOOGL（穿透 7.4%），並是整個 AI 資本支出敘事的裁判</strong>。焦點：Google Cloud 能否維持約 60% 成長、$1,900 億 AI 投資的 ROI 說法</td><td><span class="tag t-hi">極高</span></td></tr>
+<tr><td>7/23（週四）</td><td>財報高峰（169 家）；Intel Q2（預估 EPS $0.22、營收 $144 億）</td><td>Intel 展望牽動整體半導體情緒與 SOXX／SOXQ</td><td><span class="tag t-hi">高</span></td></tr>
+<tr><td>7/24（週五）</td><td>經濟數據與財報收尾</td><td>週線收盤定調反彈是否站穩</td><td><span class="tag t-mid">中</span></td></tr>
+<tr><td>持續</td><td>美對加拿大新關稅、伊朗戰事</td><td>油價與風險溢價的尾部變數</td><td><span class="tag t-mid">中</span></td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">財報家數與經濟事件數量來自 WebSearch 公開行事曆近似值；GOOGL 財報日 7/22 由 Alphabet 官方 IR 公告確認（另有單一來源誤植 7/28，已排除）。</p>
+
+<!-- ══════════════ 2. 台股盤後 ══════════════ -->
+<h2>二、台股盤後重點（2026-07-21 收盤）</h2>
+
+<div class="grid g3">
+  <div class="kpi"><div class="lbl">加權指數 TAIEX</div><div class="val up">44,232.87</div><div class="chg up">+1,783.17（+4.20%）</div><div class="note">開 42,566.93／低 42,566.93／高＝收 44,232.87</div></div>
+  <div class="kpi"><div class="lbl">台積電 2330</div><div class="val up">2,410 元</div><div class="chg up">+90（+3.88%）</div><div class="note">開 2,350／低 2,345／高＝收 2,410</div></div>
+  <div class="kpi"><div class="lbl">三大法人合計</div><div class="val up">+164 億</div><div class="chg">投信 +172 億／自營避險 +21 億</div><div class="note">外資：連 13 日賣超</div></div>
+</div>
+
+<div class="card">
+<h3 style="margin-top:4px">籌碼結構：漂亮的指數，不漂亮的籌碼</h3>
+<div class="scroll">
+<table>
+<thead><tr><th>法人別</th><th>買進（億元）</th><th>賣出（億元）</th><th>買賣超（億元）</th><th>解讀</th></tr></thead>
+<tbody>
+<tr><td>投信</td><td>371.3</td><td>198.9</td><td class="up">+172.3</td><td>單日大手筆作帳式進場，是今日主要推力</td></tr>
+<tr><td>自營商（避險）</td><td>293.6</td><td>272.4</td><td class="up">+21.1</td><td>避險部位調整，中性偏多</td></tr>
+<tr><td>三大法人合計</td><td>4,191.3</td><td>4,027.2</td><td class="up">+164.1</td><td>買超規模遠小於 7/17 賣超 2,600 億</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">TWSE BFI82U 官方資料。「外資自營商」欄位回傳 0，外資整體買賣超未在此表細分；外資連 13 日賣超為 WebSearch 公開報導。</p>
+
+<div class="con">
+<strong>關鍵不對稱：</strong>指數漲了史上最大點數，但三大法人合計只買超 164 億，而 7/17 那天是賣超 <strong>2,600 億以上</strong>（外資單日賣超約 1,890 億）。
+換算下來，今日的買盤規模只有那天賣壓的 <strong>約 6%</strong>。這意味著今天 4.2% 的漲幅，主要由<strong>空頭回補、程式交易反向觸發、以及尾盤台積電近 8,000 張大單拉抬</strong>所構成，而非資金真正回流。
+成交值萎縮到 8,356 億元，同樣佐證了「量能不足的反彈」。
+</div>
+</div>
+
+<h3>台股當日結構</h3>
+<ul>
+<li><strong>電子類股 +4.81%、金融類股 +0.85%</strong>——極度偏科技的單邊行情，防禦性類股沒有跟上，是典型的殺盤後反彈型態。</li>
+<li><strong>台積電 2,410 元</strong>：K 線為「開低走高、收在最高」的長紅，技術面轉強；但注意 7/16 曾在 2,470 元、7/17 崩跌後跌破季線，今日雖收復 44K 與季線大關，仍未回到殺盤前價位。</li>
+<li><strong>聯發科亮燈漲停（+330 元收 3,670）</strong>、鴻海 +11.5 收 246、台達電 +130 收 1,835——AI 供應鏈全面回補。</li>
+</ul>
+
+<div class="card">
+<strong>對你的意義（你未持有台股 AI 個股，但高度相關）：</strong>
+台股與你的組合是<strong>同一條 AI 半導體 beta 曲線的兩端</strong>。台積電是 NVDA／AMD 的唯一先進製程供應商，台股電子股的反彈幾乎必然對應美股 SOX 的反彈。
+今日台股的訊號要這樣讀：<span class="hl">價格已修復、籌碼未修復</span>。這代表對你的美股半導體部位而言，反彈的持續性取決於接下來兩天的<strong>財報驗證</strong>，而不是技術面。
+<br><br>
+另一個值得記下的因果鏈：7/16 台積電法說會後，董事長魏哲家關於 AI 的談話被市場解讀為「戳破 AI 泡沫」，直接引爆 7/17 的無差別提款。<strong>供給端龍頭自己說話保守，比任何分析師降評都有殺傷力</strong>——這是這輪修正最值得記住的一課，也提醒你 GOOGL 財報上管理層對資本支出的措辭，重要性不亞於數字本身。
+</div>
+
+<!-- ══════════════ 3. 美股盤前 ══════════════ -->
+<h2>三、美股盤前（7/21 開盤前）</h2>
+
+<div class="card">
+<h3 style="margin-top:4px">盤前期貨與夜間消息</h3>
+<ul>
+<li><strong>Nasdaq-100 期貨 +1.3%</strong>、S&amp;P 500 期貨 +0.5%、道瓊期貨 +0.3%——科技股續強、大盤股溫和跟進，型態與亞股一致。</li>
+<li><strong>NVDA 盤前小幅走高</strong>，消息面：NVIDIA 入股 neocloud 業者 <strong>Nebius</strong>。這是 NVIDIA 「投資客戶以創造需求」的循環融資模式再添一例——短線是利多，中長線則正好是空方質疑 AI 需求真實性的論據。</li>
+<li>晶片股連兩日嘗試修復，市場正為本週 Big Tech 財報定位。</li>
+<li><strong>逆風：</strong>美對加拿大新關稅、伊朗戰事持續，貿易政策與地緣風險仍是壓在風險偏好上的手。</li>
+</ul>
+<p class="src">來源：WebSearch 公開財經媒體（Yahoo Finance 等）；盤前期貨為近似值，非官方即時報價。</p>
+</div>
+
+<h3>持股個股前一日收盤與盤前定位</h3>
+<div class="scroll">
+<table>
+<thead><tr><th>標的</th><th>7/20 收盤</th><th>漲跌%</th><th>日內區間</th><th>成交量</th><th>盤前快評</th></tr></thead>
+<tbody>
+<tr><td><strong>NVDA</strong></td><td>203.28</td><td class="up">+0.23%</td><td>202.28–207.74</td><td>8,827 萬</td><td>開高走低吞噬前段漲幅，量大但收在區間下緣，<strong>反彈力道弱於同業</strong></td></tr>
+<tr><td><strong>AMD</strong></td><td>503.57</td><td class="up">+1.58%</td><td>502.36–522.44</td><td>2,321 萬</td><td>盤中衝 522 後回吐近 20 點，收在低點附近，<strong>上影線長、追價意願不足</strong></td></tr>
+<tr><td><strong>GOOGL</strong></td><td>351.99</td><td class="up">+1.51%</td><td>350.52–359.67</td><td>2,461 萬</td><td>同樣長上影線；<strong>財報前一日，波動將顯著放大</strong></td></tr>
+<tr><td><strong>QQQ</strong></td><td>696.06</td><td class="up">+0.11%</td><td>695.51–705.80</td><td>2,900 萬</td><td>幾乎收平，指數層面尚未確認反彈</td></tr>
+<tr><td><strong>SOXX</strong></td><td>524.14</td><td class="up">+0.45%</td><td>522.84–539.53</td><td>622 萬</td><td>盤中一度 +3.4% 後全數回吐，<strong>今日最弱的技術訊號</strong></td></tr>
+<tr><td><strong>SOXQ</strong></td><td>92.42</td><td class="up">+0.61%</td><td>92.20–95.03</td><td>335 萬</td><td>與 SOXX 同步（同追蹤 SOX 指數）</td></tr>
+<tr><td><strong>VOO</strong></td><td>682.21</td><td class="down">−0.14%</td><td>681.57–688.19</td><td>521 萬</td><td>大盤小跌，收在低點</td></tr>
+<tr><td><strong>VT</strong></td><td>154.29</td><td class="down">−0.32%</td><td>154.18–155.69</td><td>212 萬</td><td>全球股最弱，受美元偏強拖累</td></tr>
+</tbody>
+</table>
+</div>
+<p class="src">來源：Twelve Data 官方 API（td_quotes／td_preset），資料日 2026-07-20 收盤。</p>
+
+<div class="warnbox">
+<strong>7/20 K 線的共同特徵值得高度重視：</strong>八檔標的<strong>全部</strong>是「開高、盤中衝高、收盤大幅回落」的長上影線型態。
+NVDA 從 207.74 收到 203.28（回吐 78% 的日內漲幅）；AMD 從 522.44 收到 503.57（回吐 71%）；SOXX 從 539.53 收到 524.14（回吐 92%）。
+<br><br>
+<strong>這說明週一那波反彈在盤中就遭遇了實質賣壓。</strong>今晚盤前期貨再度走高，等於是要對同一道壓力再發動一次攻擊——<span class="hl">關鍵不在能不能開高，而在能不能守住不再收長上影</span>。若今晚再出現一次「衝高收綠」，反彈失敗的機率將顯著上升。
+</div>
+
+<!-- ══════════════ 4. 持股比重與曝險 ══════════════ -->
+<h2>四、持股比重與曝險分析</h2>
+
+<h3>4-1 帳面權重（以 7/20 收盤市值計算）</h3>
+<div class="scroll">
+<table>
+<thead><tr><th>標的</th><th>類別</th><th>組合權重</th><th>視覺化</th><th>屬性</th></tr></thead>
+<tbody>
+<tr><td><strong>AMD</strong></td><td>個股</td><td class="up">28.8%</td><td><div class="bar"><i style="width:96%"></i></div></td><td>高 beta 半導體，最大單一部位</td></tr>
+<tr><td><strong>NVDA</strong></td><td>個股</td><td class="up">23.0%</td><td><div class="bar"><i style="width:77%"></i></div></td><td>AI 算力核心</td></tr>
+<tr><td><strong>VT</strong></td><td>ETF</td><td>15.0%</td><td><div class="bar"><i style="width:50%"></i></div></td><td>全球股，唯一非美部位來源</td></tr>
+<tr><td><strong>VOO</strong></td><td>ETF</td><td>11.5%</td><td><div class="bar"><i style="width:38%"></i></div></td><td>S&amp;P 500 核心</td></tr>
+<tr><td><strong>SOXX</strong></td><td>ETF</td><td>6.6%</td><td><div class="bar"><i style="width:22%"></i></div></td><td>費半指數</td></tr>
+<tr><td><strong>GOOGL</strong></td><td>個股</td><td>6.2%</td><td><div class="bar"><i style="width:21%"></i></div></td><td>AI 應用端＋現金流</td></tr>
+<tr><td><strong>QQQ</strong></td><td>ETF</td><td>4.8%</td><td><div class="bar"><i style="width:16%"></i></div></td><td>Nasdaq 100</td></tr>
+<tr><td><strong>SOXQ</strong></td><td>ETF</td><td>4.1%</td><td><div class="bar"><i style="width:14%"></i></div></td><td>費半指數（與 SOXX 近乎等價）</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">依隱私規範，僅呈現權重百分比，不列股數與絕對金額。權重＝各部位以 2026-07-20 官方收盤價計算之市值佔比。<br>
+個股合計 <strong>58.0%</strong>／ETF 合計 <strong>42.0%</strong>——但下一節會顯示，這個「分散」在穿透後幾乎不存在。</p>
+
+<h3>4-2 ETF 穿透曝險（look-through）</h3>
+<div class="scroll">
+<table>
+<thead><tr><th>標的</th><th>直接持有</th><th>經 SOXX／SOXQ</th><th>經 QQQ</th><th>經 VOO</th><th>經 VT</th><th><strong>真實曝險</strong></th><th>放大倍數</th></tr></thead>
+<tbody>
+<tr><td><strong>AMD</strong></td><td>28.8%</td><td>+0.9%</td><td>+0.1%</td><td>+0.1%</td><td>+0.1%</td><td class="up"><strong>約 30.0%</strong></td><td>1.04×</td></tr>
+<tr><td><strong>NVDA</strong></td><td>23.0%</td><td>+1.0%</td><td>+0.4%</td><td>+0.9%</td><td>+0.7%</td><td class="up"><strong>約 26.0%</strong></td><td>1.13×</td></tr>
+<tr><td><strong>GOOGL</strong></td><td>6.2%</td><td>—</td><td>+0.2%</td><td>+0.5%</td><td>+0.4%</td><td class="up"><strong>約 7.4%</strong></td><td>1.19×</td></tr>
+<tr style="background:#1f1a24"><td colspan="6"><strong>三檔個股穿透後合計</strong></td><td class="up"><strong>約 63.4%</strong></td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">⚠ ETF 成分權重為<strong>估算值</strong>（yf_holdings 因 Yahoo API 故障不可用，改採已知近似權重：SOX 指數 ETF 中 NVDA 約 9%／AMD 約 8%；QQQ 中 NVDA 約 9%／GOOGL 約 5%；VOO 中 NVDA 約 8%／GOOGL 約 4.5%；VT 中 NVDA 約 4.5%／GOOGL 約 2.6%）。實際權重會隨市值與再平衡變動。</p>
+
+<h3>4-3 產業與地域集中度</h3>
+<div class="grid g2">
+<div class="card">
+<h3 style="margin-top:0">半導體穿透曝險：約 66%</h3>
+<ul>
+<li>NVDA＋AMD 直接持有：<strong>51.8%</strong></li>
+<li>SOXX＋SOXQ（100% 半導體）：<strong>10.7%</strong></li>
+<li>QQQ 內含半導體（約 25%）：+1.2%</li>
+<li>VOO 內含半導體（約 12%）：+1.4%</li>
+<li>VT 內含半導體（約 8%）：+1.2%</li>
+</ul>
+<div class="con"><strong>約 66% 的淨資產押在單一產業。</strong>加上 GOOGL 後，科技／AI 主題曝險超過 <strong>80%</strong>。</div>
+</div>
+<div class="card">
+<h3 style="margin-top:0">SOXX 與 SOXQ 的重疊問題</h3>
+<p>兩檔<strong>同追蹤費城半導體指數</strong>，成分高度重疊、彼此近乎等價。持有兩檔並未產生任何分散效果，實務上等同於單一 10.7% 的 SOX 部位。</p>
+<p>唯一的差異是費用率與流動性（SOXQ 費用率較低、規模較小）。若要簡化，<strong>合併為單一檔是零成本的結構優化</strong>——但要留意賣出可能觸發的稅務事件。</p>
+</div>
+</div>
+
+<div class="card">
+<h3 style="margin-top:0">避震能力評估：接近於零</h3>
+<div class="scroll">
+<table>
+<thead><tr><th>防禦資產類別</th><th>組合曝險</th><th>評估</th></tr></thead>
+<tbody>
+<tr><td>債券／固定收益</td><td class="down">0%</td><td>完全沒有。利率或信用事件時無緩衝</td></tr>
+<tr><td>現金／貨幣市場</td><td class="down">0%（依現有清單）</td><td>無承接彈藥，回檔時只能被動承受</td></tr>
+<tr><td>非美股票</td><td class="down">約 5.6%</td><td>僅來自 VT 的約 37% ex-US 部位；美元偏強時還會被匯率吃掉</td></tr>
+<tr><td>非科技類股</td><td class="down">約 15–18%</td><td>全部間接來自 VOO／VT 的非科技成分</td></tr>
+<tr><td>防禦性類股（公用、必需消費、醫療）</td><td class="down">約 6–8%</td><td>間接持有，遠低於大盤中性水準</td></tr>
+</tbody>
+</table>
+</div>
+<div class="con">
+<strong>核心結論：</strong>這是一個<strong>單一因子（AI 半導體 beta）的高度集中組合</strong>，帳面上有 5 檔 ETF 看似分散，穿透後三檔個股就佔了 63%、單一產業佔了 66%。
+在 7/17 那種無差別提款的日子，這個組合的所有部位會<strong>同向、同時、同幅度</strong>下跌——ETF 提供的是「持股名稱的分散」，不是「風險來源的分散」。
+<br><br>
+這與你的積極型投資屬性一致，也確實是過去一年高報酬的來源。但必須清楚認知：<strong>你承擔的不是市場風險，是產業風險</strong>。判斷失誤的代價不是跑輸大盤，是與大盤脫鉤地大幅回撤。
+</div>
+</div>
+
+<!-- ══════════════ 5. 多因子題材評分 ══════════════ -->
+<h2>五、多因子題材評分</h2>
+
+<div class="scroll">
+<table>
+<thead><tr><th>標的</th><th>基本面動能</th><th>估值位階</th><th>技術位階</th><th>題材熱度</th><th>宏觀敏感度</th><th>綜合</th></tr></thead>
+<tbody>
+<tr><td><strong>NVDA</strong></td><td class="up">★★★★★<br><span class="note">資料中心需求續強</span></td><td class="flat">★★★☆☆<br><span class="note">距目標價有空間</span></td><td class="flat">★★☆☆☆<br><span class="note">52週高 −14%</span></td><td class="up">★★★★★<br><span class="note">AI 核心敘事</span></td><td class="down">★★☆☆☆<br><span class="note">利率極敏感</span></td><td><span class="tag t-mid">3.4 / 5</span></td></tr>
+<tr><td><strong>AMD</strong></td><td class="up">★★★★☆<br><span class="note">MI 系列放量</span></td><td class="down">★★☆☆☆<br><span class="note">已超越舊 52週高</span></td><td class="up">★★★★☆<br><span class="note">相對強勢</span></td><td class="up">★★★★★<br><span class="note">第二供應商題材</span></td><td class="down">★☆☆☆☆<br><span class="note">波動最大</span></td><td><span class="tag t-mid">3.2 / 5</span></td></tr>
+<tr><td><strong>GOOGL</strong></td><td class="up">★★★★★<br><span class="note">Cloud +60%</span></td><td class="up">★★★★☆<br><span class="note">科技巨頭中偏低</span></td><td class="flat">★★★☆☆<br><span class="note">財報前觀望</span></td><td class="up">★★★★☆<br><span class="note">AI 應用端</span></td><td class="up">★★★★☆<br><span class="note">現金流防禦</span></td><td><span class="tag t-hi">4.0 / 5</span></td></tr>
+<tr><td><strong>SOXX／SOXQ</strong></td><td class="up">★★★★☆</td><td class="flat">★★★☆☆</td><td class="down">★★☆☆☆<br><span class="note">7/20 回吐 92%</span></td><td class="up">★★★★★</td><td class="down">★☆☆☆☆</td><td><span class="tag t-mid">3.0 / 5</span></td></tr>
+<tr><td><strong>QQQ</strong></td><td class="up">★★★★☆</td><td class="flat">★★★☆☆</td><td class="flat">★★★☆☆</td><td class="flat">★★★☆☆</td><td class="flat">★★★☆☆</td><td><span class="tag t-mid">3.2 / 5</span></td></tr>
+<tr><td><strong>VOO</strong></td><td class="up">★★★★☆</td><td class="flat">★★★☆☆</td><td class="flat">★★★☆☆</td><td class="flat">★★☆☆☆</td><td class="up">★★★★☆</td><td><span class="tag t-hi">3.4 / 5</span></td></tr>
+<tr><td><strong>VT</strong></td><td class="flat">★★★☆☆</td><td class="up">★★★★☆<br><span class="note">非美估值低</span></td><td class="down">★★☆☆☆<br><span class="note">最弱</span></td><td class="flat">★★☆☆☆</td><td class="up">★★★★★<br><span class="note">最分散</span></td><td><span class="tag t-mid">3.2 / 5</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card">
+<strong>評分讀法與洞察：</strong>
+<ul>
+<li><strong>GOOGL 得分最高（4.0）</strong>，是組合中唯一同時具備「基本面強 × 估值合理 × 宏觀防禦性」的標的——但權重只有穿透後 7.4%。<strong>組合的品質分佈與權重分佈是反向的</strong>，這是最值得檢討的結構問題。</li>
+<li><strong>AMD 是「題材最熱、估值最貴、波動最大」的組合</strong>——收在 503.57，已明顯超越 WebSearch 取得的舊 52 週高 430.60（該數據疑為過期快取，須以近期實際價格為準）。這意味著 AMD 正處於歷史高檔區間，估值緩衝最薄。</li>
+<li><strong>NVDA 技術位階最弱</strong>：距 52 週高 236.54 尚有 −14%，且 7/20 收在日內區間下緣，反彈落後 AMD 與 GOOGL。基本面最強但價格最弱，這個背離要嘛是機會、要嘛是聰明錢先跑的訊號。</li>
+<li><strong>宏觀敏感度欄位揭示了真正的風險</strong>：權重最重的兩檔（AMD 30%、NVDA 26%）恰好是宏觀敏感度最差的兩檔。若聯準會升息論調成形，你的組合會從最脆弱的地方開始漏水。</li>
+</ul>
+<p class="note">評分為本報告依據當日量價、估值位置與新聞面所做的相對分級，非量化模型輸出，主觀成分高，僅供結構比較。</p>
+</div>
+
+<!-- ══════════════ 6. 持股配置與買賣分析 ══════════════ -->
+<h2>六、持股配置與買賣分析</h2>
+
+<div class="scroll">
+<table>
+<thead><tr><th>標的</th><th>方向建議</th><th>信心</th><th>支撐理由</th><th>反方風險</th><th>觸發條件</th></tr></thead>
+<tbody>
+<tr>
+<td><strong>AMD</strong><br><span class="note">權重 28.8%</span></td>
+<td><span class="tag t-cut">減碼</span></td>
+<td><span class="tag t-mid">中</span></td>
+<td>單一部位近 29% 已超出多數風控框架；價格處歷史高檔、估值緩衝最薄；7/20 長上影線顯示追價力道不足；與 NVDA 高度正相關，未提供分散</td>
+<td>MI 系列在資料中心的份額仍在擴張、基本面動能強；若 AI 資本支出續強，AMD 是彈性最大的標的；減碼可能錯失波段主升段；賣出可能觸發稅務事件</td>
+<td>若跌破 <strong>495</strong>（7/17 前收）→ 減碼理由強化；<br>若站穩 <strong>522</strong>（7/20 高）且量增 → 暫緩調整</td>
+</tr>
+<tr>
+<td><strong>NVDA</strong><br><span class="note">權重 23.0%</span></td>
+<td><span class="tag t-hold">中性持有</span></td>
+<td><span class="tag t-mid">中</span></td>
+<td>基本面評分最高、分析師平均目標價 $302.73（隱含約 +49%）；現價距 52 週高 −14%，估值位階優於 AMD；為 AI 算力不可替代的核心</td>
+<td>技術面最弱、7/20 回吐日內 78% 漲幅；Nebius 入股凸顯循環融資疑慮，是空方最有力的論據；單一部位 23% 本身已屬集中</td>
+<td>若跌破 <strong>195</strong> → 集中度問題升級為風控問題；<br>若突破 <strong>212</strong> 並守住 → 技術面轉強確認</td>
+</tr>
+<tr>
+<td><strong>GOOGL</strong><br><span class="note">權重 6.2%</span></td>
+<td><span class="tag t-add">加碼</span><span class="note">（財報後）</span></td>
+<td><span class="tag t-lo">低</span><span class="note">（事件風險）</span></td>
+<td>多因子評分最高（4.0）；估值在科技巨頭中偏低；擁有實質現金流，是組合中唯一具防禦性的科技部位；提升權重可同時改善品質與分散度</td>
+<td><strong>7/22 盤後財報是二元事件</strong>，$1,900 億 AI 投資的 ROI 若遭質疑，可能單日大幅回檔；Cloud 60% 成長基期已高，減速風險真實存在</td>
+<td><strong>建議等財報結果出爐再行動</strong>；<br>財報後若守住 <strong>340</strong> → 加碼理由成立；<br>若跌破 <strong>330</strong> → 重新評估</td>
+</tr>
+<tr>
+<td><strong>SOXX</strong><br><span class="note">權重 6.6%</span></td>
+<td><span class="tag t-hold">中性持有</span><span class="note">（建議整併）</span></td>
+<td><span class="tag t-hi">高</span><span class="note">（僅指整併）</span></td>
+<td>與 SOXQ 完全重複，整併為單一檔是結構優化；SOXX 流動性較佳</td>
+<td>整併涉及賣出，可能觸發稅務事件；兩檔費用率有差異，需自行比較</td>
+<td>整併與否不影響曝險，可依稅務與費用率自行決定時點</td>
+</tr>
+<tr>
+<td><strong>SOXQ</strong><br><span class="note">權重 4.1%</span></td>
+<td><span class="tag t-hold">中性持有</span><span class="note">（建議整併）</span></td>
+<td><span class="tag t-hi">高</span><span class="note">（僅指整併）</span></td>
+<td>同上；SOXQ 費用率較低，若以成本為優先可保留此檔</td>
+<td>同上；規模與流動性略遜於 SOXX</td>
+<td>同上</td>
+</tr>
+<tr>
+<td><strong>QQQ</strong><br><span class="note">權重 4.8%</span></td>
+<td><span class="tag t-hold">中性持有</span></td>
+<td><span class="tag t-mid">中</span></td>
+<td>權重不高、與其他部位重疊但提供部分非半導體科技曝險</td>
+<td>與 VOO 重疊度高，且同樣重壓 AI 相關權值股，分散效果有限</td>
+<td>無明確觸發點，屬結構性配置</td>
+</tr>
+<tr>
+<td><strong>VOO</strong><br><span class="note">權重 11.5%</span></td>
+<td><span class="tag t-add">加碼</span></td>
+<td><span class="tag t-mid">中</span></td>
+<td>是組合中降低集中度成本最低的工具；宏觀敏感度評分佳；若要減碼 AMD，VOO 是自然的資金去處</td>
+<td>VOO 本身前十大權值股已高度重疊 AI 主題，分散效果不如帳面數字；美股整體估值不便宜</td>
+<td>若減碼 AMD／NVDA，優先考慮此處承接</td>
+</tr>
+<tr>
+<td><strong>VT</strong><br><span class="note">權重 15.0%</span></td>
+<td><span class="tag t-add">加碼</span></td>
+<td><span class="tag t-mid">中</span></td>
+<td><strong>唯一的非美曝險來源</strong>，目前僅約 5.6% ex-US；非美估值相對低；宏觀敏感度評分最高（最分散）</td>
+<td>美元偏強（DTWEXBGS 120.53、月增 +0.50）會侵蝕非美報酬；7/20 是八檔中最弱的一檔；長期報酬可能落後純美股</td>
+<td>若美元指數轉弱 → 加碼理由顯著強化；<br>當前美元偏強環境下不急於大幅增持</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3>組合層級再平衡方向（情境式）</h3>
+<div class="card">
+<div class="grid g2">
+<div>
+<div class="pro"><strong>情境 A：反彈延續（今晚站穩、GOOGL 財報過關）</strong><br>
+機率評估：<strong>約 40%</strong>（推測）<br>
+此時是<strong>減碼的機會而非加碼的訊號</strong>。價格好轉時執行集中度調整，成本最低。
+可考慮在 AMD 接近 <strong>520–525</strong> 區間分批降低權重，將 AMD 從約 29% 往 <strong>20–22%</strong> 靠攏，資金移往 VOO／VT。</div>
+
+<div class="pro"><strong>情境 B：反彈失敗、二次探底</strong><br>
+機率評估：<strong>約 35%</strong>（推測）<br>
+若今晚再現長上影、或 GOOGL 財報不如預期，NVDA 跌破 195、AMD 跌破 480 是合理的下一道測試。
+此情境下<strong>沒有現金部位是最大的問題</strong>——組合無法承接。建議先在情境 A 中建立部分現金，而非等到下跌才想加碼。</div>
+</div>
+<div>
+<div class="pro"><strong>情境 C：區間震盪整理</strong><br>
+機率評估：<strong>約 25%</strong>（推測）<br>
+最有利於分批調整結構的情境。可用時間換空間，逐步將半導體穿透曝險從 66% 往 <strong>50–55%</strong> 移動。</div>
+
+<div class="con"><strong>結構性建議（不分情境）：</strong>
+<ol>
+<li><strong>建立現金部位</strong>：目前 0% 現金是最明顯的缺口。積極型投資者需要的不是不承擔風險，而是保有在低點行動的能力。</li>
+<li><strong>SOXX／SOXQ 整併</strong>：零成本的結構簡化（除稅務外）。</li>
+<li><strong>AMD 是最應優先調整的部位</strong>：權重最高、估值最貴、宏觀敏感度最差，三者同時成立。</li>
+<li><strong>GOOGL 權重與其品質不匹配</strong>：財報後若無重大意外，是提升組合品質最直接的途徑。</li>
+</ol></div>
+</div>
+</div>
+<p class="note">機率為本報告依當前量價與事件結構的主觀推測，非模型輸出。以上為配置方向討論，<strong>非下單指令</strong>，不指定買賣股數，亦不建議立即執行。</p>
+</div>
+
+<!-- ══════════════ 7. 價位支撐壓力與目標價 ══════════════ -->
+<h2>七、價位支撐／壓力與目標價分析</h2>
+
+<h3>7-1 主要指數</h3>
+<div class="scroll">
+<table>
+<thead><tr><th>指數</th><th>參考位置</th><th>支撐 1</th><th>支撐 2</th><th>壓力 1</th><th>壓力 2</th><th>依據</th></tr></thead>
+<tbody>
+<tr><td><strong>S&amp;P 500</strong><br><span class="note">SPY 742.09</span></td><td>約 7,488 點</td><td>7,450<br><span class="note">SPY 741.5</span></td><td>7,400<br><span class="note">整數關</span></td><td>7,550<br><span class="note">SPY 748.7</span></td><td>7,600<br><span class="note">整數關</span></td><td>7/20 日內低點 741.51、高點 748.73；整數關推算</td></tr>
+<tr><td><strong>Nasdaq</strong><br><span class="note">QQQ 696.06</span></td><td>約 25,729 點</td><td>25,500<br><span class="note">QQQ 695.5</span></td><td>25,200<br><span class="note">QQQ 約 682</span></td><td>26,050<br><span class="note">QQQ 705.8</span></td><td>26,300</td><td>QQQ 7/20 低 695.51／高 705.80；指數換算為近似</td></tr>
+<tr><td><strong>費半 SOX</strong><br><span class="note">SOXX 524.14</span></td><td>以 SOXX 為座標</td><td>SOXX 522.8<br><span class="note">7/20 低</span></td><td>SOXX 510<br><span class="note">整數關</span></td><td>SOXX 539.5<br><span class="note">7/20 高</span></td><td>SOXX 550</td><td>SOX 指數點位無官方源，一律以 SOXX ETF 價格為座標</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">指數點位為 WebSearch 近似值，ETF 價格為 Twelve Data 官方資料。指數換算的支撐壓力為<strong>估算</strong>，請以 ETF 價格為可執行的參考座標。</p>
+
+<h3>7-2 個股：支撐、壓力與目標價</h3>
+<div class="scroll">
+<table>
+<thead><tr><th>標的</th><th>現價</th><th>支撐 1</th><th>支撐 2</th><th>壓力 1</th><th>壓力 2</th><th>分析師目標價</th><th>相對位置</th></tr></thead>
+<tbody>
+<tr>
+<td><strong>NVDA</strong></td><td>203.28</td>
+<td><strong>202.28</strong><br><span class="note">7/20 日內低</span></td>
+<td><strong>195</strong><br><span class="note">整數關＋跌破即破壞結構</span></td>
+<td><strong>207.74</strong><br><span class="note">7/20 日內高</span></td>
+<td><strong>212–215</strong><br><span class="note">殺盤前平台（估算）</span></td>
+<td>平均 <strong>$302.73</strong>（68 位分析師）<br>KeyBanc $330（7/14）<br>Tigress $350 Strong Buy</td>
+<td>距 52 週高 236.54 <strong>−14.1%</strong><br>距 52 週低 164.07 <strong>+23.9%</strong><br>距均值目標價 <strong>+48.9%</strong></td>
+</tr>
+<tr>
+<td><strong>AMD</strong></td><td>503.57</td>
+<td><strong>495.76</strong><br><span class="note">7/17 收盤</span></td>
+<td><strong>480</strong><br><span class="note">整數關（估算）</span></td>
+<td><strong>522.44</strong><br><span class="note">7/20 日內高</span></td>
+<td><strong>550</strong><br><span class="note">整數關</span></td>
+<td>共識 Strong Buy<br>平均約 <strong>$276</strong><span class="note">（該數據明顯落後現價，疑為過期，請自行以券商最新報告核對）</span></td>
+<td>現價已<strong>高於</strong> WebSearch 取得之 52 週高 430.60，<br>顯示該區間資料過期；<br><strong>實質處於歷史高檔區</strong></td>
+</tr>
+<tr>
+<td><strong>GOOGL</strong></td><td>351.99</td>
+<td><strong>346.77</strong><br><span class="note">7/17 收盤</span></td>
+<td><strong>340</strong><br><span class="note">整數關（估算）</span></td>
+<td><strong>359.67</strong><br><span class="note">7/20 日內高</span></td>
+<td><strong>365–370</strong><br><span class="note">估算</span></td>
+<td>未取得可靠共識目標價<br><span class="note">Q2 預估 EPS $2.87–2.90、營收 $1,169 億</span></td>
+<td><strong>7/22 盤後財報，波動區間可能大幅超出上表</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="src">目標價來源：WebSearch 公開資料（MarketBeat／TipRanks／Benzinga 等彙整），非即時、非官方，<strong>下單前請自行以券商最新研究報告核對</strong>。AMD 的 52 週區間與目標價明顯與現價矛盾，已標示為不可靠。</p>
+
+<h3>7-3 ETF 支撐壓力</h3>
+<div class="scroll">
+<table>
+<thead><tr><th>ETF</th><th>現價</th><th>支撐 1</th><th>支撐 2</th><th>壓力 1</th><th>壓力 2</th><th>依據</th></tr></thead>
+<tbody>
+<tr><td><strong>QQQ</strong></td><td>696.06</td><td>695.33<span class="note">（前收）</span></td><td>690<span class="note">（整數關）</span></td><td>705.80<span class="note">（7/20 高）</span></td><td>710</td><td>前收＋日內高低＋整數關</td></tr>
+<tr><td><strong>SOXX</strong></td><td>524.14</td><td>522.84<span class="note">（7/20 低）</span></td><td>510<span class="note">（整數關）</span></td><td>539.53<span class="note">（7/20 高）</span></td><td>550</td><td>同上</td></tr>
+<tr><td><strong>SOXQ</strong></td><td>92.42</td><td>92.20<span class="note">（7/20 低）</span></td><td>90<span class="note">（整數關）</span></td><td>95.03<span class="note">（7/20 高）</span></td><td>97</td><td>同上（與 SOXX 同步）</td></tr>
+<tr><td><strong>VOO</strong></td><td>682.21</td><td>681.57<span class="note">（7/20 低）</span></td><td>675<span class="note">（整數關）</span></td><td>688.19<span class="note">（7/20 高）</span></td><td>695</td><td>同上</td></tr>
+<tr><td><strong>VT</strong></td><td>154.29</td><td>154.18<span class="note">（7/20 低）</span></td><td>152<span class="note">（整數關）</span></td><td>155.69<span class="note">（7/20 高）</span></td><td>158</td><td>同上</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">⚠ <strong>本報告未能取得 50 日／200 日均線</strong>：Stooq 歷史資料 API 遭反爬阻擋、Yahoo Finance API 回傳 429，兩個歷史資料源今日均不可用。因此上表支撐壓力<strong>僅以前收、日內高低點與整數關推算</strong>，缺少均線這一道重要的技術參考。請自行於看盤軟體確認均線位置後再使用。</p>
+
+<h3>7-4 操作建議（4 條）</h3>
+<div class="card">
+<ol>
+<li><strong>AMD：於 505–525 區間分批降低權重</strong>
+<div class="pro"><strong>依據：</strong>權重 28.8%（穿透後 30.0%）為組合最大單一風險；現價處歷史高檔、估值緩衝最薄；7/20 從 522.44 回吐至 503.57 顯示 520 上方有實質賣壓，反彈至此區間正是降低集中度的合理窗口。</div>
+<div class="con"><strong>反方風險：</strong>AMD 基本面動能確實在改善、MI 系列份額擴張中，若 AI 資本支出續強，AMD 是彈性最大的標的，減碼將直接犧牲上檔。此外賣出可能觸發稅務事件。若你的判斷是「AI 資本支出週期尚未見頂」，則維持權重是內部一致的選擇。</div>
+</li>
+
+<li><strong>GOOGL：財報（7/22 盤後）結果出爐後再決定，守住 340 才考慮加碼</strong>
+<div class="pro"><strong>依據：</strong>多因子評分最高（4.0）但權重僅 6.2%，是組合中品質與權重最不匹配的部位；估值在科技巨頭中偏低、擁有實質現金流，提升權重可同時改善品質與防禦性。</div>
+<div class="con"><strong>反方風險：</strong>財報是二元事件。$1,900 億 AI 投資的 ROI 若遭質疑、或 Cloud 成長率從 60% 明顯減速，單日跌幅可能遠超上表壓力／支撐區間。<strong>財報前建立部位等同於押注一個無法分析的結果</strong>，這也是本建議信心評等僅為「低」的原因。</div>
+</li>
+
+<li><strong>NVDA：維持現有權重，以 195 為風控參考、212 為轉強確認</strong>
+<div class="pro"><strong>依據：</strong>基本面評分最高、距分析師均值目標價 $302.73 尚有約 +49% 空間、距 52 週高 −14%，估值位階明顯優於 AMD。作為 AI 算力不可替代的核心，在題材未破壞前沒有主動減碼的理由。</div>
+<div class="con"><strong>反方風險：</strong>技術面是三檔個股中最弱的（7/20 回吐日內 78% 漲幅）；Nebius 入股再度凸顯「投資客戶創造需求」的循環融資疑慮，這正是空方最有力的論據；且 23% 的單一部位本身已屬集中，「維持」也是一種持續承擔風險的選擇。分析師目標價的一致樂觀，在轉折點往往是反向指標。</div>
+</li>
+
+<li><strong>建立現金部位（優先於任何加碼動作）</strong>
+<div class="pro"><strong>依據：</strong>組合現金 0%、債券 0%，在 7/17 式的無差別提款中完全沒有承接能力。情境 B（反彈失敗）機率約 35%，屆時若無彈藥，只能被動承受。在反彈期間建立現金的成本，遠低於下跌後被迫賣股。</div>
+<div class="con"><strong>反方風險：</strong>持有現金在多頭延續時是明確的機會成本，且與積極型投資屬性相衝突。過去一年這個組合的高報酬，正來自於「滿倉不留現金」。若 AI 週期尚在中段，這條建議會讓你系統性落後。</div>
+</li>
+</ol>
+
+<div class="warnbox">
+<strong>ETF 風險特性提示：</strong>SOXX 與 SOXQ 雖<strong>非槓桿型</strong> ETF，但因追蹤費城半導體指數、成分高度集中於少數大型半導體股，其波動度顯著高於大盤（7/20 日內振幅達 3.2%，而 VOO 僅 0.97%）。
+持有兩檔並不降低風險，實務上等同單一 SOX 部位。若未來考慮槓桿型半導體 ETF，須特別注意<strong>單日重設機制</strong>與<strong>波動耗損</strong>——在震盪盤中，即使指數回到原點，槓桿型 ETF 仍會產生結構性虧損。
+</div>
+
+<p class="note">以上所有價位為<strong>盤前參考座標、非預測</strong>。均線因資料源故障無法計算、ETF 成分權重、部分支撐壓力位與情境機率均為<strong>估算值</strong>。建議為分析觀點，非下單指令。</p>
+</div>
+
+<!-- ══════════════ 8. 多角度分析 ══════════════ -->
+<h2>八、多角度分析</h2>
+<div class="grid g3">
+<div class="card">
+<h3 style="margin-top:0">🔵 若你是現有持有者</h3>
+<p>你在 7/17 承受了一次極端測試，今日已回補相當部分。<strong>當前最該做的不是判斷方向，而是檢視結構。</strong></p>
+<ul>
+<li>反彈期是調整集中度的最佳窗口——價格好時調整，成本最低。</li>
+<li>66% 的半導體穿透曝險，若你在 7/17 那天感到不安，那就是超出風險承受度的訊號，應在此時修正而非等下一次。</li>
+<li>若你在 7/17 完全沒有動搖，且理解這是產業風險而非市場風險，維持配置是內部一致的選擇。</li>
+</ul>
+</div>
+<div class="card">
+<h3 style="margin-top:0">🟢 若你是潛在買方</h3>
+<p>現在<strong>不是</strong>理想的進場點——但也不是最差的。</p>
+<ul>
+<li>價格已從谷底反彈，7/17 的恐慌折價大半消失，但籌碼尚未修復（外資連 13 賣）。</li>
+<li>本週三 GOOGL、週四 Intel 財報是免費的資訊——等兩天，你會知道得更多而代價有限。</li>
+<li>若要建倉，<strong>GOOGL 與 VOO 的風險報酬比優於 NVDA／AMD</strong>：前者估值合理有現金流，後者需要 AI 資本支出敘事持續成立。</li>
+</ul>
+</div>
+<div class="card">
+<h3 style="margin-top:0">🟣 若你是長期投資人</h3>
+<p>7/17 的暴跌與今日的暴漲，在 10 年尺度上都是噪音。<strong>真正的問題只有一個：AI 資本支出能否轉化為獲利？</strong></p>
+<ul>
+<li>多方論據：需求真實、台積電產能滿載、雲端業者持續加碼。</li>
+<li>空方論據：資本支出領先獲利 2–3 年、循環融資（NVDA 投資客戶）、與 2000 年基建過度建設軌跡相似。</li>
+<li>對長期投資人而言，<strong>66% 單一產業曝險的最大問題不是報酬，是時間</strong>——若 AI 週期進入 3–5 年消化期，你需要有能力等，而 0% 現金部位讓「等」變得昂貴。</li>
+</ul>
+</div>
+</div>
+
+<!-- ══════════════ 9. 情境與風險 ══════════════ -->
+<h2>九、情境劇本與風險清單</h2>
+<div class="scroll">
+<table>
+<thead><tr><th>情境</th><th>推測機率</th><th>觸發訊號</th><th>對組合影響</th><th>可考慮的因應方向</th></tr></thead>
+<tbody>
+<tr><td><strong>A. 反彈延續</strong><br>V 型修復</td><td>約 40%</td><td>今晚不再收長上影；GOOGL 財報優於預期；SOXX 站穩 539.5</td><td class="up">高 beta 部位領漲，組合快速回血</td><td>把握窗口降低 AMD 集中度、建立現金，而非追加</td></tr>
+<tr><td><strong>B. 反彈失敗</strong><br>二次探底</td><td>約 35%</td><td>今晚再現衝高收綠；GOOGL 財報不如預期；NVDA 破 195、AMD 破 480</td><td class="down">組合所有部位同向下跌，無避震</td><td>0% 現金是最大弱點；先在 A 情境建立彈藥</td></tr>
+<tr><td><strong>C. 區間震盪</strong></td><td>約 25%</td><td>財報好壞參半；指數在 7/20 高低區間內反覆</td><td class="flat">高波動低方向，情緒消耗</td><td>最適合分批調整結構的環境</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card">
+<h3 style="margin-top:0">風險清單（依對本組合的嚴重度排序）</h3>
+<ol>
+<li><strong>單一產業集中度風險（最高）</strong>：半導體穿透曝險約 66%、三檔個股佔 63%。這不是市場風險，是產業風險——判斷失誤的代價是與大盤脫鉤的大幅回撤。</li>
+<li><strong>GOOGL 財報事件風險（7/22 盤後）</strong>：直接影響穿透 7.4% 的部位，並將定調整個 AI 資本支出敘事，間接衝擊其餘 66% 的半導體曝險。</li>
+<li><strong>聯準會升息論調</strong>：已有官員表態認為有必要升息。10Y 停在 4.55%，若轉為升息預期，權重最重的高 beta 部位受創最深。</li>
+<li><strong>AI 估值泡沫的結構性質疑</strong>：資本支出領先獲利、循環融資（NVDA 入股 Nebius、投資客戶創造需求）、能源與算力瓶頸——這些論據在 7/16–17 已被市場定價一次，隨時可能重演。</li>
+<li><strong>零現金、零債券</strong>：組合完全沒有避震器，也沒有在低點行動的能力。</li>
+<li><strong>地緣與貿易政策</strong>：伊朗戰事、美對加拿大新關稅——影響油價與風險溢價，對半導體供應鏈亦有間接衝擊。</li>
+<li><strong>美元偏強</strong>：DTWEXBGS 120.53、月增 +0.50，侵蝕 VT 的非美部位報酬，讓你唯一的分散工具效果打折。</li>
+<li><strong>本報告的資料缺口</strong>：均線（50/200 日）因資料源故障無法計算；ETF 穿透權重為估算；AMD 的 52 週區間與目標價明顯過期。技術面與估值面的判斷因此存在盲區。</li>
+</ol>
+</div>
+
+<!-- ══════════════ 免責 ══════════════ -->
+<div class="discl">
+<strong>資料來源標註</strong>
+<ul>
+<li><strong>Twelve Data 官方 API</strong>：美股個股與 ETF 收盤價（NVDA／AMD／GOOGL／QQQ／SOXX／SOXQ／VOO／VT），資料日 2026-07-20。四大指數與費半、VIX 為 <strong>ETF proxy</strong>（SPY／DIA／QQQ／SOXX／VIXY）——<strong>% 漲跌貼近指數，點位為 ETF 價格、非指數本身</strong>。</li>
+<li><strong>FRED 官方 API</strong>：DGS10／DGS2／T10Y2Y／DFF／DCOILWTICO／DTWEXBGS／T10YIE。日資料延遲約 1 個交易日，油價最新值停在 07-13。</li>
+<li><strong>TWSE 官方</strong>：加權指數（MI_5MINS_HIST）、三大法人買賣超（BFI82U）、台積電 2330 個股（STOCK_DAY），資料日 2026-07-21。</li>
+<li><strong>WebSearch 公開資料近似值</strong>：亞股／歐股收盤、美股指數點位、盤前期貨、夜間消息、財報與經濟數據行事曆、分析師目標價、52 週高低。<strong>非即時、非官方，可能過期</strong>（AMD 的 52 週區間與目標價已確認與現價矛盾）。</li>
+<li><strong>資料源故障說明</strong>：Yahoo Finance API 回傳 HTTP 429、Stooq 歷史資料遭反爬阻擋，因此 <strong>ETF 成分穿透權重與 50／200 日均線均無法取得官方數據</strong>，本報告以已知近似權重估算，並已於各處標示。Twelve Data 免費版有每分鐘呼叫上限，部分報價分批取得。</li>
+</ul>
+
+<strong style="display:block;margin-top:14px">免責聲明</strong>
+<p>本報告由自動化排程程式產出，<strong>本人非財務顧問、非證券分析師、亦非任何形式的持牌投資專業人士</strong>，不具備提供投資建議之資格。</p>
+<p>本報告所有內容僅為個人資訊整理與分析練習，<strong>不構成任何投資建議、要約、招攬或推薦</strong>。所有「加碼／減碼／中性持有」等方向性描述均為分析觀點的表達方式，<strong>並非下單指令</strong>，不指定買賣股數，亦不建議立即執行。</p>
+<p>報告中的價位、目標價、機率與評分包含大量<strong>估算與主觀判斷</strong>，可能存在錯誤。市場資料可能有延遲、缺漏或錯誤。過去表現不代表未來績效。</p>
+<p><strong>投資決策應由您自行負責</strong>，並在必要時諮詢合格的持牌財務顧問。因使用本報告所生之任何損失，本報告產出者概不負責。</p>
+<p class="note" style="margin-top:10px">為維護隱私，本報告僅以權重百分比呈現持股結構，不含任何絕對金額、股數或投資組合總額。</p>
+</div>
+
+<footer>
+美股盤前分析｜2026-07-21 產出（台北時間 20:00）｜FinanceAssistant 自動化排程<br>
+資料日：美股 2026-07-20 收盤／台股 2026-07-21 收盤
+</footer>
+
+</div>
+</body>
+</html>
